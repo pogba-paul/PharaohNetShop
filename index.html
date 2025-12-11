@@ -1513,43 +1513,67 @@
 
         // دالة لتحميل بيانات المستخدم من البوت
         async function loadUserData() {
+    return new Promise((resolve) => {
+        console.log('بدء تحميل بيانات المستخدم...');
+        
+        // 1. جلب البيانات المحلية
+        const savedData = localStorage.getItem('pharaohnet_user_data');
+        if (savedData) {
             try {
-                // إظهار رسالة التحميل
-                tg.showPopup({
-                    title: 'جاري التحميل',
-                    message: 'جاري تحميل بياناتك من البوت...',
-                    buttons: []
-                }, () => {});
-                
-                // محاولة الحصول على البيانات من localStorage كنسخة احتياطية
-                const savedData = localStorage.getItem('pharaohnet_user_data');
-                if (savedData) {
-                    const parsedData = JSON.parse(savedData);
-                    userData = { ...userData, ...parsedData };
-                }
-                
-                // إرسال طلب للحصول على بيانات المستخدم من البوت
-                const dataToSend = {
-                    action: 'get_user_data',
-                    user_id: user.id,
-                    timestamp: Date.now()
-                };
-                
-                // إرسال البيانات للبوت
-                tg.sendData(JSON.stringify(dataToSend));
-                
-                // انتظار قليل ثم تحديث الواجهة
-                setTimeout(() => {
-                    updateUI();
-                    tg.closePopup();
-                }, 1000);
-                
-            } catch (error) {
-                console.error('خطأ في تحميل البيانات:', error);
-                tg.showAlert('حدث خطأ في تحميل البيانات. سيتم استخدام البيانات المحلية.');
-                updateUI();
+                const parsedData = JSON.parse(savedData);
+                userData = { ...userData, ...parsedData };
+                console.log('تم تحميل البيانات المحلية:', userData);
+            } catch (e) {
+                console.error('خطأ في تحليل البيانات المحلية:', e);
             }
         }
+        
+        // 2. إذا كان هناك مستخدم من Telegram
+        if (user && user.id) {
+            userData.user_id = user.id;
+            
+            // 3. إرسال طلب بيانات من البوت
+            try {
+                const requestData = {
+                    action: 'get_user_data',
+                    user_id: user.id,
+                    timestamp: Date.now(),
+                    request_id: 'req_' + Date.now()
+                };
+                
+                console.log('إرسال طلب بيانات للبوت:', requestData);
+                tg.sendData(JSON.stringify(requestData));
+                
+                // انتظار بسيط ثم تحديث الواجهة
+                setTimeout(() => {
+                    console.log('تحديث الواجهة بالبيانات المتاحة');
+                    updateUI();
+                    
+                    // عرض رسالة للمستخدم
+                    tg.showAlert('✅ تم تحميل بياناتك. النقاط متزامنة مع البوت تلقائياً.');
+                    
+                    resolve(true);
+                }, 1500);
+                
+            } catch (error) {
+                console.error('خطأ في الاتصال بالبوت:', error);
+                
+                // استخدام البيانات المحلية مع تحذير
+                updateUI();
+                tg.showAlert('⚠️ استخدام البيانات المحلية. النقاط قد لا تكون محدثة.');
+                
+                resolve(false);
+            }
+        } else {
+            // لا يوجد مستخدم، استخدام البيانات المحلية فقط
+            console.log('لا يوجد مستخدم Telegram، استخدام البيانات المحلية');
+            updateUI();
+            tg.showAlert('👋 مرحباً! يمكنك استخدام التطبيق وتخزين النقاط محلياً.');
+            
+            resolve(false);
+        }
+    });
+}
 
         // دالة لتحديث النقاط في البوت
         async function updatePointsInBot(pointsToAdd, adId = null) {
