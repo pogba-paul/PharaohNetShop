@@ -1668,7 +1668,8 @@
     <script>
         // ⚙️ إعدادات API
         const API_BASE_URL = 'https://ardis-thatchless-claribel.ngrok-free.dev'; // غير هذا إلى رابط السيرفر الحقيقي
-        const API_KEY = '018fc45207f7f75fcb510698873b571733d7a910b9081cf38aca9c9eb34257e5'; // يجب أن يكون نفس WEBHOOK_SECRET في main.py
+        const API_KEY = 'ca16f63d8ff83a3ee25b3655923f26f78919b58b8603b21e6bc5786106014c51'; // يجب أن يكون نفس WEBHOOK_SECRET في main.py
+        const BOT_USERNAME = 'PharaohNetChopBot'; // اسم البوت الرسمي
         const SYNC_INTERVAL = 30000; // 30 ثانية
 
         Telegram.WebApp.ready();
@@ -1719,7 +1720,7 @@
             const alertType = alertTypes[type] || alertTypes.info;
             
             const alertHTML = `
-                <div class="alert-message ${alertType.color}" id="${alertId}">
+                <div class="alert-message \( {alertType.color}" id=" \){alertId}">
                     <i class="fas ${alertType.icon} alert-icon"></i>
                     <div class="alert-content">
                         <div class="alert-title">${title}</div>
@@ -1793,7 +1794,7 @@
             }
             
             try {
-                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                const response = await fetch(`\( {API_BASE_URL} \){endpoint}`, options);
                 
                 if (!response.ok) {
                     throw new Error(`خطأ في API: ${response.status}`);
@@ -1897,7 +1898,7 @@
                 totalTasksCompleted = result.completed_tasks;
                 localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
                 
-                showAlert('success', 'تمت المهمة!', `لقد كسبت ${pointsEarned} نقطة. الرصيد الجديد: ${points} نقطة`);
+                showAlert('success', 'تمت المهمة!', `لقد كسبت \( {pointsEarned} نقطة. الرصيد الجديد: \){points} نقطة`);
                 updatePointsDisplay();
                 
                 return true;
@@ -2011,7 +2012,7 @@
             // اسم وصورة المستخدم
             const userNameElement = document.getElementById('user-name');
             userNameElement.textContent = user.first_name ? 
-                `${user.first_name} ${user.last_name || ''}`.trim() : 'ضيف';
+                `\( {user.first_name} \){user.last_name || ''}`.trim() : 'ضيف';
 
             const userAvatar = document.getElementById('user-avatar');
             const defaultAvatar = document.getElementById('default-avatar');
@@ -2028,8 +2029,8 @@
             // تحميل النقاط والمهام المكتملة
             updatePointsDisplay();
 
-            // رابط الدعوة
-            const inviteLink = `https://t.me/johera_bot?start=invite_${user.id || 'default'}`;
+            // رابط الدعوة المحدث
+            const inviteLink = `https://t.me/\( {BOT_USERNAME}?start= \){user.id || 'default'}`;
             document.getElementById('invite-link').value = inviteLink;
 
             // تحديث زر الوضع الليلي في القائمة
@@ -2152,7 +2153,7 @@
                     url = 'https://www.facebook.com/61573924207577/posts/pfbid0mTNCb6X87jzHyNY9WZdNm9LE8u8PbrkHn35GNWWu97vmAW6Sckb3Ab1gDpnUK51Nl/?app=fbl';
                     break;
                 default:
-                    url = 'https://t.me/PharaohNetChop';
+                    url = `https://t.me/${BOT_USERNAME}`;
             }
             
             tg.openLink(url);
@@ -2198,7 +2199,7 @@
             for (let i = 1; i <= totalTasks; i++) {
                 const isCompleted = getAdStatus(i);
                 const taskHTML = `
-                    <div class="task-card ${isCompleted ? 'completed' : ''}" id="task${i}">
+                    <div class="task-card \( {isCompleted ? 'completed' : ''}" id="task \){i}">
                         <div class="task-header">
                             <div class="task-icon ${isCompleted ? 'completed' : ''}">
                                 <i class="fas fa-play-circle"></i>
@@ -2218,11 +2219,11 @@
                                 <span class="points">+0.5 نقطة</span>
                             </div>
                             <div class="progress-bar">
-                                <div class="progress-fill" id="p${i}" style="width: ${isCompleted ? '100%' : '0%'}"></div>
+                                <div class="progress-fill" id="p\( {i}" style="width: \){isCompleted ? '100%' : '0%'}"></div>
                             </div>
                         </div>
                         
-                        <button class="watch-btn ${isCompleted ? 'completed' : ''}" onclick="startAd(${i})" id="btn${i}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="watch-btn \( {isCompleted ? 'completed' : ''}" onclick="startAd( \){i})" id="btn\( {i}" \){isCompleted ? 'disabled' : ''}>
                             <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-play'}"></i> 
                             ${isCompleted ? 'تم الإكمال +0.5' : 'ابدأ المشاهدة'}
                         </button>
@@ -2476,7 +2477,7 @@
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
             
-            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
+            timerElement.textContent = `متبقي: \( {hours}س \){minutes}د ${seconds}ث`;
         }
 
         async function claimDailyGift() {
@@ -2598,7 +2599,7 @@
                     copyInviteLink();
                 });
             } else {
-                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى تطبيق النقاط واحصل على جوائز قيمة! 🎁✨')}`;
+                const telegramShareUrl = `https://t.me/share/url?url=\( {encodeURIComponent(link)}&text= \){encodeURIComponent('انضم إلى تطبيق النقاط واحصل على جوائز قيمة! 🎁✨')}`;
                 tg.openLink(telegramShareUrl);
             }
         }
