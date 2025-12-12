@@ -1666,9 +1666,9 @@
     <script src='//libtl.com/sdk.js' data-zone='10301752' data-sdk='show_10301752'></script>
 
     <script>
-        // ⚙️ إعدادات API المحسنة
-        const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
-        const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
+        // ⚙️ إعدادات API المحسنة والمعدلة
+        const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev'; // ✅ رابط الـ ngrok الحالي
+const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطابق ومتوفر)
         const SYNC_INTERVAL = 30000; // 30 ثانية
         const BOT_USERNAME = 'PharaohNetChopBot'; // اسم البوت
 
@@ -1688,6 +1688,7 @@
         let giftCodeCollapsed = localStorage.getItem('giftCodeCollapsed') === 'true';
         let lastSyncTime = localStorage.getItem('lastSyncTime') || null;
         let apiConnected = false;
+        let currentApiUrl = API_BASE_URL; // متغير لتتبع عنوان API الحالي
 
         // كود الهدية الخاص
         const GIFT_CODE = "gift-pharaoh";
@@ -1781,15 +1782,12 @@
             
             const headers = {
                 'Content-Type': 'application/json',
-                'X-API-Key': API_KEY,
-                'Origin': 'https://web.telegram.org'
+                'X-API-Key': API_KEY
             };
             
             const options = {
                 method: method,
-                headers: headers,
-                mode: 'cors',
-                credentials: 'omit'
+                headers: headers
             };
             
             if (data && (method === 'POST' || method === 'PUT')) {
@@ -1798,7 +1796,7 @@
             
             try {
                 // محاولة الاتصال بالـ API
-                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                const response = await fetch(`${currentApiUrl}${endpoint}`, options);
                 
                 if (!response.ok) {
                     throw new Error(`خطأ في API: ${response.status}`);
@@ -1953,12 +1951,11 @@
         async function testApiConnection() {
             showLoading(true);
             try {
-                const result = await fetch(`${API_BASE_URL}/api/health`, {
+                const result = await fetch(`${currentApiUrl}/api/health`, {
                     method: 'GET',
                     headers: {
                         'X-API-Key': API_KEY
-                    },
-                    mode: 'cors'
+                    }
                 });
                 
                 if (result.ok) {
