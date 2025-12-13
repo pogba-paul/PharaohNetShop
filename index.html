@@ -1361,6 +1361,30 @@
             cursor: pointer;
             padding: 5px;
         }
+
+        /* زر المزامنة الاحتياطي */
+        .sync-backup-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            background: linear-gradient(45deg, #FF9800, #F57C00);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .sync-backup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4);
+        }
     </style>
 </head>
 <body class="light-theme">
@@ -1408,10 +1432,6 @@
                 <i class="fas fa-question-circle"></i>
                 <span>المساعدة</span>
             </a>
-            <div class="menu-item" onclick="syncWithBot()">
-                <i class="fas fa-sync-alt"></i>
-                <span>مزامنة مع البوت</span>
-            </div>
         </div>
     </div>
     <div class="menu-overlay" onclick="toggleMenu()"></div>
@@ -1426,9 +1446,6 @@
         </div>
         
         <div class="header-controls">
-            <div class="connection-status" id="connectionStatus" style="font-size: 12px; padding: 5px 10px; border-radius: 10px; background: rgba(33, 150, 243, 0.1);">
-                <i class="fas fa-wifi"></i> متصل
-            </div>
             <button class="menu-btn" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -1459,33 +1476,24 @@
         </div>
 
         <div class="configs-card">
-            <h3>الملفات المتاحة</h3>
+            <h3>🔍 طرق كسب نقاط</h3>
             <div class="config-item">
-                <div class="config-title">كونفيغ VIP</div>
+                <div class="config-title">📺 مشاهدة الإعلانات</div>
                 <ul class="config-features">
-                    <li>دعم لجميع السيرفرات</li>
-                    <li>سرعة عالية وأمان متقدم</li>
-                    <li>تحديثات أسبوعية</li>
+                    <li>قم بمشاهدة الإعلانات و اكسب 0.5 نقطة لكل اعلان تشاهده</li>
                 </ul>
-                <div class="config-price">سعر: 5.0 نقاط</div>
             </div>
             <div class="config-item">
-                <div class="config-title">كونفيغ بريميوم</div>
+                <div class="config-title">🎟 كود الهدية</div>
                 <ul class="config-features">
-                    <li>وصول إلى 100+ سيرفر</li>
-                    <li>تشفير قوي</li>
-                    <li>دعم فني 24/7</li>
+                    <li>اضغط على زر الحصول على كود الهدية قم بتفعيله و مبروك عليك نقطتين</li>
                 </ul>
-                <div class="config-price">سعر: 10.0 نقاط</div>
             </div>
             <div class="config-item">
-                <div class="config-title">كونفيغ أساسي</div>
+                <div class="config-title">🎁 الهدية اليومية</div>
                 <ul class="config-features">
-                    <li>وصول أساسي للسيرفرات</li>
-                    <li>سرعة متوسطة</li>
-                    <li>تحديثات شهرية</li>
+                    <li>يمكنك الحصول على نقاط هدية خلال كل يوم</li>
                 </ul>
-                <div class="config-price">سعر: 2.0 نقاط</div>
             </div>
             <div style="margin-top: 20px; padding: 15px; background: rgba(33, 150, 243, 0.05); border-radius: 12px; text-align: center;">
                 <p style="color: var(--dark-blue); font-weight: 600; margin-bottom: 10px;">🔗 النقاط التي تكسبها هنا يمكنك استخدامها في البوت مباشرة!</p>
@@ -1557,18 +1565,14 @@
 
         <!-- قسم معلومات المزامنة -->
         <div class="configs-card" style="margin-top: 30px;">
-            <h3>معلومات المزامنة</h3>
+            <h3>معلومات تحديث النقاط</h3>
             <p style="text-align: center; margin: 15px 0;">
                 <i class="fas fa-sync-alt" style="color: var(--primary-blue); margin-left: 5px;"></i>
-                النقاط التي تكسبها هنا ستتم مزامنتها تلقائياً مع بوت التليغرام
+                النقاط التي تكسبها هنا ستتم تحديثها تلقائياً مع بوت التليغرام
             </p>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button onclick="syncWithBot()" style="padding: 10px 20px; background: var(--gradient-blue); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-sync-alt"></i> مزامنة الآن
-                </button>
-                <button onclick="checkBalance()" style="padding: 10px 20px; background: rgba(33, 150, 243, 0.1); color: var(--dark-blue); border: 1px solid rgba(33, 150, 243, 0.3); border-radius: 10px; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-coins"></i> فحص الرصيد
-                </button>
+            <div style="text-align: center; color: #666; font-size: 14px; margin: 10px 0;">
+                <i class="fas fa-info-circle" style="color: var(--info-blue);"></i>
+                ان لم تحصل على نقاطك التي اكتسبتها هنا في البوت اذهب لجهة معلوماتي و اضغط على زر تحديث نقاطي في البوت
             </div>
         </div>
     </div>
@@ -1591,8 +1595,8 @@
                 <div class="stat-value" id="invites-count">0</div>
             </div>
             <div class="stat-card">
-                <h4>النقاط في البوت</h4>
-                <div class="stat-value" id="bot-points">0.0</div>
+                <h4>آخر تحديث</h4>
+                <div class="stat-value" id="last-updated" style="font-size: 20px;">-</div>
             </div>
         </div>
 
@@ -1611,32 +1615,25 @@
             </div>
         </div>
 
-        <!-- قسم اتصال API -->
+        <!-- زر المزامنة الاحتياطي -->
         <div class="configs-card" style="margin-top: 20px;">
-            <h3>اتصال الخادم</h3>
-            <div style="margin: 15px 0;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                    <span>حالة الاتصال:</span>
-                    <span id="api-status" style="color: var(--success-green); font-weight: 600;">
-                        <i class="fas fa-check-circle"></i> متصل
-                    </span>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                    <span>آخر مزامنة:</span>
-                    <span id="last-sync">لم تتم المزامنة بعد</span>
+            <h3>تحديث النقاط الاحتياطي</h3>
+            <p style="text-align: center; margin: 15px 0; color: #666;">
+                <i class="fas fa-exclamation-triangle" style="color: var(--warning-orange); margin-left: 5px;"></i>
+                استخدم هذا الزر فقط في حالة تأخر وصول النقاط للبوت
+            </p>
+            <button class="sync-backup-btn" onclick="manualSync()">
+                <i class="fas fa-sync-alt"></i> تحديث نقاطي في البوت
+            </button>
+            <div style="margin-top: 15px; padding: 10px; background: rgba(33, 150, 243, 0.05); border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span>آخر تحديث:</span>
+                    <span id="last-sync-time">لم يتم التحديث بعد</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
                     <span>معرف المستخدم:</span>
                     <span id="user-id-display" style="font-family: monospace;">-</span>
                 </div>
-            </div>
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button onclick="testApiConnection()" style="padding: 10px 20px; background: rgba(33, 150, 243, 0.1); color: var(--dark-blue); border: 1px solid rgba(33, 150, 243, 0.3); border-radius: 10px; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-plug"></i> فحص الاتصال
-                </button>
-                <button onclick="forceSync()" style="padding: 10px 20px; background: var(--gradient-blue); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-bolt"></i> مزامنة قسرية
-                </button>
             </div>
         </div>
     </div>
@@ -1666,11 +1663,10 @@
     <script src='//libtl.com/sdk.js' data-zone='10301752' data-sdk='show_10301752'></script>
 
     <script>
-        // ⚙️ إعدادات API المحسنة والمعدلة
-        const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev'; // ✅ رابط الـ ngrok الحالي
-const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطابق ومتوفر)
-        const SYNC_INTERVAL = 30000; // 30 ثانية
-        const BOT_USERNAME = 'PharaohNetChopBot'; // اسم البوت
+        // ⚙️ إعدادات API المعدلة
+        const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
+        const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
+        const BOT_USERNAME = 'PharaohNetChopBot';
 
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
@@ -1678,17 +1674,16 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
         const user = tg.initDataUnsafe.user || {};
 
         // متغيرات التطبيق
-        let points = parseFloat(localStorage.getItem('points') || '0');
-        let invites = parseInt(localStorage.getItem('invites') || '0');
-        let totalTasksCompleted = parseInt(localStorage.getItem('totalTasksCompleted') || '0');
+        let points = 0;
+        let invites = 0;
+        let totalTasksCompleted = 0;
         const totalTasks = 10;
-        let dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') || false;
-        let dailyGiftTime = localStorage.getItem('dailyGiftTime') || null;
-        let tasksCollapsed = localStorage.getItem('tasksCollapsed') === 'true';
-        let giftCodeCollapsed = localStorage.getItem('giftCodeCollapsed') === 'true';
-        let lastSyncTime = localStorage.getItem('lastSyncTime') || null;
-        let apiConnected = false;
-        let currentApiUrl = API_BASE_URL; // متغير لتتبع عنوان API الحالي
+        let dailyGiftClaimed = false;
+        let dailyGiftTime = null;
+        let tasksCollapsed = false;
+        let giftCodeCollapsed = false;
+        let lastSyncTime = null;
+        let lastTaskCompletedTime = null;
 
         // كود الهدية الخاص
         const GIFT_CODE = "gift-pharaoh";
@@ -1754,305 +1749,191 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
             return alertId;
         }
 
-        function updateConnectionStatus(connected) {
-            apiConnected = connected;
-            const statusElement = document.getElementById('connectionStatus');
-            const apiStatusElement = document.getElementById('api-status');
+        function updatePointsDisplay() {
+            document.getElementById('points').textContent = points.toFixed(1);
+            document.getElementById('total-points').textContent = points.toFixed(1);
+            document.getElementById('completed-count').textContent = totalTasksCompleted;
+            document.getElementById('invites-count').textContent = invites;
             
-            if (connected) {
-                statusElement.innerHTML = '<i class="fas fa-wifi"></i> متصل';
-                statusElement.style.background = 'rgba(76, 175, 80, 0.1)';
-                statusElement.style.color = '#4CAF50';
-                
-                apiStatusElement.innerHTML = '<i class="fas fa-check-circle"></i> متصل';
-                apiStatusElement.style.color = 'var(--success-green)';
-            } else {
-                statusElement.innerHTML = '<i class="fas fa-wifi-slash"></i> غير متصل';
-                statusElement.style.background = 'rgba(244, 67, 54, 0.1)';
-                statusElement.style.color = '#f44336';
-                
-                apiStatusElement.innerHTML = '<i class="fas fa-times-circle"></i> غير متصل';
-                apiStatusElement.style.color = '#f44336';
+            if (lastTaskCompletedTime) {
+                const time = new Date(lastTaskCompletedTime);
+                document.getElementById('last-updated').textContent = time.toLocaleTimeString('ar-SA');
             }
         }
 
-        // 🔌 وظائف API المحسنة مع fallback
-        async function callApi(endpoint, method = 'GET', data = null) {
+        function updateLastSyncTime() {
+            lastSyncTime = new Date().toISOString();
+            localStorage.setItem('lastSyncTime', lastSyncTime);
+            
+            const displayTime = new Date(lastSyncTime).toLocaleString('ar-SA');
+            document.getElementById('last-sync-time').textContent = displayTime;
+        }
+
+        // 🔌 وظائف API المعدلة
+        async function completeTaskViaAPI(taskId, taskType = 'ad', pointsEarned = 0.5) {
             showLoading(true);
             
+            const userId = user.id;
+            if (!userId) {
+                showLoading(false);
+                showAlert('error', 'خطأ', 'لم يتم التعرف على هوية المستخدم');
+                return false;
+            }
+            
+            const endpoint = `${API_BASE_URL}/api/user/${userId}/complete-task`;
             const headers = {
                 'Content-Type': 'application/json',
                 'X-API-Key': API_KEY
             };
             
-            const options = {
-                method: method,
-                headers: headers
+            const data = {
+                task_id: taskId,
+                task_type: taskType,
+                points: pointsEarned
             };
             
-            if (data && (method === 'POST' || method === 'PUT')) {
-                options.body = JSON.stringify(data);
-            }
-            
             try {
-                // محاولة الاتصال بالـ API
-                const response = await fetch(`${currentApiUrl}${endpoint}`, options);
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                });
                 
                 if (!response.ok) {
                     throw new Error(`خطأ في API: ${response.status}`);
                 }
                 
                 const result = await response.json();
-                updateConnectionStatus(true);
-                return result;
-            } catch (error) {
-                console.error('خطأ في الاتصال بالـ API:', error);
-                updateConnectionStatus(false);
                 
-                // إذا فشل الاتصال، استخدم التخزين المحلي
-                showAlert('warning', 'وضع عدم الاتصال', 'جاري استخدام التخزين المحلي. سوف تتم مزامنة البيانات عند إعادة الاتصال.');
-                
-                // محاكاة استجابة API للتخزين المحلي
-                return simulateApiResponse(endpoint, method, data);
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        function simulateApiResponse(endpoint, method, data) {
-            // محاكاة استجابة API للتخزين المحلي
-            const userId = user.id || 'local_user';
-            
-            if (endpoint.includes('/api/user/') && endpoint.includes('/points')) {
-                return {
-                    success: true,
-                    points: parseFloat(localStorage.getItem('points') || '0'),
-                    user_id: userId
-                };
-            }
-            
-            if (endpoint.includes('/api/user/') && endpoint.includes('/complete-task')) {
-                const pointsEarned = data?.points || 0.5;
-                const currentPoints = parseFloat(localStorage.getItem('points') || '0');
-                const newPoints = currentPoints + pointsEarned;
-                
-                localStorage.setItem('points', newPoints);
-                
-                return {
-                    success: true,
-                    points: newPoints,
-                    task_id: data?.task_id,
-                    points_earned: pointsEarned
-                };
-            }
-            
-            if (endpoint === '/api/health') {
-                return {
-                    success: true,
-                    status: 'offline_mode',
-                    message: 'وضع عدم الاتصال - التخزين المحلي'
-                };
-            }
-            
-            return {
-                success: true,
-                message: 'تم تنفيذ العملية في التخزين المحلي'
-            };
-        }
-
-        async function syncWithBot() {
-            showAlert('info', 'مزامنة', 'جاري مزامنة النقاط مع البوت...');
-            
-            try {
-                // 1. الحصول على نقاط المستخدم من API
-                const userData = await callApi(`/api/user/${user.id}/points`);
-                
-                if (userData && userData.success) {
-                    const botPoints = userData.points || 0;
-                    const localPoints = parseFloat(localStorage.getItem('points') || '0');
+                if (result && result.success) {
+                    // تحديث النقاط من الاستجابة
+                    points = result.points || 0;
                     
-                    // 2. إذا كانت النقاط المحلية أكثر، أرسلها إلى البوت
-                    if (localPoints > 0) {
-                        const addResult = await callApi(`/api/user/${user.id}/add-points`, 'POST', {
-                            points: localPoints,
-                            reason: 'مزامنة من WebApp'
-                        });
-                        
-                        if (addResult && addResult.success) {
-                            localStorage.setItem('points', 0);
-                            points = 0;
-                            
-                            showAlert('success', 'تمت المزامنة', `تمت مزامنة ${localPoints.toFixed(1)} نقطة مع البوت بنجاح!`);
-                        }
-                    } else {
-                        // 3. إذا لم تكن هناك نقاط محلية، تحديث من البوت
-                        points = botPoints;
-                        localStorage.setItem('points', points);
-                        showAlert('success', 'تمت المزامنة', `تم تحديث الرصيد من البوت: ${botPoints.toFixed(1)} نقطة`);
+                    // تحديث إحصائيات المهام
+                    if (taskType === 'ad') {
+                        totalTasksCompleted = result.completed_tasks || 0;
                     }
                     
-                    // تحديث وقت المزامنة الأخير
-                    lastSyncTime = new Date().toISOString();
-                    localStorage.setItem('lastSyncTime', lastSyncTime);
-                    document.getElementById('last-sync').textContent = new Date(lastSyncTime).toLocaleString('ar-SA');
+                    // تحديث وقت المهمة الأخيرة
+                    lastTaskCompletedTime = new Date().toISOString();
+                    localStorage.setItem('lastTaskCompletedTime', lastTaskCompletedTime);
                     
-                    // تحديث عرض نقاط البوت
-                    document.getElementById('bot-points').textContent = botPoints.toFixed(1);
-                    
-                    // تحديث العرض
-                    updatePointsDisplay();
-                }
-            } catch (error) {
-                console.error('خطأ في المزامنة:', error);
-                showAlert('warning', 'مزامنة محلية', 'تم حفظ البيانات محلياً. سيتم مزامنتها مع البوت عند إعادة الاتصال.');
-            }
-        }
-
-        async function checkBalance() {
-            const userData = await callApi(`/api/user/${user.id}/points`);
-            
-            if (userData && userData.success) {
-                const botPoints = userData.points || 0;
-                document.getElementById('bot-points').textContent = botPoints.toFixed(1);
-                
-                showAlert('success', 'رصيد البوت', `رصيدك في البوت: ${botPoints.toFixed(1)} نقطة`);
-            } else {
-                showAlert('error', 'خطأ', 'تعذر الحصول على رصيد البوت');
-            }
-        }
-
-        async function completeTaskViaAPI(taskId, taskType = 'ad', pointsEarned = 0.5) {
-            const result = await callApi(`/api/user/${user.id}/complete-task`, 'POST', {
-                task_id: taskId,
-                task_type: taskType,
-                points: pointsEarned
-            });
-            
-            if (result && result.success) {
-                // تحديث النقاط المحلية من الاستجابة
-                points = result.points || parseFloat(localStorage.getItem('points') || '0');
-                localStorage.setItem('points', points);
-                
-                // تحديث إحصائيات المهام
-                if (taskType === 'ad') {
-                    totalTasksCompleted++;
+                    // حفظ البيانات محلياً
+                    localStorage.setItem('points', points);
                     localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
-                }
-                
-                showAlert('success', 'تمت المهمة!', `لقد كسبت ${pointsEarned} نقطة. الرصيد الجديد: ${points.toFixed(1)} نقطة`);
-                updatePointsDisplay();
-                
-                return true;
-            }
-            
-            return false;
-        }
-
-        async function testApiConnection() {
-            showLoading(true);
-            try {
-                const result = await fetch(`${currentApiUrl}/api/health`, {
-                    method: 'GET',
-                    headers: {
-                        'X-API-Key': API_KEY
-                    }
-                });
-                
-                if (result.ok) {
-                    const data = await result.json();
-                    updateConnectionStatus(true);
-                    showAlert('success', 'الاتصال ناجح', `الخادم يعمل. حالة: ${data.status || 'نشط'}`);
+                    
+                    showAlert('success', 'تمت المهمة!', `لقد كسبت ${pointsEarned} نقطة. الرصيد الجديد: ${points.toFixed(1)} نقطة`);
+                    updatePointsDisplay();
+                    
+                    // ✅ سوف يرسل البوت رسالة تهنئة تلقائياً عبر API
+                    
                     return true;
                 } else {
-                    updateConnectionStatus(false);
-                    showAlert('warning', 'اتصال محدود', 'الخادم قد لا يعمل بشكل كامل. جاري استخدام التخزين المحلي.');
+                    showAlert('warning', 'تنبيه', 'تم إكمال المهمة محلياً. سيتم مزامنتها لاحقاً.');
                     return false;
                 }
             } catch (error) {
-                updateConnectionStatus(false);
-                showAlert('warning', 'فشل الاتصال', 'تعذر الاتصال بالخادم. جاري استخدام التخزين المحلي.');
+                console.error('خطأ في اتصال API:', error);
+                
+                // ✅ استخدام التخزين المحلي كبديل
+                completeTaskLocally(taskId, pointsEarned);
+                
+                showAlert('warning', 'وضع عدم الاتصال', 'تم حفظ النقاط محلياً. سيتم مزامنتها عند إعادة الاتصال.');
                 return false;
             } finally {
                 showLoading(false);
             }
         }
 
-        async function forceSync() {
-            // مزامنة قسرية لجميع البيانات
-            await syncWithBot();
-            showAlert('info', 'تم التحديث', 'تم تحديث جميع البيانات بنجاح');
-        }
-
-        function updatePointsDisplay() {
-            document.getElementById('points').textContent = points.toFixed(1);
-            document.getElementById('total-points').textContent = points.toFixed(1);
-            document.getElementById('completed-count').textContent = totalTasksCompleted;
-            document.getElementById('invites-count').textContent = invites;
-        }
-
-        // تهيئة بيانات الإعلانات
-        function initAdData() {
-            let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+        function completeTaskLocally(taskId, pointsEarned = 0.5) {
+            // تحديث النقاط محلياً
+            points += pointsEarned;
             
-            if (!adsData.ads || adsData.ads.length !== totalTasks) {
-                const now = Date.now();
-                adsData = {
-                    ads: [],
-                    lastReset: now
-                };
-                
-                for (let i = 1; i <= totalTasks; i++) {
-                    adsData.ads.push({
-                        id: i,
-                        completed: false,
-                        completedDate: null,
-                        pointsEarned: 0
-                    });
-                }
-                
-                localStorage.setItem('adsData', JSON.stringify(adsData));
+            // تحديث إحصائيات المهام
+            if (taskId !== 'daily_gift' && !taskId.startsWith('gift_code')) {
+                totalTasksCompleted++;
             }
             
-            checkAdExpiry(adsData);
+            // حفظ البيانات محلياً
+            localStorage.setItem('points', points);
+            localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
             
-            return adsData;
+            // تحديث وقت المهمة الأخيرة
+            lastTaskCompletedTime = new Date().toISOString();
+            localStorage.setItem('lastTaskCompletedTime', lastTaskCompletedTime);
+            
+            updatePointsDisplay();
+            
+            return true;
         }
 
-        function checkAdExpiry(adsData) {
-            const now = Date.now();
-            const sevenDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+        async function manualSync() {
+            showLoading(true);
+            showAlert('info', 'تحديث', 'جاري إضافة النقاط إلى البوت...');
             
-            if (now - adsData.lastReset > sevenDaysInMs) {
-                adsData.ads.forEach(ad => {
-                    ad.completed = false;
-                    ad.completedDate = null;
-                    ad.pointsEarned = 0;
+            const userId = user.id;
+            if (!userId) {
+                showLoading(false);
+                showAlert('error', 'خطأ', 'لم يتم التعرف على هوية المستخدم');
+                return;
+            }
+            
+            try {
+                // 1. الحصول على نقاط المستخدم الحالية من البوت
+                const pointsEndpoint = `${API_BASE_URL}/api/user/${userId}/points`;
+                const pointsResponse = await fetch(pointsEndpoint, {
+                    headers: { 'X-API-Key': API_KEY }
                 });
-                adsData.lastReset = now;
-                localStorage.setItem('adsData', JSON.stringify(adsData));
                 
-                updateCompletedTasks();
+                if (pointsResponse.ok) {
+                    const pointsData = await pointsResponse.json();
+                    const botPoints = pointsData.points || 0;
+                    
+                    // 2. حساب النقاط المحلية
+                    const localPoints = parseFloat(localStorage.getItem('points') || '0');
+                    
+                    if (localPoints > 0) {
+                        // 3. إرسال النقاط المحلية إلى البوت
+                        const addEndpoint = `${API_BASE_URL}/api/user/${userId}/add-points`;
+                        const addResponse = await fetch(addEndpoint, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-API-Key': API_KEY
+                            },
+                            body: JSON.stringify({
+                                points: localPoints,
+                                reason: 'تحديث يدوي من WebApp'
+                            })
+                        });
+                        
+                        if (addResponse.ok) {
+                            // 4. تحديث النقاط المحلية
+                            const addData = await addResponse.json();
+                            points = addData.new_points || botPoints;
+                            localStorage.setItem('points', 0); // إعادة تعيين النقاط المحلية
+                            
+                            showAlert('success', 'تم تحديث نقاطك', `تم إضافة ${localPoints.toFixed(1)} نقطة إلى البوت بنجاح!`);
+                        }
+                    } else {
+                        // 5. إذا لم تكن هناك نقاط محلية، تحديث من البوت
+                        points = botPoints;
+                        localStorage.setItem('points', points);
+                        showAlert('success', 'تم تحديث رصيدك', `تم تحديث الرصيد من البوت: ${botPoints.toFixed(1)} نقطة`);
+                    }
+                    
+                    // تحديث وقت المزامنة الأخير
+                    updateLastSyncTime();
+                    
+                    // تحديث العرض
+                    updatePointsDisplay();
+                }
+            } catch (error) {
+                console.error('خطأ في التحديث:', error);
+                showAlert('warning', 'تحديث محلي', 'تم حفظ البيانات محلياً. سيتم تحديثها مع البوت عند إعادة الاتصال.');
+            } finally {
+                showLoading(false);
             }
-        }
-
-        function getAdStatus(adId) {
-            const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
-            const ad = adsData.ads?.find(a => a.id === adId);
-            return ad ? ad.completed : false;
-        }
-
-        function setAdCompleted(adId) {
-            let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
-            const adIndex = adsData.ads?.findIndex(a => a.id === adId);
-            
-            if (adIndex !== -1 && adsData.ads) {
-                adsData.ads[adIndex].completed = true;
-                adsData.ads[adIndex].completedDate = Date.now();
-                adsData.ads[adIndex].pointsEarned = 0.5;
-                localStorage.setItem('adsData', JSON.stringify(adsData));
-                return true;
-            }
-            return false;
         }
 
         function init() {
@@ -2075,10 +1956,17 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
             const userId = user.id || 'مستخدم محلي';
             document.getElementById('user-id-display').textContent = userId;
 
-            // تحميل النقاط والمهام المكتملة
+            // تحميل النقاط والمهام المكتملة من التخزين المحلي
+            points = parseFloat(localStorage.getItem('points') || '0');
+            invites = parseInt(localStorage.getItem('invites') || '0');
+            totalTasksCompleted = parseInt(localStorage.getItem('totalTasksCompleted') || '0');
+            lastTaskCompletedTime = localStorage.getItem('lastTaskCompletedTime');
+            lastSyncTime = localStorage.getItem('lastSyncTime');
+
+            // تحديث العرض
             updatePointsDisplay();
 
-            // رابط الدعوة - مصحح حسب الطلب
+            // رابط الدعوة
             const inviteLink = `https://t.me/${BOT_USERNAME}?start=${userId}`;
             document.getElementById('invite-link').value = inviteLink;
 
@@ -2126,20 +2014,16 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
 
             // عرض وقت المزامنة الأخير
             if (lastSyncTime) {
-                document.getElementById('last-sync').textContent = new Date(lastSyncTime).toLocaleString('ar-SA');
+                const displayTime = new Date(lastSyncTime).toLocaleString('ar-SA');
+                document.getElementById('last-sync-time').textContent = displayTime;
             }
 
-            // اختبار اتصال API عند البدء
+            // مزامنة تلقائية عند البدء
             setTimeout(() => {
-                testApiConnection();
-            }, 1000);
-
-            // مزامنة تلقائية كل 30 ثانية (فقط إذا كان متصلاً)
-            setInterval(() => {
-                if (apiConnected && navigator.onLine) {
-                    syncWithBot();
+                if (navigator.onLine) {
+                    manualSync();
                 }
-            }, SYNC_INTERVAL);
+            }, 2000);
         }
 
         function updateThemeToggleText() {
@@ -2239,6 +2123,71 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
             if (document.querySelector('.side-menu').classList.contains('active')) {
                 toggleMenu();
             }
+        }
+
+        // تهيئة بيانات الإعلانات
+        function initAdData() {
+            let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+            
+            if (!adsData.ads || adsData.ads.length !== totalTasks) {
+                const now = Date.now();
+                adsData = {
+                    ads: [],
+                    lastReset: now
+                };
+                
+                for (let i = 1; i <= totalTasks; i++) {
+                    adsData.ads.push({
+                        id: i,
+                        completed: false,
+                        completedDate: null,
+                        pointsEarned: 0
+                    });
+                }
+                
+                localStorage.setItem('adsData', JSON.stringify(adsData));
+            }
+            
+            checkAdExpiry(adsData);
+            
+            return adsData;
+        }
+
+        function checkAdExpiry(adsData) {
+            const now = Date.now();
+            const sevenDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+            
+            if (now - adsData.lastReset > sevenDaysInMs) {
+                adsData.ads.forEach(ad => {
+                    ad.completed = false;
+                    ad.completedDate = null;
+                    ad.pointsEarned = 0;
+                });
+                adsData.lastReset = now;
+                localStorage.setItem('adsData', JSON.stringify(adsData));
+                
+                updateCompletedTasks();
+            }
+        }
+
+        function getAdStatus(adId) {
+            const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+            const ad = adsData.ads?.find(a => a.id === adId);
+            return ad ? ad.completed : false;
+        }
+
+        function setAdCompleted(adId) {
+            let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+            const adIndex = adsData.ads?.findIndex(a => a.id === adId);
+            
+            if (adIndex !== -1 && adsData.ads) {
+                adsData.ads[adIndex].completed = true;
+                adsData.ads[adIndex].completedDate = Date.now();
+                adsData.ads[adIndex].pointsEarned = 0.5;
+                localStorage.setItem('adsData', JSON.stringify(adsData));
+                return true;
+            }
+            return false;
         }
 
         function createTasks() {
@@ -2393,10 +2342,10 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
                 clearInterval(progressInterval);
                 fill.style.width = '100%';
                 
-                // استخدام API لإكمال المهمة
+                // ✅ استخدام API لإكمال المهمة وإرسال إشعار للبوت
                 const apiSuccess = await completeTaskViaAPI(id, 'ad', 0.5);
                 
-                if (apiSuccess || !apiConnected) {
+                if (apiSuccess || !navigator.onLine) {
                     // تحديث الواجهة المحلية
                     setTimeout(() => {
                         completeAdLocal(id, btn);
@@ -2415,15 +2364,8 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
         function completeAdLocal(id, btn) {
             if (setAdCompleted(id)) {
                 // إذا لم يتم استخدام API، استخدم الطريقة المحلية
-                if (!apiConnected) {
-                    points += 0.5;
-                    totalTasksCompleted++;
-                    localStorage.setItem('points', points);
-                    localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
-                    
-                    updatePointsDisplay();
-                    
-                    showAlert('success', 'تمت المهمة!', `لقد كسبت 0.5 نقطة. الرصيد الجديد: ${points.toFixed(1)} نقطة`);
+                if (!navigator.onLine) {
+                    completeTaskLocally(id, 0.5);
                 }
                 
                 btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال +0.5';
@@ -2512,10 +2454,9 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
             // استخدام API لإضافة النقاط
             const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift', amount);
             
-            if (apiSuccess || !apiConnected) {
-                if (!apiConnected) {
-                    points += amount;
-                    localStorage.setItem('points', points);
+            if (apiSuccess || !navigator.onLine) {
+                if (!navigator.onLine) {
+                    completeTaskLocally('daily_gift', amount);
                 }
                 
                 dailyGiftClaimed = true;
@@ -2556,10 +2497,9 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
                 // استخدام API لإضافة النقاط
                 const apiSuccess = await completeTaskViaAPI('gift_code', 'gift', GIFT_CODE_POINTS);
                 
-                if (apiSuccess || !apiConnected) {
-                    if (!apiConnected) {
-                        points += GIFT_CODE_POINTS;
-                        localStorage.setItem('points', points);
+                if (apiSuccess || !navigator.onLine) {
+                    if (!navigator.onLine) {
+                        completeTaskLocally('gift_code', GIFT_CODE_POINTS);
                     }
                     
                     usedCodes.push(code.toUpperCase());
@@ -2596,7 +2536,7 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
 
         function shareInviteLink() {
             const link = document.getElementById('invite-link').value;
-            const shareText = 'انضم إلى تطبيق النقاط واحصل على جوائز قيمة! 🎁✨\n' + link;
+            const shareText = 'انضم إلى بوت  Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨\n' + link;
             
             if (tg.shareToChat) {
                 tg.shareToChat(shareText, (shared) => {
@@ -2611,7 +2551,7 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
             } else if (navigator.share) {
                 navigator.share({
                     title: 'تطبيق النقاط - جوائز قيمة',
-                    text: 'انضم إلى تطبيق النقاط واحصل على جوائز قيمة! 🎁✨',
+                    text: 'انضم إلى بوت  Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨',
                     url: link,
                 })
                 .then(() => {
@@ -2626,22 +2566,10 @@ const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh'; // (مطا�
                     copyInviteLink();
                 });
             } else {
-                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى تطبيق النقاط واحصل على جوائز قيمة! 🎁✨')}`;
+                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى بوت  Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨')}`;
                 tg.openLink(telegramShareUrl);
             }
         }
-
-        // كشف تغييرات حالة الاتصال
-        window.addEventListener('online', () => {
-            updateConnectionStatus(true);
-            showAlert('info', 'تم إعادة الاتصال', 'جاري مزامنة البيانات مع الخادم...');
-            setTimeout(() => syncWithBot(), 2000);
-        });
-
-        window.addEventListener('offline', () => {
-            updateConnectionStatus(false);
-            showAlert('warning', 'فقدان الاتصال', 'تم التحويل إلى وضع التخزين المحلي.');
-        });
 
         window.onload = function() {
             init();
