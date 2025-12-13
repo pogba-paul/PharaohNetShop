@@ -1508,29 +1508,13 @@
     <div id="tasks-page" class="page">
         <h2 class="page-title">المهام اليومية</h2>
         
-        <div class="tasks-header">
-            <div class="tasks-title">
-                <i class="fas fa-eye"></i>
-                مشاهدة الإعلانات
-            </div>
-            <button class="toggle-tasks" id="toggle-tasks-btn" onclick="toggleTasks()">
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </div>
-        
-        <div class="tasks-container" id="tasks-container">
-            <!-- سيتم إنشاء المهام ديناميكياً -->
-        </div>
-
-        <div class="task-card" style="margin: 30px 0;">
+        <!-- ======== قسم كود الهدية (في الأعلى) ======== -->
+        <div class="gift-code-section" style="margin-top: 0;">
             <div class="gift-code-header">
                 <div class="gift-code-title">
                     <i class="fas fa-gift"></i>
                     كود هدية
                 </div>
-                <button class="toggle-tasks" id="toggle-gift-btn" onclick="toggleGiftCode()">
-                    <i class="fas fa-chevron-down"></i>
-                </button>
             </div>
             
             <div id="gift-code-content">
@@ -1545,6 +1529,21 @@
                     <i class="fas fa-external-link-alt"></i> الحصول على كود هدية
                 </a>
             </div>
+        </div>
+        <!-- ======================================== -->
+        
+        <div class="tasks-header">
+            <div class="tasks-title">
+                <i class="fas fa-eye"></i>
+                مشاهدة الإعلانات
+            </div>
+            <button class="toggle-tasks" id="toggle-tasks-btn" onclick="toggleTasks()">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        
+        <div class="tasks-container" id="tasks-container">
+            <!-- سيتم إنشاء المهام ديناميكياً -->
         </div>
 
         <div class="daily-gift-section">
@@ -1667,6 +1666,13 @@
         const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
         const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
         const BOT_USERNAME = 'PharaohNetChopBot';
+        
+        // 🔧 إعدادات كود الهدية (سهلة التعديل) 🔧
+        const GIFT_CODE_CONFIG = {
+            code: "gift-pharaoh",        // غير هذا الكود كما تريد
+            points: 2,                    // عدد النقاط للكود
+            link: "https://www.facebook.com/61573924207577/posts/pfbid0mTNCb6X87jzHyNY9WZdNm9LE8u8PbrkHn35GNWWu97vmAW6Sckb3Ab1gDpnUK51Nl/?app=fbl" // رابط الحصول على كود
+        };
 
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
@@ -1684,13 +1690,9 @@
         let giftCodeCollapsed = false;
         let lastSyncTime = null;
         let lastTaskCompletedTime = null;
-
-        // كود الهدية الخاص
-        const GIFT_CODE = "gift-pharaon";
-        const GIFT_CODE_POINTS = 2;
-
-        // نظام تاريخ الإعلانات
-        const AD_EXPIRY_DAYS = 30;
+        
+        // متغير لتتبع اتصال API
+        let apiConnectionStatus = 'checking';
 
         // 🔧 وظائف مساعدة
         function showLoading(show = true) {
@@ -1769,7 +1771,27 @@
             document.getElementById('last-sync-time').textContent = displayTime;
         }
 
-        // 🔌 وظائف API المعدلة
+        // 🔌 وظائف API المحسنة
+        async function checkAPIConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`, {
+                    headers: { 'X-API-Key': API_KEY },
+                    timeout: 5000
+                });
+                
+                if (response.ok) {
+                    apiConnectionStatus = 'connected';
+                    return true;
+                } else {
+                    apiConnectionStatus = 'disconnected';
+                    return false;
+                }
+            } catch (error) {
+                apiConnectionStatus = 'disconnected';
+                return false;
+            }
+        }
+
         async function completeTaskViaAPI(taskId, taskType = 'ad', pointsEarned = 0.5) {
             showLoading(true);
             
@@ -1777,6 +1799,19 @@
             if (!userId) {
                 showLoading(false);
                 showAlert('error', 'خطأ', 'لم يتم التعرف على هوية المستخدم');
+                return false;
+            }
+            
+            // التحقق من اتصال API أولاً
+            const isConnected = await checkAPIConnection();
+            if (!isConnected) {
+                showLoading(false);
+                // ✅ استخدام التخزين المحلي مباشرة بدون رسالة "وضع عدم الاتصال"
+                completeTaskLocally(taskId, pointsEarned);
+                // تحديث الواجهة مباشرة
+                if (taskType === 'ad') {
+                    updateTaskUI(taskId, true);
+                }
                 return false;
             }
             
@@ -1825,20 +1860,28 @@
                     showAlert('success', 'تمت المهمة!', `لقد كسبت ${pointsEarned} نقطة. الرصيد الجديد: ${points.toFixed(1)} نقطة`);
                     updatePointsDisplay();
                     
-                    // ✅ سوف يرسل البوت رسالة تهنئة تلقائياً عبر API
+                    // تحديث الواجهة
+                    if (taskType === 'ad') {
+                        updateTaskUI(taskId, true);
+                    }
                     
                     return true;
                 } else {
-                    showAlert('warning', 'تنبيه', 'تم إكمال المهمة محلياً. سيتم مزامنتها لاحقاً.');
+                    // إذا فشل API، استخدم المحلي
+                    completeTaskLocally(taskId, pointsEarned);
+                    if (taskType === 'ad') {
+                        updateTaskUI(taskId, true);
+                    }
                     return false;
                 }
             } catch (error) {
                 console.error('خطأ في اتصال API:', error);
                 
-                // ✅ استخدام التخزين المحلي كبديل
+                // ✅ استخدام التخزين المحلي بدون رسالة "وضع عدم الاتصال"
                 completeTaskLocally(taskId, pointsEarned);
-                
-                showAlert('warning', 'وضع عدم الاتصال', 'تم حفظ النقاط محلياً. سيتم مزامنتها عند إعادة الاتصال.');
+                if (taskType === 'ad') {
+                    updateTaskUI(taskId, true);
+                }
                 return false;
             } finally {
                 showLoading(false);
@@ -1867,6 +1910,20 @@
             return true;
         }
 
+        function updateTaskUI(taskId, isCompleted) {
+            const card = document.getElementById(`task${taskId}`);
+            if (card) {
+                const btn = card.querySelector('.watch-btn');
+                if (isCompleted) {
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال +0.5';
+                    btn.classList.add('completed');
+                    btn.disabled = true;
+                    card.classList.add('completed');
+                    document.getElementById(`p${taskId}`).style.width = '100%';
+                }
+            }
+        }
+
         async function manualSync() {
             showLoading(true);
             showAlert('info', 'تحديث', 'جاري إضافة النقاط إلى البوت...');
@@ -1879,7 +1936,15 @@
             }
             
             try {
-                // 1. الحصول على نقاط المستخدم الحالية من البوت
+                // 1. التحقق من اتصال API
+                const isConnected = await checkAPIConnection();
+                if (!isConnected) {
+                    showLoading(false);
+                    showAlert('warning', 'عدم اتصال', 'لا يمكن الاتصال بالبوت حالياً. سيتم تحديث النقاط عند إعادة الاتصال.');
+                    return;
+                }
+                
+                // 2. الحصول على نقاط المستخدم الحالية من البوت
                 const pointsEndpoint = `${API_BASE_URL}/api/user/${userId}/points`;
                 const pointsResponse = await fetch(pointsEndpoint, {
                     headers: { 'X-API-Key': API_KEY }
@@ -1889,11 +1954,11 @@
                     const pointsData = await pointsResponse.json();
                     const botPoints = pointsData.points || 0;
                     
-                    // 2. حساب النقاط المحلية
+                    // 3. حساب النقاط المحلية
                     const localPoints = parseFloat(localStorage.getItem('points') || '0');
                     
                     if (localPoints > 0) {
-                        // 3. إرسال النقاط المحلية إلى البوت
+                        // 4. إرسال النقاط المحلية إلى البوت
                         const addEndpoint = `${API_BASE_URL}/api/user/${userId}/add-points`;
                         const addResponse = await fetch(addEndpoint, {
                             method: 'POST',
@@ -1908,17 +1973,25 @@
                         });
                         
                         if (addResponse.ok) {
-                            // 4. تحديث النقاط المحلية
+                            // 5. تحديث النقاط المحلية
                             const addData = await addResponse.json();
                             points = addData.new_points || botPoints;
                             localStorage.setItem('points', 0); // إعادة تعيين النقاط المحلية
                             
+                            // 6. تحديث إحصائيات المهام من البوت
+                            totalTasksCompleted = addData.completed_tasks || 0;
+                            localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
+                            
                             showAlert('success', 'تم تحديث نقاطك', `تم إضافة ${localPoints.toFixed(1)} نقطة إلى البوت بنجاح!`);
                         }
                     } else {
-                        // 5. إذا لم تكن هناك نقاط محلية، تحديث من البوت
+                        // 7. إذا لم تكن هناك نقاط محلية، تحديث من البوت
                         points = botPoints;
+                        totalTasksCompleted = pointsData.completed_tasks || 0;
+                        
                         localStorage.setItem('points', points);
+                        localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
+                        
                         showAlert('success', 'تم تحديث رصيدك', `تم تحديث الرصيد من البوت: ${botPoints.toFixed(1)} نقطة`);
                     }
                     
@@ -1930,9 +2003,171 @@
                 }
             } catch (error) {
                 console.error('خطأ في التحديث:', error);
-                showAlert('warning', 'تحديث محلي', 'تم حفظ البيانات محلياً. سيتم تحديثها مع البوت عند إعادة الاتصال.');
+                showAlert('warning', 'خطأ في الاتصال', 'حدث خطأ في الاتصال بالبوت. يرجى المحاولة لاحقاً.');
             } finally {
                 showLoading(false);
+            }
+        }
+
+        // 🎁 وظائف الهدية اليومية المحسنة
+        function initDailyGift() {
+            const now = new Date();
+            const today = now.toDateString();
+            
+            // الحصول على آخر وقت للمطالبة
+            const lastClaimDate = localStorage.getItem('dailyGiftLastClaim');
+            const lastClaimTime = localStorage.getItem('dailyGiftTime');
+            
+            const claimBtn = document.getElementById('claim-gift-btn');
+            const timerElement = document.getElementById('daily-gift-timer');
+            const amountElement = document.getElementById('daily-gift-amount');
+            
+            // تعيين مبلغ عشوائي للهدية
+            const randomAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+            localStorage.setItem('dailyGiftAmount', randomAmount);
+            amountElement.textContent = `${randomAmount} نقطة`;
+            
+            // التحقق إذا تم المطالبة اليوم
+            if (lastClaimDate === today && lastClaimTime) {
+                dailyGiftClaimed = true;
+                dailyGiftTime = parseInt(lastClaimTime);
+                
+                const lastClaim = new Date(parseInt(lastClaimTime));
+                const nextClaimTime = new Date(lastClaim);
+                nextClaimTime.setHours(nextClaimTime.getHours() + 24);
+                
+                const timeDiff = nextClaimTime.getTime() - now.getTime();
+                
+                if (timeDiff > 0) {
+                    claimBtn.disabled = true;
+                    claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                    updateGiftTimer(timeDiff, timerElement);
+                    
+                    // تحديث المؤقت كل ثانية
+                    const timerInterval = setInterval(() => {
+                        const newTimeDiff = nextClaimTime.getTime() - Date.now();
+                        if (newTimeDiff <= 0) {
+                            clearInterval(timerInterval);
+                            dailyGiftClaimed = false;
+                            claimBtn.disabled = false;
+                            claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                            timerElement.textContent = 'الهدية متاحة الآن!';
+                            localStorage.removeItem('dailyGiftLastClaim');
+                            localStorage.removeItem('dailyGiftTime');
+                        } else {
+                            updateGiftTimer(newTimeDiff, timerElement);
+                        }
+                    }, 1000);
+                } else {
+                    dailyGiftClaimed = false;
+                    claimBtn.disabled = false;
+                    timerElement.textContent = 'الهدية متاحة الآن!';
+                }
+            } else {
+                dailyGiftClaimed = false;
+                claimBtn.disabled = false;
+                timerElement.textContent = 'الهدية متاحة الآن!';
+            }
+        }
+
+        function updateGiftTimer(timeLeft, timerElement) {
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
+        }
+
+        async function claimDailyGift() {
+            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
+            const today = new Date().toDateString();
+            
+            // استخدام API لإضافة النقاط
+            const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift', amount);
+            
+            if (apiSuccess) {
+                dailyGiftClaimed = true;
+                dailyGiftTime = Date.now();
+                
+                // حفظ وقت المطالبة
+                localStorage.setItem('dailyGiftLastClaim', today);
+                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
+                
+                updatePointsDisplay();
+                
+                const claimBtn = document.getElementById('claim-gift-btn');
+                claimBtn.disabled = true;
+                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
+                
+                initDailyGift();
+            } else {
+                // إذا فشل API، استخدم المحلي مع تحذير
+                completeTaskLocally('daily_gift', amount);
+                dailyGiftClaimed = true;
+                dailyGiftTime = Date.now();
+                
+                localStorage.setItem('dailyGiftLastClaim', today);
+                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
+                
+                updatePointsDisplay();
+                
+                const claimBtn = document.getElementById('claim-gift-btn');
+                claimBtn.disabled = true;
+                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'هدية يومية (محلي)', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
+                
+                initDailyGift();
+            }
+        }
+
+        // 🎁 وظائف كود الهدية المحسنة
+        async function submitGiftCode() {
+            const codeInput = document.getElementById('gift-code-input');
+            const code = codeInput.value.trim();
+            
+            if (!code) {
+                showAlert('error', 'خطأ', 'يرجى إدخال كود الهدية');
+                return;
+            }
+            
+            if (code.toUpperCase() === GIFT_CODE_CONFIG.code.toUpperCase()) {
+                const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
+                if (usedCodes.includes(code.toUpperCase())) {
+                    showAlert('warning', 'تم الاستخدام', '⚠️ هذا الكود تم استخدامه مسبقاً!');
+                    return;
+                }
+                
+                // استخدام API لإضافة النقاط
+                const apiSuccess = await completeTaskViaAPI('gift_code', 'gift', GIFT_CODE_CONFIG.points);
+                
+                if (apiSuccess) {
+                    usedCodes.push(code.toUpperCase());
+                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
+                    
+                    updatePointsDisplay();
+                    codeInput.value = '';
+                    
+                    tg.HapticFeedback.impactOccurred('medium');
+                    showAlert('success', 'كود هدية', `🎉 تم تفعيل الكود بنجاح! حصلت على ${GIFT_CODE_CONFIG.points} نقطة!`);
+                } else {
+                    // إذا فشل API، استخدم المحلي
+                    completeTaskLocally('gift_code', GIFT_CODE_CONFIG.points);
+                    usedCodes.push(code.toUpperCase());
+                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
+                    
+                    updatePointsDisplay();
+                    codeInput.value = '';
+                    
+                    tg.HapticFeedback.impactOccurred('medium');
+                    showAlert('success', 'كود هدية (محلي)', `🎉 تم تفعيل الكود محلياً! حصلت على ${GIFT_CODE_CONFIG.points} نقطة!`);
+                }
+            } else {
+                showAlert('error', 'كود خاطئ', '❌ كود الهدية غير صحيح!');
             }
         }
 
@@ -1984,9 +2219,6 @@
 
             // تهيئة حالة المهام
             initTasksCollapse();
-
-            // تهيئة حالة كود الهدية
-            initGiftCodeCollapse();
 
             // تهيئة الهدية اليومية
             initDailyGift();
@@ -2083,7 +2315,7 @@
                     url = 'https://t.me/Misteerx';
                     break;
                 case 'gift_codes':
-                    url = 'https://www.facebook.com/61573924207577/posts/pfbid0mTNCb6X87jzHyNY9WZdNm9LE8u8PbrkHn35GNWWu97vmAW6Sckb3Ab1gDpnUK51Nl/?app=fbl';
+                    url = GIFT_CODE_CONFIG.link; // استخدام الرابط من الإعدادات
                     break;
                 default:
                     url = 'https://t.me/PharaohNetShop';
@@ -2155,7 +2387,7 @@
 
         function checkAdExpiry(adsData) {
             const now = Date.now();
-            const sevenDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+            const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
             
             if (now - adsData.lastReset > sevenDaysInMs) {
                 adsData.ads.forEach(ad => {
@@ -2205,8 +2437,6 @@
                             <div class="task-info">
                                 <h3>إعلان مميز #${i}</h3>
                                 <p>شاهد الإعلان للحصول على 0.5 نقطة</p>
-             
-                                </p>
                             </div>
                         </div>
                         
@@ -2260,36 +2490,6 @@
             localStorage.setItem('tasksCollapsed', tasksCollapsed);
         }
 
-        function initGiftCodeCollapse() {
-            const content = document.getElementById('gift-code-content');
-            const toggleBtn = document.getElementById('toggle-gift-btn');
-            
-            if (giftCodeCollapsed) {
-                content.style.display = 'none';
-                toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-            } else {
-                content.style.display = 'block';
-                toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-            }
-        }
-
-        function toggleGiftCode() {
-            const content = document.getElementById('gift-code-content');
-            const toggleBtn = document.getElementById('toggle-gift-btn');
-            
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-                giftCodeCollapsed = false;
-            } else {
-                content.style.display = 'none';
-                toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-                giftCodeCollapsed = true;
-            }
-            
-            localStorage.setItem('giftCodeCollapsed', giftCodeCollapsed);
-        }
-
         function showPage(page) {
             document.querySelectorAll('.page').forEach(el => {
                 el.classList.remove('active');
@@ -2341,14 +2541,13 @@
                 clearInterval(progressInterval);
                 fill.style.width = '100%';
                 
-                // ✅ استخدام API لإكمال المهمة وإرسال إشعار للبوت
+                // استخدام API لإكمال المهمة
                 const apiSuccess = await completeTaskViaAPI(id, 'ad', 0.5);
                 
-                if (apiSuccess || !navigator.onLine) {
-                    // تحديث الواجهة المحلية
-                    setTimeout(() => {
-                        completeAdLocal(id, btn);
-                    }, 500);
+                if (!apiSuccess) {
+                    // إذا فشل API، استخدم المحلي
+                    setAdCompleted(id);
+                    updateTaskUI(id, true);
                 }
             } catch (error) {
                 clearInterval(progressInterval);
@@ -2360,158 +2559,12 @@
             }
         }
 
-        function completeAdLocal(id, btn) {
-            if (setAdCompleted(id)) {
-                // إذا لم يتم استخدام API، استخدم الطريقة المحلية
-                if (!navigator.onLine) {
-                    completeTaskLocally(id, 0.5);
-                }
-                
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال +0.5';
-                btn.classList.add('completed');
-                btn.disabled = true;
-                
-                const taskCard = document.getElementById(`task${id}`);
-                taskCard.classList.add('completed');
-                
-                tg.HapticFeedback.impactOccurred('medium');
-            } else {
-                showAlert('error', 'خطأ', 'حدث خطأ أثناء حفظ بيانات الإعلان.');
-            }
-        }
-
         function updateCompletedTasks() {
             for (let i = 1; i <= totalTasks; i++) {
                 const isCompleted = getAdStatus(i);
-                const card = document.getElementById(`task${i}`);
-                if (card) {
-                    const btn = card.querySelector('.watch-btn');
-                    if (isCompleted) {
-                        btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال +0.5';
-                        btn.classList.add('completed');
-                        btn.disabled = true;
-                        card.classList.add('completed');
-                        document.getElementById(`p${i}`).style.width = '100%';
-                    }
+                if (isCompleted) {
+                    updateTaskUI(i, true);
                 }
-            }
-        }
-
-        function initDailyGift() {
-            const now = Date.now();
-            const lastClaimTime = dailyGiftTime ? parseInt(dailyGiftTime) : 0;
-            const timeDiff = now - lastClaimTime;
-            const twentyFourHours = 24 * 60 * 60 * 1000;
-            
-            const claimBtn = document.getElementById('claim-gift-btn');
-            const timerElement = document.getElementById('daily-gift-timer');
-            const amountElement = document.getElementById('daily-gift-amount');
-            
-            const randomAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-            localStorage.setItem('dailyGiftAmount', randomAmount);
-            amountElement.textContent = `${randomAmount} نقطة`;
-            
-            if (dailyGiftClaimed && timeDiff < twentyFourHours) {
-                claimBtn.disabled = true;
-                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                
-                const timeLeft = twentyFourHours - timeDiff;
-                updateGiftTimer(timeLeft, timerElement);
-                
-                const timerInterval = setInterval(() => {
-                    const newTimeLeft = twentyFourHours - (Date.now() - lastClaimTime);
-                    if (newTimeLeft <= 0) {
-                        clearInterval(timerInterval);
-                        claimBtn.disabled = false;
-                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
-                        timerElement.textContent = 'الهدية متاحة الآن!';
-                        dailyGiftClaimed = false;
-                        localStorage.setItem('dailyGiftClaimed', false);
-                    } else {
-                        updateGiftTimer(newTimeLeft, timerElement);
-                    }
-                }, 1000);
-            } else {
-                dailyGiftClaimed = false;
-                claimBtn.disabled = false;
-                timerElement.textContent = 'الهدية متاحة الآن!';
-                localStorage.setItem('dailyGiftClaimed', false);
-            }
-        }
-
-        function updateGiftTimer(timeLeft, timerElement) {
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-            
-            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
-        }
-
-        async function claimDailyGift() {
-            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
-            
-            // استخدام API لإضافة النقاط
-            const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift', amount);
-            
-            if (apiSuccess || !navigator.onLine) {
-                if (!navigator.onLine) {
-                    completeTaskLocally('daily_gift', amount);
-                }
-                
-                dailyGiftClaimed = true;
-                dailyGiftTime = Date.now();
-                
-                localStorage.setItem('dailyGiftClaimed', true);
-                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
-                
-                updatePointsDisplay();
-                
-                const claimBtn = document.getElementById('claim-gift-btn');
-                claimBtn.disabled = true;
-                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                
-                tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
-                
-                initDailyGift();
-            }
-        }
-
-        async function submitGiftCode() {
-            const codeInput = document.getElementById('gift-code-input');
-            const code = codeInput.value.trim();
-            
-            if (!code) {
-                showAlert('error', 'خطأ', 'يرجى إدخال كود الهدية');
-                return;
-            }
-            
-            if (code.toUpperCase() === GIFT_CODE.toUpperCase()) {
-                const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
-                if (usedCodes.includes(code.toUpperCase())) {
-                    showAlert('warning', 'تم الاستخدام', '⚠️ هذا الكود تم استخدامه مسبقاً!');
-                    return;
-                }
-                
-                // استخدام API لإضافة النقاط
-                const apiSuccess = await completeTaskViaAPI('gift_code', 'gift', GIFT_CODE_POINTS);
-                
-                if (apiSuccess || !navigator.onLine) {
-                    if (!navigator.onLine) {
-                        completeTaskLocally('gift_code', GIFT_CODE_POINTS);
-                    }
-                    
-                    usedCodes.push(code.toUpperCase());
-                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
-                    
-                    updatePointsDisplay();
-                    codeInput.value = '';
-                    
-                    tg.HapticFeedback.impactOccurred('medium');
-                    showAlert('success', 'كود هدية', `🎉 تم تفعيل الكود بنجاح! حصلت على ${GIFT_CODE_POINTS} نقطة!`);
-                }
-            } else {
-                showAlert('error', 'كود خاطئ', '❌ كود الهدية غير صحيح!');
             }
         }
 
@@ -2535,7 +2588,7 @@
 
         function shareInviteLink() {
             const link = document.getElementById('invite-link').value;
-            const shareText = 'انضم إلى بوت  Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨\n' + link;
+            const shareText = 'انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨\n' + link;
             
             if (tg.shareToChat) {
                 tg.shareToChat(shareText, (shared) => {
@@ -2550,7 +2603,7 @@
             } else if (navigator.share) {
                 navigator.share({
                     title: 'تطبيق النقاط - جوائز قيمة',
-                    text: 'انضم إلى بوت  Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨',
+                    text: 'انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨',
                     url: link,
                 })
                 .then(() => {
@@ -2565,7 +2618,7 @@
                     copyInviteLink();
                 });
             } else {
-                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى بوت  Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨')}`;
+                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨')}`;
                 tg.openLink(telegramShareUrl);
             }
         }
