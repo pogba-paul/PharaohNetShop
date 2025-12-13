@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* جميع الأنماط السابقة تبقى كما هي */
         :root {
             --primary-blue: #2196F3;
             --secondary-blue: #1976D2;
@@ -52,7 +51,6 @@
             color: #F0F0F0;
         }
 
-        /* تأثيرات خلفية زرقاء */
         .blue-bg-effect {
             position: fixed;
             top: 0;
@@ -75,7 +73,6 @@
             border-radius: 50%;
         }
 
-        /* القائمة الجانبية */
         .side-menu {
             position: fixed;
             top: 0;
@@ -189,7 +186,6 @@
             font-size: 16px;
         }
 
-        /* الهيدر */
         .app-header {
             position: sticky;
             top: 0;
@@ -246,7 +242,6 @@
             gap: 15px;
         }
 
-        /* زر القائمة */
         .menu-btn {
             width: 40px;
             height: 40px;
@@ -296,7 +291,6 @@
             transform: rotate(-45deg) translate(4px, -4px);
         }
 
-        /* الصفحات */
         .page {
             display: none;
             padding: 20px 20px 90px;
@@ -318,7 +312,6 @@
             }
         }
 
-        /* صفحة الرئيسية */
         .user-profile-center {
             display: flex;
             flex-direction: column;
@@ -400,8 +393,7 @@
             100% { opacity: 1; }
         }
 
-        /* بطاقة النقاط الزرقاء */
-        .points-card {
+        .tasks-summary-card {
             background: var(--gradient-blue);
             border-radius: 24px;
             padding: 30px;
@@ -414,11 +406,11 @@
             transition: transform 0.3s;
         }
 
-        .points-card:hover {
+        .tasks-summary-card:hover {
             transform: translateY(-5px);
         }
 
-        .points-card::before {
+        .tasks-summary-card::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -429,40 +421,39 @@
             z-index: 0;
         }
 
-        .points-header {
+        .tasks-summary-header {
             position: relative;
             z-index: 1;
             text-align: center;
         }
 
-        .points-header i {
+        .tasks-summary-header i {
             font-size: 36px;
             margin-bottom: 15px;
             color: white;
             filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
         }
 
-        .points-header .label {
+        .tasks-summary-header .label {
             font-size: 16px;
             opacity: 0.9;
             margin-bottom: 5px;
             font-weight: 600;
         }
 
-        .points-header .value {
+        .tasks-summary-header .value {
             font-size: 48px;
             font-weight: 900;
             margin: 10px 0;
             text-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
-        .points-header .subtext {
+        .tasks-summary-header .subtext {
             font-size: 14px;
             opacity: 0.8;
             font-weight: 500;
         }
 
-        /* الملفات المتاحة */
         .configs-card {
             background: var(--card-light);
             border-radius: 20px;
@@ -560,7 +551,6 @@
             color: var(--primary-blue);
         }
 
-        /* صفحة المهام */
         .page-title {
             text-align: center;
             font-size: 28px;
@@ -641,7 +631,6 @@
             display: none;
         }
 
-        /* بطاقات المهام */
         .task-card {
             background: var(--card-light);
             border-radius: 22px;
@@ -736,7 +725,6 @@
             color: #AAA;
         }
 
-        /* شريط التقدم */
         .progress-container {
             margin: 20px 0;
         }
@@ -784,7 +772,6 @@
             background: linear-gradient(90deg, rgba(255,255,255,0.3), transparent);
         }
 
-        /* أزرار المهام */
         .watch-btn {
             width: 100%;
             padding: 18px;
@@ -828,7 +815,6 @@
             font-size: 20px;
         }
 
-        /* قسم الكود الهدية */
         .gift-code-section {
             background: var(--card-light);
             border-radius: 20px;
@@ -925,7 +911,6 @@
             background: rgba(33, 150, 243, 0.2);
         }
 
-        /* هدية يومية */
         .daily-gift-section {
             background: linear-gradient(135deg, #4CAF50, #388E3C);
             border-radius: 20px;
@@ -995,7 +980,6 @@
             box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
         }
 
-        /* صفحة معلوماتي */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1028,6 +1012,12 @@
             font-size: 32px;
             font-weight: 800;
             color: var(--primary-blue);
+        }
+
+        .stat-value-small {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--success-green);
         }
 
         .invite-link-container {
@@ -1067,7 +1057,7 @@
             color: #FFF;
         }
 
-        .invite-buttons {
+        .invite-ons {
             display: flex;
             gap: 10px;
         }
@@ -1103,89 +1093,176 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* التنقل السفلي المصغر */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            padding: 10px 15px 20px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-top: 1px solid rgba(33, 150, 243, 0.1);
-            z-index: 1000;
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s;
+        .bot-logo-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: var(--card-light);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(33, 150, 243, 0.2);
         }
 
-        .dark-theme .bottom-nav {
-            background: rgba(18, 18, 18, 0.98);
-            border-top: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.25);
+        .dark-theme .bot-logo-section {
+            background: var(--card-dark);
+            border: 1px solid rgba(33, 150, 243, 0.15);
         }
 
-        .nav {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+        .bot-logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 25px;
+            object-fit: cover;
+            margin: 0 auto 15px;
+            border: 4px solid transparent;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue)) border-box;
+            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3);
+            display: block;
         }
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 18px;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            position: relative;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 16px;
-            min-width: 60px;
+        .bot-logo-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--dark-blue);
+            margin-bottom: 5px;
         }
 
-        .nav-item span {
-            font-size: 10px;
-            margin-top: 6px;
-            font-weight: 600;
-            opacity: 0.7;
-            transition: all 0.4s;
+        .bot-logo-subtitle {
+            font-size: 16px;
+            color: #666;
         }
 
-        .nav-item.active {
-            color: white;
-            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
-            transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.3);
-            padding: 8px 16px;
-            min-width: 70px;
+        .dark-theme .bot-logo-subtitle {
+            color: #AAA;
         }
 
-        .nav-item.active span {
-            opacity: 1;
-            color: white;
-            font-weight: 700;
-            font-size: 11px;
-        }
+        /* التنقل السفلي المصغر والمضغوط */
+/* التنقل السفلي المصغر في الارتفاع فقط */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: 8px 5px 12px; /* قللنا الارتفاع بشكل كبير */
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(33, 150, 243, 0.1);
+    z-index: 1000;
+    box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    height: 60px; /* ارتفاع ثابت ومصغر */
+    display: flex;
+    align-items: center;
+}
 
-        .nav-indicator {
+.dark-theme .bottom-nav {
+    background: rgba(18, 18, 18, 0.97);
+    border-top: 1px solid rgba(33, 150, 243, 0.15);
+    box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 18px; /* حجم أصغر للأيقونات */
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 12px;
+    min-width: 50px;
+    background: transparent;
+    height: 45px; /* ارتفاع مصغر للزر */
+}
+
+.nav-item span {
+    font-size: 9px; /* نص أصغر */
+    margin-top: 3px;
+    font-weight: 600;
+    opacity: 0.7;
+    transition: all 0.3s;
+}
+
+.nav-item.active {
+    color: white;
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    transform: translateY(-3px); /* ارتفاع أقل للزر النشط */
+    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.25);
+    padding: 5px 10px;
+    min-width: 55px;
+    border-radius: 12px;
+    height: 48px; /* ارتفاع أكبر قليلاً للزر النشط */
+}
+
+.nav-item.active span {
+    opacity: 1;
+    color: white;
+    font-weight: 700;
+    font-size: 10px;
+}
+
+.nav-indicator {
+    position: absolute;
+    top: -2px;
+    width: 3px;
+    height: 3px;
+    background: var(--primary-blue);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.nav-item.active .nav-indicator {
+    opacity: 1;
+}
+
+/* تأثير خفيف عند hover */
+.nav-item:hover:not(.active) {
+    background: rgba(33, 150, 243, 0.05);
+    transform: translateY(-1px);
+}
+
+/* لإخفاء حواف البار عند الزوايا */
+.bottom-nav::before {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: -1px;
+    right: -1px;
+    height: 1px;
+    background: inherit;
+}
+
+        .nav-item::before {
+            content: '';
             position: absolute;
-            top: -8px;
-            width: 6px;
-            height: 6px;
-            background: var(--primary-blue);
+            top: -5px;
+            width: 40px;
+            height: 40px;
+            background: inherit;
             border-radius: 50%;
+            z-index: -1;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
         }
 
-        .nav-item.active .nav-indicator {
-            opacity: 1;
+        .nav-item.active::before {
+            opacity: 0.2;
+            transform: scale(1.5);
         }
 
-        /* تأثيرات للمهام المكتملة */
         .task-card.completed {
             border-color: rgba(76, 175, 80, 0.3);
         }
@@ -1194,7 +1271,6 @@
             background: linear-gradient(135deg, var(--success-green), #45a049);
         }
 
-        /* رسوميات إضافية */
         .blue-sparkle {
             position: absolute;
             width: 10px;
@@ -1210,7 +1286,6 @@
             50% { opacity: 0.8; transform: scale(1.3); }
         }
 
-        /* تحسينات للشاشات الصغيرة */
         @media (max-width: 480px) {
             .app-header {
                 padding: 12px 15px;
@@ -1220,7 +1295,7 @@
                 font-size: 18px;
             }
             
-            .points-header .value {
+            .tasks-summary-header .value {
                 font-size: 36px;
             }
             
@@ -1229,15 +1304,15 @@
             }
             
             .nav-item {
-                padding: 6px 10px;
-                min-width: 50px;
-                font-size: 16px;
+                padding: 8px 12px;
+                min-width: 60px;
+                font-size: 18px;
             }
             
             .nav-item.active {
-                transform: translateY(-8px);
-                padding: 6px 14px;
-                min-width: 60px;
+                transform: translateY(-12px);
+                padding: 10px 18px;
+                min-width: 70px;
             }
 
             .page-title {
@@ -1251,9 +1326,13 @@
             .code-input-container {
                 flex-direction: column;
             }
+            
+            .bot-logo {
+                width: 150px;
+                height: 150px;
+            }
         }
 
-        /* شريط التحميل */
         .loading-bar {
             position: fixed;
             top: 0;
@@ -1275,7 +1354,6 @@
             100% { transform: translateX(100%); }
         }
 
-        /* رسائل التنبيه */
         .alert-message {
             position: fixed;
             top: 20px;
@@ -1362,50 +1440,68 @@
             padding: 5px;
         }
 
-        /* زر المزامنة الاحتياطي */
-        .sync-backup-btn {
-            width: 100%;
-            padding: 16px;
-            margin-top: 20px;
-            background: linear-gradient(45deg, #FF9800, #F57C00);
+        /* زر فتح البوت المحسن */
+        .open-bot-btn {
+            margin-top: 15px;
+            padding: 14px 28px;
+            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
             color: white;
             border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 15px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            margin: 15px auto 0;
             transition: all 0.3s;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .sync-backup-btn:hover {
+        .open-bot-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 152, 0, 0.4);
+            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .open-bot-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+        }
+
+        .open-bot-btn:hover::before {
+            animation: shine 1.5s ease-out;
+        }
+
+        @keyframes shine {
+            to { transform: translateX(100%); }
         }
     </style>
 </head>
 <body class="light-theme">
 
-    <!-- شريط التحميل -->
     <div class="loading-bar" id="loadingBar"></div>
 
-    <!-- رسائل التنبيه -->
     <div id="alertContainer"></div>
 
-    <!-- تأثيرات الخلفية الزرقاء -->
     <div class="blue-bg-effect"></div>
     <div class="blue-bg-effect-2"></div>
 
-    <!-- القائمة الجانبية -->
     <div class="side-menu">
         <div class="menu-header">
             <div class="menu-title">القائمة</div>
-            <button class="close-menu" onclick="toggleMenu()">
+            <on class="close-menu" onclick="toggleMenu()">
                 <i class="fas fa-times"></i>
-            </button>
+            </on>
         </div>
         <div class="menu-items">
             <a href="#" class="menu-item" onclick="openTelegram('developer_account')">
@@ -1414,7 +1510,7 @@
             </a>
             <a href="#" class="menu-item" onclick="openTelegram('channel')">
                 <i class="fas fa-broadcast-tower"></i>
-                <span>قناة البوت</span>
+                <span>قناة مبيعات البوت</span>
             </a>
             <a href="#" class="menu-item" onclick="openTelegram('group')">
                 <i class="fas fa-users"></i>
@@ -1436,7 +1532,6 @@
     </div>
     <div class="menu-overlay" onclick="toggleMenu()"></div>
 
-    <!-- الهيدر المحسن -->
     <div class="app-header">
         <div class="logo">
             <div class="logo-icon">
@@ -1446,15 +1541,14 @@
         </div>
         
         <div class="header-controls">
-            <button class="menu-btn" onclick="toggleMenu()">
+            <on class="menu-btn" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
-            </button>
+            </on>
         </div>
     </div>
 
-    <!-- الصفحة الرئيسية -->
     <div id="main-page" class="page active">
         <div class="user-profile-center">
             <div class="avatar-container">
@@ -1466,12 +1560,12 @@
             <div class="user-status">عضو نشط</div>
         </div>
 
-        <div class="points-card">
-            <div class="points-header">
-                <i class="fas fa-coins"></i>
-                <div class="label">رصيدك الحالي من النقاط</div>
-                <div class="value"><span id="points">0.0</span></div>
-                <div class="subtext">النقاط متزامنة مع البوت</div>
+        <div class="tasks-summary-card">
+            <div class="tasks-summary-header">
+                <i class="fas fa-tasks"></i>
+                <div class="label">المهام المكتملة اليوم</div>
+                <div class="value"><span id="completed-tasks">0</span></div>
+                <div class="subtext">من أصل 10 مهام متاحة</div>
             </div>
         </div>
 
@@ -1481,69 +1575,68 @@
                 <div class="config-title">📺 مشاهدة الإعلانات</div>
                 <ul class="config-features">
                     <li>قم بمشاهدة الإعلانات و اكسب 0.5 نقطة لكل اعلان تشاهده</li>
+                    <li>متاح 10 إعلانات تنتضرك لمشاهدتها</li>
+                    <li>النقاط ترسل تلقائياً للبوت</li>
                 </ul>
             </div>
             <div class="config-item">
                 <div class="config-title">🎟 كود الهدية</div>
                 <ul class="config-features">
-                    <li>اضغط على زر الحصول على كود الهدية قم بتفعيله و مبروك عليك نقطتين</li>
+                    <li>اضغط على زر الحصول على كود الهدية</li>
+                    <li>ستجد الكود في منشور فيسبوك انسخه</li>
+                    <li>قم بتفعيله و مبروك عليك نقطتين</li>
                 </ul>
             </div>
             <div class="config-item">
                 <div class="config-title">🎁 الهدية اليومية</div>
                 <ul class="config-features">
                     <li>يمكنك الحصول على نقاط هدية خلال كل يوم</li>
+                    <li>انتظر 24 ساعة للحصول على هدية جديدة</li>
+                    <li>ستجد هديتك متوفرة كل يوم</li>
                 </ul>
-            </div>
-            <div style="margin-top: 20px; padding: 15px; background: rgba(33, 150, 243, 0.05); border-radius: 12px; text-align: center;">
-                <p style="color: var(--dark-blue); font-weight: 600; margin-bottom: 10px;">🔗 النقاط التي تكسبها هنا يمكنك استخدامها في البوت مباشرة!</p>
-                <button onclick="openBot()" style="padding: 10px 20px; background: var(--gradient-blue); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-robot"></i> فتح البوت للشراء
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- صفحة المهام -->
     <div id="tasks-page" class="page">
         <h2 class="page-title">المهام اليومية</h2>
-        
-        <!-- ======== قسم كود الهدية (في الأعلى) ======== -->
-        <div class="gift-code-section" style="margin-top: 0;">
-            <div class="gift-code-header">
-                <div class="gift-code-title">
-                    <i class="fas fa-gift"></i>
-                    كود هدية
-                </div>
-            </div>
-            
-            <div id="gift-code-content">
-                <div class="code-input-container">
-                    <input type="text" class="code-input" id="gift-code-input" placeholder="أدخل الكود هنا">
-                    <button class="submit-code-btn" onclick="submitGiftCode()">
-                        <i class="fas fa-check"></i> تفعيل
-                    </button>
-                </div>
-                
-                <a href="#" class="get-code-link" onclick="openTelegram('gift_codes')">
-                    <i class="fas fa-external-link-alt"></i> الحصول على كود هدية
-                </a>
-            </div>
-        </div>
-        <!-- ======================================== -->
         
         <div class="tasks-header">
             <div class="tasks-title">
                 <i class="fas fa-eye"></i>
                 مشاهدة الإعلانات
             </div>
-            <button class="toggle-tasks" id="toggle-tasks-btn" onclick="toggleTasks()">
+            <on class="toggle-tasks" id="toggle-tasks-btn" onclick="toggleTasks()">
                 <i class="fas fa-chevron-down"></i>
-            </button>
+            </on>
         </div>
         
         <div class="tasks-container" id="tasks-container">
-            <!-- سيتم إنشاء المهام ديناميكياً -->
+        </div>
+
+        <div class="task-card" style="margin: 30px 0;">
+            <div class="gift-code-header">
+                <div class="gift-code-title">
+                    <i class="fas fa-gift"></i>
+                    كود هدية
+                </div>
+                <on class="toggle-tasks" id="toggle-gift-btn" onclick="toggleGiftCode()">
+                    <i class="fas fa-chevron-down"></i>
+                </on>
+            </div>
+            
+            <div id="gift-code-content">
+                <div class="code-input-container">
+                    <input type="text" class="code-input" id="gift-code-input" placeholder="أدخل الكود هنا">
+                    <on class="submit-code-btn" onclick="submitGiftCode()">
+                        <i class="fas fa-check"></i> تفعيل
+                    </on>
+                </div>
+                
+                <a href="#" class="get-code-link" onclick="openTelegram('gift_codes')">
+                    <i class="fas fa-external-link-alt"></i> الحصول على كود هدية
+                </a>
+            </div>
         </div>
 
         <div class="daily-gift-section">
@@ -1557,45 +1650,35 @@
             <div class="gift-amount" id="daily-gift-amount">0.15 نقطة</div>
             <div class="gift-timer" id="daily-gift-timer">جاري التحميل...</div>
             
-            <button class="claim-gift-btn" id="claim-gift-btn" onclick="claimDailyGift()">
+            <on class="claim-gift-btn" id="claim-gift-btn" onclick="claimDailyGift()">
                 <i class="fas fa-gift"></i> احصل على الهدية
-            </button>
-        </div>
-
-        <!-- قسم معلومات المزامنة -->
-        <div class="configs-card" style="margin-top: 30px;">
-            <h3>معلومات تحديث النقاط</h3>
-            <p style="text-align: center; margin: 15px 0;">
-                <i class="fas fa-sync-alt" style="color: var(--primary-blue); margin-left: 5px;"></i>
-                النقاط التي تكسبها هنا ستتم تحديثها تلقائياً مع بوت التليغرام
-            </p>
-            <div style="text-align: center; color: #666; font-size: 14px; margin: 10px 0;">
-                <i class="fas fa-info-circle" style="color: var(--info-blue);"></i>
-                ان لم تحصل على نقاطك التي اكتسبتها هنا في البوت اذهب لجهة معلوماتي و اضغط على زر تحديث نقاطي في البوت
-            </div>
+            </on>
         </div>
     </div>
 
-    <!-- صفحة معلوماتي -->
     <div id="profile-page" class="page">
         <h2 class="page-title">معلوماتي</h2>
         
         <div class="stats-container">
             <div class="stat-card">
-                <h4>إجمالي النقاط</h4>
-                <div class="stat-value" id="total-points">0.0</div>
+                <h4>المهام المكتملة</h4>
+                <div class="stat-value" id="profile-completed-tasks">0</div>
+                <p style="font-size: 14px; color: #666; margin-top: 5px;">من أصل 10</p>
             </div>
             <div class="stat-card">
-                <h4>عدد المهام المكتملة</h4>
-                <div class="stat-value" id="completed-count">0</div>
+                <h4>الإعلانات اليوم</h4>
+                <div class="stat-value" id="today-ads">0</div>
+                <p style="font-size: 14px; color: #666; margin-top: 5px">من أصل 10</p>
             </div>
             <div class="stat-card">
-                <h4>عدد الدعوات</h4>
-                <div class="stat-value" id="invites-count">0</div>
+                <h4>حالة الهدية</h4>
+                <div class="stat-value-small" id="gift-status">غير مطلوبة</div>
+                <p style="font-size: 14px; color: #666; margin-top: 5px">اليومية</p>
             </div>
             <div class="stat-card">
-                <h4>آخر تحديث</h4>
-                <div class="stat-value" id="last-updated" style="font-size: 20px;">-</div>
+                <h4>آخر نشاط</h4>
+                <div class="stat-value" id="last-activity" style="font-size: 20px;">-</div>
+                <p style="font-size: 14px; color: #666; margin-top: 5px">تحديث</p>
             </div>
         </div>
 
@@ -1604,40 +1687,26 @@
             <div class="invite-link">
                 <input type="text" id="invite-link" readonly value="" placeholder="سيتم إنشاء الرابط...">
             </div>
-            <div class="invite-buttons">
-                <button class="copy-btn" onclick="copyInviteLink()">
+            <div class="invite-ons">
+                <on class="copy-btn" onclick="copyInviteLink()">
                     <i class="fas fa-copy"></i> نسخ الرابط
-                </button>
-                <button class="share-btn" onclick="shareInviteLink()">
+                </on>
+                <on class="share-btn" onclick="shareInviteLink()">
                     <i class="fas fa-share-alt"></i> مشاركة
-                </button>
+                </on>
             </div>
         </div>
 
-        <!-- زر المزامنة الاحتياطي -->
-        <div class="configs-card" style="margin-top: 20px;">
-            <h3>تحديث النقاط الاحتياطي</h3>
-            <p style="text-align: center; margin: 15px 0; color: #666;">
-                <i class="fas fa-exclamation-triangle" style="color: var(--warning-orange); margin-left: 5px;"></i>
-                استخدم هذا الزر فقط في حالة تأخر وصول النقاط للبوت
-            </p>
-            <button class="sync-backup-btn" onclick="manualSync()">
-                <i class="fas fa-sync-alt"></i> تحديث نقاطي في البوت
-            </button>
-            <div style="margin-top: 15px; padding: 10px; background: rgba(33, 150, 243, 0.05); border-radius: 10px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                    <span>آخر تحديث:</span>
-                    <span id="last-sync-time">لم يتم التحديث بعد</span>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <span>معرف المستخدم:</span>
-                    <span id="user-id-display" style="font-family: monospace;">-</span>
-                </div>
-            </div>
+        <div class="bot-logo-section" style="margin-top: 30px;">
+            <img src="bot_logo.png" alt="Pharaoh Net Bot Logo" class="bot-logo">
+            <div class="bot-logo-title">Pharaoh Net Shop</div>
+            <div class="bot-logo-subtitle">انضم إلى البوت لاستخدام النقاط التي تكسبها</div>
+            <on onclick="openBotProperly()" class="open-bot-btn">
+                <i class="fas fa-external-link-alt"></i> فتح البوت لشراء
+            </on>
         </div>
     </div>
 
-    <!-- التنقل السفلي المصغر -->
     <div class="bottom-nav">
         <div class="nav">
             <div class="nav-item active" onclick="showPage('main')">
@@ -1658,43 +1727,28 @@
         </div>
     </div>
 
-    <!-- إضافة مكتبة الإعلانات -->
     <script src='//libtl.com/sdk.js' data-zone='10301752' data-sdk='show_10301752'></script>
 
     <script>
-        // ⚙️ إعدادات API المعدلة
         const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
         const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
         const BOT_USERNAME = 'PharaohNetChopBot';
-        
-        // 🔧 إعدادات كود الهدية (سهلة التعديل) 🔧
-        const GIFT_CODE_CONFIG = {
-            code: "gift-pharaoh",        // غير هذا الكود كما تريد
-            points: 2,                    // عدد النقاط للكود
-            link: "https://www.facebook.com/61573924207577/posts/pfbid0mTNCb6X87jzHyNY9WZdNm9LE8u8PbrkHn35GNWWu97vmAW6Sckb3Ab1gDpnUK51Nl/?app=fbl" // رابط الحصول على كود
-        };
 
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
         const tg = Telegram.WebApp;
         const user = tg.initDataUnsafe.user || {};
 
-        // متغيرات التطبيق
-        let points = 0;
-        let invites = 0;
-        let totalTasksCompleted = 0;
         const totalTasks = 10;
         let dailyGiftClaimed = false;
         let dailyGiftTime = null;
         let tasksCollapsed = false;
         let giftCodeCollapsed = false;
-        let lastSyncTime = null;
-        let lastTaskCompletedTime = null;
-        
-        // متغير لتتبع اتصال API
-        let apiConnectionStatus = 'checking';
+        let lastActivityTime = null;
 
-        // 🔧 وظائف مساعدة
+        const GIFT_CODE = "gift-pharaoh";
+        const AD_EXPIRY_DAYS = 30;
+
         function showLoading(show = true) {
             const loadingBar = document.getElementById('loadingBar');
             if (show) {
@@ -1724,9 +1778,9 @@
                         <div class="alert-title">${title}</div>
                         <div class="alert-text">${message}</div>
                     </div>
-                    <button class="close-alert" onclick="document.getElementById('${alertId}').remove()">
+                    <on class="close-alert" onclick="document.getElementById('${alertId}').remove()">
                         <i class="fas fa-times"></i>
-                    </button>
+                    </on>
                 </div>
             `;
             
@@ -1751,48 +1805,89 @@
             return alertId;
         }
 
-        function updatePointsDisplay() {
-            document.getElementById('points').textContent = points.toFixed(1);
-            document.getElementById('total-points').textContent = points.toFixed(1);
-            document.getElementById('completed-count').textContent = totalTasksCompleted;
-            document.getElementById('invites-count').textContent = invites;
+        function updateTasksDisplay() {
+            const completedTasks = calculateCompletedTasks();
+            const todayAds = calculateTodayAds();
             
-            if (lastTaskCompletedTime) {
-                const time = new Date(lastTaskCompletedTime);
-                document.getElementById('last-updated').textContent = time.toLocaleTimeString('ar-SA');
+            const completedTasksElement = document.getElementById('completed-tasks');
+            if (completedTasksElement) completedTasksElement.textContent = completedTasks;
+            
+            const profileCompletedTasksElement = document.getElementById('profile-completed-tasks');
+            if (profileCompletedTasksElement) profileCompletedTasksElement.textContent = completedTasks;
+            
+            const todayAdsElement = document.getElementById('today-ads');
+            if (todayAdsElement) todayAdsElement.textContent = todayAds;
+            
+            const giftStatusElement = document.getElementById('gift-status');
+            if (giftStatusElement) {
+                giftStatusElement.textContent = dailyGiftClaimed ? 'مطلوبة' : 'متاحة';
+                giftStatusElement.style.color = dailyGiftClaimed ? '#FF9800' : '#4CAF50';
             }
-        }
-
-        function updateLastSyncTime() {
-            lastSyncTime = new Date().toISOString();
-            localStorage.setItem('lastSyncTime', lastSyncTime);
             
-            const displayTime = new Date(lastSyncTime).toLocaleString('ar-SA');
-            document.getElementById('last-sync-time').textContent = displayTime;
+            const lastActivityElement = document.getElementById('last-activity');
+            if (lastActivityElement && lastActivityTime) {
+                const time = new Date(lastActivityTime);
+                lastActivityElement.textContent = time.toLocaleTimeString('ar-SA');
+            }
+            
+            updateTasksUI();
         }
 
-        // 🔌 وظائف API المحسنة
-        async function checkAPIConnection() {
+        function calculateCompletedTasks() {
             try {
-                const response = await fetch(`${API_BASE_URL}/health`, {
-                    headers: { 'X-API-Key': API_KEY },
-                    timeout: 5000
+                const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+                if (!adsData.ads || !Array.isArray(adsData.ads)) {
+                    return 0;
+                }
+                
+                let completedAds = 0;
+                adsData.ads.forEach(ad => {
+                    if (ad.completed) completedAds++;
                 });
                 
-                if (response.ok) {
-                    apiConnectionStatus = 'connected';
-                    return true;
-                } else {
-                    apiConnectionStatus = 'disconnected';
-                    return false;
+                let otherTasks = 0;
+                
+                if (localStorage.getItem('dailyGiftClaimed') === 'true') {
+                    otherTasks++;
                 }
+                
+                const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
+                otherTasks += usedCodes.length;
+                
+                return completedAds + otherTasks;
             } catch (error) {
-                apiConnectionStatus = 'disconnected';
-                return false;
+                console.error('خطأ في حساب المهام المكتملة:', error);
+                return 0;
             }
         }
 
-        async function completeTaskViaAPI(taskId, taskType = 'ad', pointsEarned = 0.5) {
+        function calculateTodayAds() {
+            try {
+                const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+                if (!adsData.ads || !Array.isArray(adsData.ads)) {
+                    return 0;
+                }
+                
+                let todayAds = 0;
+                const today = new Date().toDateString();
+                
+                adsData.ads.forEach(ad => {
+                    if (ad.completed && ad.completedDate) {
+                        const adDate = new Date(ad.completedDate).toDateString();
+                        if (adDate === today) {
+                            todayAds++;
+                        }
+                    }
+                });
+                
+                return todayAds;
+            } catch (error) {
+                console.error('خطأ في حساب الإعلانات اليومية:', error);
+                return 0;
+            }
+        }
+
+        async function completeTaskViaAPI(taskId, taskType = 'ad') {
             showLoading(true);
             
             const userId = user.id;
@@ -1802,24 +1897,15 @@
                 return false;
             }
             
-            // التحقق من اتصال API أولاً
-            const isConnected = await checkAPIConnection();
-            if (!isConnected) {
-                showLoading(false);
-                // ✅ استخدام التخزين المحلي مباشرة بدون رسالة "وضع عدم الاتصال"
-                completeTaskLocally(taskId, pointsEarned);
-                // تحديث الواجهة مباشرة
-                if (taskType === 'ad') {
-                    updateTaskUI(taskId, true);
-                }
-                return false;
-            }
-            
             const endpoint = `${API_BASE_URL}/api/user/${userId}/complete-task`;
             const headers = {
                 'Content-Type': 'application/json',
                 'X-API-Key': API_KEY
             };
+            
+            const pointsEarned = taskType === 'ad' ? 0.5 : 
+                               taskType === 'gift' ? 2 : 
+                               taskType === 'daily_gift' ? parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15') : 0.5;
             
             const data = {
                 task_id: taskId,
@@ -1841,338 +1927,38 @@
                 const result = await response.json();
                 
                 if (result && result.success) {
-                    // تحديث النقاط من الاستجابة
-                    points = result.points || 0;
+                    lastActivityTime = new Date().toISOString();
+                    localStorage.setItem('lastActivityTime', lastActivityTime);
                     
-                    // تحديث إحصائيات المهام
-                    if (taskType === 'ad') {
-                        totalTasksCompleted = result.completed_tasks || 0;
-                    }
-                    
-                    // تحديث وقت المهمة الأخيرة
-                    lastTaskCompletedTime = new Date().toISOString();
-                    localStorage.setItem('lastTaskCompletedTime', lastTaskCompletedTime);
-                    
-                    // حفظ البيانات محلياً
-                    localStorage.setItem('points', points);
-                    localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
-                    
-                    showAlert('success', 'تمت المهمة!', `لقد كسبت ${pointsEarned} نقطة. الرصيد الجديد: ${points.toFixed(1)} نقطة`);
-                    updatePointsDisplay();
-                    
-                    // تحديث الواجهة
-                    if (taskType === 'ad') {
-                        updateTaskUI(taskId, true);
-                    }
+                    showAlert('success', 'تمت المهمة!', `لقد أكملت المهمة بنجاح! النقاط تم إرسالها للبوت.`);
+                    updateTasksDisplay();
                     
                     return true;
                 } else {
-                    // إذا فشل API، استخدم المحلي
-                    completeTaskLocally(taskId, pointsEarned);
-                    if (taskType === 'ad') {
-                        updateTaskUI(taskId, true);
-                    }
+                    completeTaskLocally(taskId, taskType);
                     return false;
                 }
             } catch (error) {
                 console.error('خطأ في اتصال API:', error);
                 
-                // ✅ استخدام التخزين المحلي بدون رسالة "وضع عدم الاتصال"
-                completeTaskLocally(taskId, pointsEarned);
-                if (taskType === 'ad') {
-                    updateTaskUI(taskId, true);
-                }
+                completeTaskLocally(taskId, taskType);
                 return false;
             } finally {
                 showLoading(false);
             }
         }
 
-        function completeTaskLocally(taskId, pointsEarned = 0.5) {
-            // تحديث النقاط محلياً
-            points += pointsEarned;
+        function completeTaskLocally(taskId, taskType) {
+            lastActivityTime = new Date().toISOString();
+            localStorage.setItem('lastActivityTime', lastActivityTime);
             
-            // تحديث إحصائيات المهام
-            if (taskId !== 'daily_gift' && !taskId.startsWith('gift_code')) {
-                totalTasksCompleted++;
-            }
-            
-            // حفظ البيانات محلياً
-            localStorage.setItem('points', points);
-            localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
-            
-            // تحديث وقت المهمة الأخيرة
-            lastTaskCompletedTime = new Date().toISOString();
-            localStorage.setItem('lastTaskCompletedTime', lastTaskCompletedTime);
-            
-            updatePointsDisplay();
+            showAlert('info', 'تم حفظ المهمة', 'تم حفظ المهمة محلياً، سيتم مزامنتها مع البوت عند الاتصال.');
+            updateTasksDisplay();
             
             return true;
         }
 
-        function updateTaskUI(taskId, isCompleted) {
-            const card = document.getElementById(`task${taskId}`);
-            if (card) {
-                const btn = card.querySelector('.watch-btn');
-                if (isCompleted) {
-                    btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال +0.5';
-                    btn.classList.add('completed');
-                    btn.disabled = true;
-                    card.classList.add('completed');
-                    document.getElementById(`p${taskId}`).style.width = '100%';
-                }
-            }
-        }
-
-        async function manualSync() {
-            showLoading(true);
-            showAlert('info', 'تحديث', 'جاري إضافة النقاط إلى البوت...');
-            
-            const userId = user.id;
-            if (!userId) {
-                showLoading(false);
-                showAlert('error', 'خطأ', 'لم يتم التعرف على هوية المستخدم');
-                return;
-            }
-            
-            try {
-                // 1. التحقق من اتصال API
-                const isConnected = await checkAPIConnection();
-                if (!isConnected) {
-                    showLoading(false);
-                    showAlert('warning', 'عدم اتصال', 'لا يمكن الاتصال بالبوت حالياً. سيتم تحديث النقاط عند إعادة الاتصال.');
-                    return;
-                }
-                
-                // 2. الحصول على نقاط المستخدم الحالية من البوت
-                const pointsEndpoint = `${API_BASE_URL}/api/user/${userId}/points`;
-                const pointsResponse = await fetch(pointsEndpoint, {
-                    headers: { 'X-API-Key': API_KEY }
-                });
-                
-                if (pointsResponse.ok) {
-                    const pointsData = await pointsResponse.json();
-                    const botPoints = pointsData.points || 0;
-                    
-                    // 3. حساب النقاط المحلية
-                    const localPoints = parseFloat(localStorage.getItem('points') || '0');
-                    
-                    if (localPoints > 0) {
-                        // 4. إرسال النقاط المحلية إلى البوت
-                        const addEndpoint = `${API_BASE_URL}/api/user/${userId}/add-points`;
-                        const addResponse = await fetch(addEndpoint, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-API-Key': API_KEY
-                            },
-                            body: JSON.stringify({
-                                points: localPoints,
-                                reason: 'تحديث يدوي من WebApp'
-                            })
-                        });
-                        
-                        if (addResponse.ok) {
-                            // 5. تحديث النقاط المحلية
-                            const addData = await addResponse.json();
-                            points = addData.new_points || botPoints;
-                            localStorage.setItem('points', 0); // إعادة تعيين النقاط المحلية
-                            
-                            // 6. تحديث إحصائيات المهام من البوت
-                            totalTasksCompleted = addData.completed_tasks || 0;
-                            localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
-                            
-                            showAlert('success', 'تم تحديث نقاطك', `تم إضافة ${localPoints.toFixed(1)} نقطة إلى البوت بنجاح!`);
-                        }
-                    } else {
-                        // 7. إذا لم تكن هناك نقاط محلية، تحديث من البوت
-                        points = botPoints;
-                        totalTasksCompleted = pointsData.completed_tasks || 0;
-                        
-                        localStorage.setItem('points', points);
-                        localStorage.setItem('totalTasksCompleted', totalTasksCompleted);
-                        
-                        showAlert('success', 'تم تحديث رصيدك', `تم تحديث الرصيد من البوت: ${botPoints.toFixed(1)} نقطة`);
-                    }
-                    
-                    // تحديث وقت المزامنة الأخير
-                    updateLastSyncTime();
-                    
-                    // تحديث العرض
-                    updatePointsDisplay();
-                }
-            } catch (error) {
-                console.error('خطأ في التحديث:', error);
-                showAlert('warning', 'خطأ في الاتصال', 'حدث خطأ في الاتصال بالبوت. يرجى المحاولة لاحقاً.');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // 🎁 وظائف الهدية اليومية المحسنة
-        function initDailyGift() {
-            const now = new Date();
-            const today = now.toDateString();
-            
-            // الحصول على آخر وقت للمطالبة
-            const lastClaimDate = localStorage.getItem('dailyGiftLastClaim');
-            const lastClaimTime = localStorage.getItem('dailyGiftTime');
-            
-            const claimBtn = document.getElementById('claim-gift-btn');
-            const timerElement = document.getElementById('daily-gift-timer');
-            const amountElement = document.getElementById('daily-gift-amount');
-            
-            // تعيين مبلغ عشوائي للهدية
-            const randomAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-            localStorage.setItem('dailyGiftAmount', randomAmount);
-            amountElement.textContent = `${randomAmount} نقطة`;
-            
-            // التحقق إذا تم المطالبة اليوم
-            if (lastClaimDate === today && lastClaimTime) {
-                dailyGiftClaimed = true;
-                dailyGiftTime = parseInt(lastClaimTime);
-                
-                const lastClaim = new Date(parseInt(lastClaimTime));
-                const nextClaimTime = new Date(lastClaim);
-                nextClaimTime.setHours(nextClaimTime.getHours() + 24);
-                
-                const timeDiff = nextClaimTime.getTime() - now.getTime();
-                
-                if (timeDiff > 0) {
-                    claimBtn.disabled = true;
-                    claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                    updateGiftTimer(timeDiff, timerElement);
-                    
-                    // تحديث المؤقت كل ثانية
-                    const timerInterval = setInterval(() => {
-                        const newTimeDiff = nextClaimTime.getTime() - Date.now();
-                        if (newTimeDiff <= 0) {
-                            clearInterval(timerInterval);
-                            dailyGiftClaimed = false;
-                            claimBtn.disabled = false;
-                            claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
-                            timerElement.textContent = 'الهدية متاحة الآن!';
-                            localStorage.removeItem('dailyGiftLastClaim');
-                            localStorage.removeItem('dailyGiftTime');
-                        } else {
-                            updateGiftTimer(newTimeDiff, timerElement);
-                        }
-                    }, 1000);
-                } else {
-                    dailyGiftClaimed = false;
-                    claimBtn.disabled = false;
-                    timerElement.textContent = 'الهدية متاحة الآن!';
-                }
-            } else {
-                dailyGiftClaimed = false;
-                claimBtn.disabled = false;
-                timerElement.textContent = 'الهدية متاحة الآن!';
-            }
-        }
-
-        function updateGiftTimer(timeLeft, timerElement) {
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-            
-            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
-        }
-
-        async function claimDailyGift() {
-            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
-            const today = new Date().toDateString();
-            
-            // استخدام API لإضافة النقاط
-            const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift', amount);
-            
-            if (apiSuccess) {
-                dailyGiftClaimed = true;
-                dailyGiftTime = Date.now();
-                
-                // حفظ وقت المطالبة
-                localStorage.setItem('dailyGiftLastClaim', today);
-                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
-                
-                updatePointsDisplay();
-                
-                const claimBtn = document.getElementById('claim-gift-btn');
-                claimBtn.disabled = true;
-                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                
-                tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
-                
-                initDailyGift();
-            } else {
-                // إذا فشل API، استخدم المحلي مع تحذير
-                completeTaskLocally('daily_gift', amount);
-                dailyGiftClaimed = true;
-                dailyGiftTime = Date.now();
-                
-                localStorage.setItem('dailyGiftLastClaim', today);
-                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
-                
-                updatePointsDisplay();
-                
-                const claimBtn = document.getElementById('claim-gift-btn');
-                claimBtn.disabled = true;
-                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                
-                tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'هدية يومية (محلي)', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
-                
-                initDailyGift();
-            }
-        }
-
-        // 🎁 وظائف كود الهدية المحسنة
-        async function submitGiftCode() {
-            const codeInput = document.getElementById('gift-code-input');
-            const code = codeInput.value.trim();
-            
-            if (!code) {
-                showAlert('error', 'خطأ', 'يرجى إدخال كود الهدية');
-                return;
-            }
-            
-            if (code.toUpperCase() === GIFT_CODE_CONFIG.code.toUpperCase()) {
-                const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
-                if (usedCodes.includes(code.toUpperCase())) {
-                    showAlert('warning', 'تم الاستخدام', '⚠️ هذا الكود تم استخدامه مسبقاً!');
-                    return;
-                }
-                
-                // استخدام API لإضافة النقاط
-                const apiSuccess = await completeTaskViaAPI('gift_code', 'gift', GIFT_CODE_CONFIG.points);
-                
-                if (apiSuccess) {
-                    usedCodes.push(code.toUpperCase());
-                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
-                    
-                    updatePointsDisplay();
-                    codeInput.value = '';
-                    
-                    tg.HapticFeedback.impactOccurred('medium');
-                    showAlert('success', 'كود هدية', `🎉 تم تفعيل الكود بنجاح! حصلت على ${GIFT_CODE_CONFIG.points} نقطة!`);
-                } else {
-                    // إذا فشل API، استخدم المحلي
-                    completeTaskLocally('gift_code', GIFT_CODE_CONFIG.points);
-                    usedCodes.push(code.toUpperCase());
-                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
-                    
-                    updatePointsDisplay();
-                    codeInput.value = '';
-                    
-                    tg.HapticFeedback.impactOccurred('medium');
-                    showAlert('success', 'كود هدية (محلي)', `🎉 تم تفعيل الكود محلياً! حصلت على ${GIFT_CODE_CONFIG.points} نقطة!`);
-                }
-            } else {
-                showAlert('error', 'كود خاطئ', '❌ كود الهدية غير صحيح!');
-            }
-        }
-
         function init() {
-            // اسم وصورة المستخدم
             const userNameElement = document.getElementById('user-name');
             const displayName = user.first_name ? 
                 `${user.first_name} ${user.last_name || ''}`.trim() : 'ضيف';
@@ -2187,52 +1973,27 @@
                 defaultAvatar.style.display = 'none';
             }
 
-            // عرض معرف المستخدم
-            const userId = user.id || 'مستخدم محلي';
-            document.getElementById('user-id-display').textContent = userId;
+            lastActivityTime = localStorage.getItem('lastActivityTime');
 
-            // تحميل النقاط والمهام المكتملة من التخزين المحلي
-            points = parseFloat(localStorage.getItem('points') || '0');
-            invites = parseInt(localStorage.getItem('invites') || '0');
-            totalTasksCompleted = parseInt(localStorage.getItem('totalTasksCompleted') || '0');
-            lastTaskCompletedTime = localStorage.getItem('lastTaskCompletedTime');
-            lastSyncTime = localStorage.getItem('lastSyncTime');
-
-            // تحديث العرض
-            updatePointsDisplay();
-
-            // رابط الدعوة
+            const userId = user.id || 'local_user';
             const inviteLink = `https://t.me/${BOT_USERNAME}?start=${userId}`;
             document.getElementById('invite-link').value = inviteLink;
 
-            // تحديث زر الوضع الليلي في القائمة
             updateThemeToggleText();
-
-            // تهيئة بيانات الإعلانات
             initAdData();
-
-            // إنشاء 10 مهام إعلانية
             createTasks();
-
-            // تحديث المهام المكتملة
-            updateCompletedTasks();
-
-            // تهيئة حالة المهام
+            updateTasksFromData();
             initTasksCollapse();
-
-            // تهيئة الهدية اليومية
+            initGiftCodeCollapse();
             initDailyGift();
 
-            // تطبيق الثيم المحفوظ
             if (localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-theme');
                 document.body.classList.remove('light-theme');
             }
             
-            // إضافة تأثيرات زرقاء عشوائية
             addSparkleEffects();
             
-            // تحسين تجربة Telegram WebApp
             tg.setHeaderColor('#2196F3');
             tg.setBackgroundColor('#F5F7FA');
             
@@ -2240,22 +2001,10 @@
                 tg.setBackgroundColor('#121212');
             }
 
-            // تحسين تنسيق النص العربي
             document.documentElement.setAttribute('dir', 'rtl');
             document.documentElement.setAttribute('lang', 'ar');
-
-            // عرض وقت المزامنة الأخير
-            if (lastSyncTime) {
-                const displayTime = new Date(lastSyncTime).toLocaleString('ar-SA');
-                document.getElementById('last-sync-time').textContent = displayTime;
-            }
-
-            // مزامنة تلقائية عند البدء
-            setTimeout(() => {
-                if (navigator.onLine) {
-                    manualSync();
-                }
-            }, 2000);
+            
+            updateTasksDisplay();
         }
 
         function updateThemeToggleText() {
@@ -2315,7 +2064,7 @@
                     url = 'https://t.me/Misteerx';
                     break;
                 case 'gift_codes':
-                    url = GIFT_CODE_CONFIG.link; // استخدام الرابط من الإعدادات
+                    url = 'https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/';
                     break;
                 default:
                     url = 'https://t.me/PharaohNetShop';
@@ -2325,9 +2074,18 @@
             toggleMenu();
         }
 
-        function openBot() {
+        function openBotProperly() {
             const botUrl = `https://t.me/${BOT_USERNAME}`;
-            tg.openLink(botUrl);
+            
+            tg.showConfirm('سيتم فتح البوت في تطبيق تيليغرام الرئيسي', function(confirmed) {
+                if (confirmed) {
+                    tg.openLink(botUrl);
+                    
+                    setTimeout(() => {
+                        tg.close();
+                    }, 100);
+                }
+            });
         }
 
         function toggleTheme() {
@@ -2357,7 +2115,6 @@
             }
         }
 
-        // تهيئة بيانات الإعلانات
         function initAdData() {
             let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
             
@@ -2387,7 +2144,7 @@
 
         function checkAdExpiry(adsData) {
             const now = Date.now();
-            const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+            const sevenDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
             
             if (now - adsData.lastReset > sevenDaysInMs) {
                 adsData.ads.forEach(ad => {
@@ -2398,7 +2155,7 @@
                 adsData.lastReset = now;
                 localStorage.setItem('adsData', JSON.stringify(adsData));
                 
-                updateCompletedTasks();
+                updateTasksFromData();
             }
         }
 
@@ -2417,6 +2174,9 @@
                 adsData.ads[adIndex].completedDate = Date.now();
                 adsData.ads[adIndex].pointsEarned = 0.5;
                 localStorage.setItem('adsData', JSON.stringify(adsData));
+                
+                updateTasksDisplay();
+                
                 return true;
             }
             return false;
@@ -2450,14 +2210,39 @@
                             </div>
                         </div>
                         
-                        <button class="watch-btn ${isCompleted ? 'completed' : ''}" onclick="startAd(${i})" id="btn${i}" ${isCompleted ? 'disabled' : ''}>
+                        <on class="watch-btn ${isCompleted ? 'completed' : ''}" onclick="startAd(${i})" id="btn${i}" ${isCompleted ? 'disabled' : ''}>
                             <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-play'}"></i> 
-                            ${isCompleted ? 'تم الإكمال +0.5' : 'ابدأ المشاهدة'}
-                        </button>
+                            ${isCompleted ? 'تم الإكمال' : 'ابدأ المشاهدة'}
+                        </on>
                     </div>
                 `;
                 container.innerHTML += taskHTML;
             }
+        }
+
+        function updateTasksUI() {
+            for (let i = 1; i <= totalTasks; i++) {
+                const isCompleted = getAdStatus(i);
+                const card = document.getElementById(`task${i}`);
+                if (card) {
+                    const btn = card.querySelector('.watch-btn');
+                    if (isCompleted) {
+                        btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال';
+                        btn.classList.add('completed');
+                        btn.disabled = true;
+                        card.classList.add('completed');
+                        const fillElement = document.getElementById(`p${i}`);
+                        if (fillElement) {
+                            fillElement.style.width = '100%';
+                        }
+                    }
+                }
+            }
+        }
+
+        function updateTasksFromData() {
+            updateTasksUI();
+            updateTasksDisplay();
         }
 
         function initTasksCollapse() {
@@ -2490,6 +2275,36 @@
             localStorage.setItem('tasksCollapsed', tasksCollapsed);
         }
 
+        function initGiftCodeCollapse() {
+            const content = document.getElementById('gift-code-content');
+            const toggleBtn = document.getElementById('toggle-gift-btn');
+            
+            if (giftCodeCollapsed) {
+                content.style.display = 'none';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            } else {
+                content.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            }
+        }
+
+        function toggleGiftCode() {
+            const content = document.getElementById('gift-code-content');
+            const toggleBtn = document.getElementById('toggle-gift-btn');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                giftCodeCollapsed = false;
+            } else {
+                content.style.display = 'none';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                giftCodeCollapsed = true;
+            }
+            
+            localStorage.setItem('giftCodeCollapsed', giftCodeCollapsed);
+        }
+
         function showPage(page) {
             document.querySelectorAll('.page').forEach(el => {
                 el.classList.remove('active');
@@ -2509,6 +2324,8 @@
             setTimeout(() => {
                 document.getElementById(page + '-page').style.animation = 'pageFadeIn 0.6s forwards';
             }, 10);
+            
+            updateTasksDisplay();
         }
 
         async function startAd(id) {
@@ -2526,7 +2343,7 @@
             let progress = 0;
             const progressInterval = setInterval(() => {
                 progress += 2;
-                fill.style.width = Math.min(progress, 100) + '%';
+                if (fill) fill.style.width = Math.min(progress, 100) + '%';
                 
                 if (progress >= 100) {
                     clearInterval(progressInterval);
@@ -2539,43 +2356,188 @@
                 }
                 
                 clearInterval(progressInterval);
-                fill.style.width = '100%';
+                if (fill) fill.style.width = '100%';
                 
-                // استخدام API لإكمال المهمة
-                const apiSuccess = await completeTaskViaAPI(id, 'ad', 0.5);
+                const apiSuccess = await completeTaskViaAPI(id, 'ad');
                 
-                if (!apiSuccess) {
-                    // إذا فشل API، استخدم المحلي
-                    setAdCompleted(id);
-                    updateTaskUI(id, true);
+                if (apiSuccess || !navigator.onLine) {
+                    setTimeout(() => {
+                        completeAdLocal(id, btn);
+                    }, 500);
                 }
             } catch (error) {
                 clearInterval(progressInterval);
-                btn.innerHTML = '<i class="fas fa-play"></i> ابدأ المشاهدة';
-                btn.disabled = false;
-                fill.style.width = '0%';
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-play"></i> ابدأ المشاهدة';
+                    btn.disabled = false;
+                }
+                if (fill) fill.style.width = '0%';
                 console.error('Ad error:', error);
                 showAlert('error', 'خطأ في الإعلان', 'حدث خطأ أثناء عرض الإعلان. يرجى المحاولة مرة أخرى.');
             }
         }
 
-        function updateCompletedTasks() {
-            for (let i = 1; i <= totalTasks; i++) {
-                const isCompleted = getAdStatus(i);
-                if (isCompleted) {
-                    updateTaskUI(i, true);
+        function completeAdLocal(id, btn) {
+            if (setAdCompleted(id)) {
+                if (!navigator.onLine) {
+                    completeTaskLocally(id, 'ad');
                 }
+                
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال';
+                    btn.classList.add('completed');
+                    btn.disabled = true;
+                }
+                
+                const taskCard = document.getElementById(`task${id}`);
+                if (taskCard) {
+                    taskCard.classList.add('completed');
+                }
+                
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'مهمة مكتملة', 'تم إكمال مشاهدة الإعلان بنجاح!');
+            } else {
+                showAlert('error', 'خطأ', 'حدث خطأ أثناء حفظ بيانات الإعلان.');
+            }
+        }
+
+        function initDailyGift() {
+            const now = Date.now();
+            const lastClaimTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
+            const timeDiff = now - lastClaimTime;
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+            
+            const claimBtn = document.getElementById('claim-gift-btn');
+            const timerElement = document.getElementById('daily-gift-timer');
+            const amountElement = document.getElementById('daily-gift-amount');
+            
+            let savedAmount = localStorage.getItem('dailyGiftAmount');
+            if (!savedAmount) {
+                savedAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                localStorage.setItem('dailyGiftAmount', savedAmount);
+            }
+            
+            amountElement.textContent = `${savedAmount} نقطة`;
+            
+            dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') === 'true';
+            dailyGiftTime = localStorage.getItem('dailyGiftTime');
+            
+            if (dailyGiftClaimed && timeDiff < twentyFourHours) {
+                claimBtn.disabled = true;
+                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                
+                const timeLeft = twentyFourHours - timeDiff;
+                updateGiftTimer(timeLeft, timerElement);
+                
+                const timerInterval = setInterval(() => {
+                    const currentTime = Date.now();
+                    const newTimeLeft = twentyFourHours - (currentTime - lastClaimTime);
+                    if (newTimeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        claimBtn.disabled = false;
+                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                        timerElement.textContent = 'الهدية متاحة الآن!';
+                        dailyGiftClaimed = false;
+                        localStorage.setItem('dailyGiftClaimed', false);
+                        
+                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                        localStorage.setItem('dailyGiftAmount', newAmount);
+                        amountElement.textContent = `${newAmount} نقطة`;
+                    } else {
+                        updateGiftTimer(newTimeLeft, timerElement);
+                    }
+                }, 1000);
+            } else {
+                dailyGiftClaimed = false;
+                claimBtn.disabled = false;
+                timerElement.textContent = 'الهدية متاحة الآن!';
+                localStorage.setItem('dailyGiftClaimed', false);
+            }
+            
+            updateTasksDisplay();
+        }
+
+        function updateGiftTimer(timeLeft, timerElement) {
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
+        }
+
+        async function claimDailyGift() {
+            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
+            
+            const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift');
+            
+            if (apiSuccess || !navigator.onLine) {
+                if (!navigator.onLine) {
+                    completeTaskLocally('daily_gift', 'daily_gift');
+                }
+                
+                dailyGiftClaimed = true;
+                dailyGiftTime = Date.now();
+                
+                localStorage.setItem('dailyGiftClaimed', true);
+                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
+                
+                updateTasksDisplay();
+                
+                const claimBtn = document.getElementById('claim-gift-btn');
+                claimBtn.disabled = true;
+                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على هدية يومية!`);
+                
+                initDailyGift();
+            }
+        }
+
+        async function submitGiftCode() {
+            const codeInput = document.getElementById('gift-code-input');
+            const code = codeInput.value.trim();
+            
+            if (!code) {
+                showAlert('error', 'خطأ', 'يرجى إدخال كود الهدية');
+                return;
+            }
+            
+            if (code.toUpperCase() === GIFT_CODE.toUpperCase()) {
+                const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
+                if (usedCodes.includes(code.toUpperCase())) {
+                    showAlert('warning', 'تم الاستخدام', '⚠️ هذا الكود تم استخدامه مسبقاً!');
+                    return;
+                }
+                
+                const apiSuccess = await completeTaskViaAPI('gift_code', 'gift');
+                
+                if (apiSuccess || !navigator.onLine) {
+                    if (!navigator.onLine) {
+                        completeTaskLocally('gift_code', 'gift');
+                    }
+                    
+                    usedCodes.push(code.toUpperCase());
+                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
+                    
+                    updateTasksDisplay();
+                    codeInput.value = '';
+                    
+                    tg.HapticFeedback.impactOccurred('medium');
+                    showAlert('success', 'كود هدية', `🎉 تم تفعيل الكود بنجاح!`);
+                }
+            } else {
+                showAlert('error', 'كود خاطئ', '❌ كود الهدية غير صحيح!');
             }
         }
 
         function copyInviteLink() {
             const link = document.getElementById('invite-link').value;
             navigator.clipboard.writeText(link).then(() => {
-                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح! شاركه مع أصدقائك للحصول على مكافآت إضافية.');
+                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح! شاركه مع أصدقائك.');
                 tg.HapticFeedback.impactOccurred('light');
             }).catch(err => {
                 console.error('Failed to copy: ', err);
-                // طريقة بديلة للنسخ
                 const tempInput = document.createElement('input');
                 tempInput.value = link;
                 document.body.appendChild(tempInput);
@@ -2593,25 +2555,17 @@
             if (tg.shareToChat) {
                 tg.shareToChat(shareText, (shared) => {
                     if (shared) {
-                        showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح! ستحصل على نقاط إضافية عندما ينضم أصدقاؤك.');
-                        
-                        invites++;
-                        localStorage.setItem('invites', invites);
-                        document.getElementById('invites-count').textContent = invites;
+                        showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح!');
                     }
                 });
             } else if (navigator.share) {
                 navigator.share({
-                    title: 'تطبيق النقاط - جوائز قيمة',
+                    title: 'Pharaoh Net Shop - بوت المنتوجات',
                     text: 'انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨',
                     url: link,
                 })
                 .then(() => {
-                    showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح! ستحصل على نقاط إضافية عندما ينضم أصدقاؤك.');
-                    
-                    invites++;
-                    localStorage.setItem('invites', invites);
-                    document.getElementById('invites-count').textContent = invites;
+                    showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح!');
                 })
                 .catch((error) => {
                     console.error('Error sharing:', error);
