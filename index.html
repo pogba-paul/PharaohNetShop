@@ -24,6 +24,7 @@
             --success-green: #4CAF50;
             --info-blue: #2196F3;
             --warning-orange: #FF9800;
+            --error-red: #f44336;
             --menu-width: 280px;
         }
 
@@ -973,6 +974,7 @@
         .claim-gift-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.5);
         }
 
         .claim-gift-btn:hover:not(:disabled) {
@@ -1082,7 +1084,13 @@
             background: linear-gradient(45deg, var(--info-blue), #1976D2);
             color: white;
         }
-
+        
+        .invite-buttons {
+    display: flex;
+    flex-direction: row; /* تأكد من أنه أفقي */
+    gap: 10px;
+    width: 100%;
+}
         .share-btn {
             background: linear-gradient(45deg, var(--success-green), #388E3C);
             color: white;
@@ -1137,130 +1145,99 @@
         }
 
         /* التنقل السفلي المصغر والمضغوط */
-/* التنقل السفلي المصغر في الارتفاع فقط */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    padding: 8px 5px 12px; /* قللنا الارتفاع بشكل كبير */
-    background: rgba(255, 255, 255, 0.97);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(33, 150, 243, 0.1);
-    z-index: 1000;
-    box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s;
-    height: 60px; /* ارتفاع ثابت ومصغر */
-    display: flex;
-    align-items: center;
-}
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            padding: 8px 5px 12px;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(33, 150, 243, 0.1);
+            z-index: 1000;
+            box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
 
-.dark-theme .bottom-nav {
-    background: rgba(18, 18, 18, 0.97);
-    border-top: 1px solid rgba(33, 150, 243, 0.15);
-    box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.2);
-}
+        .dark-theme .bottom-nav {
+            background: rgba(18, 18, 18, 0.97);
+            border-top: 1px solid rgba(33, 150, 243, 0.15);
+            box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.2);
+        }
 
-.nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-}
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
 
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    font-size: 18px; /* حجم أصغر للأيقونات */
-    transition: all 0.3s ease;
-    position: relative;
-    cursor: pointer;
-    padding: 5px 8px;
-    border-radius: 12px;
-    min-width: 50px;
-    background: transparent;
-    height: 45px; /* ارتفاع مصغر للزر */
-}
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 12px;
+            min-width: 50px;
+            background: transparent;
+            height: 45px;
+        }
 
-.nav-item span {
-    font-size: 9px; /* نص أصغر */
-    margin-top: 3px;
-    font-weight: 600;
-    opacity: 0.7;
-    transition: all 0.3s;
-}
-
-.nav-item.active {
-    color: white;
-    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-    transform: translateY(-3px); /* ارتفاع أقل للزر النشط */
-    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.25);
-    padding: 5px 10px;
-    min-width: 55px;
-    border-radius: 12px;
-    height: 48px; /* ارتفاع أكبر قليلاً للزر النشط */
-}
-
-.nav-item.active span {
-    opacity: 1;
-    color: white;
-    font-weight: 700;
-    font-size: 10px;
-}
-
-.nav-indicator {
-    position: absolute;
-    top: -2px;
-    width: 3px;
-    height: 3px;
-    background: var(--primary-blue);
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.nav-item.active .nav-indicator {
-    opacity: 1;
-}
-
-/* تأثير خفيف عند hover */
-.nav-item:hover:not(.active) {
-    background: rgba(33, 150, 243, 0.05);
-    transform: translateY(-1px);
-}
-
-/* لإخفاء حواف البار عند الزوايا */
-.bottom-nav::before {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    height: 1px;
-    background: inherit;
-}
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            width: 40px;
-            height: 40px;
-            background: inherit;
-            border-radius: 50%;
-            z-index: -1;
-            opacity: 0;
+        .nav-item span {
+            font-size: 9px;
+            margin-top: 3px;
+            font-weight: 600;
+            opacity: 0.7;
             transition: all 0.3s;
         }
 
-        .nav-item.active::before {
-            opacity: 0.2;
-            transform: scale(1.5);
+        .nav-item.active {
+            color: white;
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            transform: translateY(-3px);
+            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.25);
+            padding: 5px 10px;
+            min-width: 55px;
+            border-radius: 12px;
+            height: 48px;
+        }
+
+        .nav-item.active span {
+            opacity: 1;
+            color: white;
+            font-weight: 700;
+            font-size: 10px;
+        }
+
+        .nav-indicator {
+            position: absolute;
+            top: -2px;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-item.active .nav-indicator {
+            opacity: 1;
+        }
+
+        .nav-item:hover:not(.active) {
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateY(-1px);
         }
 
         .task-card.completed {
@@ -1382,7 +1359,7 @@
         }
 
         .alert-message.error {
-            border-right: 4px solid #f44336;
+            border-right: 4px solid var(--error-red);
         }
 
         .alert-message.info {
@@ -1406,7 +1383,7 @@
         }
 
         .alert-message.error .alert-icon {
-            color: #f44336;
+            color: var(--error-red);
         }
 
         .alert-message.info .alert-icon {
@@ -1440,7 +1417,6 @@
             padding: 5px;
         }
 
-        /* زر فتح البوت المحسن */
         .open-bot-btn {
             margin-top: 15px;
             padding: 14px 28px;
@@ -1499,9 +1475,9 @@
     <div class="side-menu">
         <div class="menu-header">
             <div class="menu-title">القائمة</div>
-            <on class="close-menu" onclick="toggleMenu()">
+            <button class="close-menu" onclick="toggleMenu()">
                 <i class="fas fa-times"></i>
-            </on>
+            </button>
         </div>
         <div class="menu-items">
             <a href="#" class="menu-item" onclick="openTelegram('developer_account')">
@@ -1541,11 +1517,11 @@
         </div>
         
         <div class="header-controls">
-            <on class="menu-btn" onclick="toggleMenu()">
+            <button class="menu-btn" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
-            </on>
+            </button>
         </div>
     </div>
 
@@ -1606,9 +1582,9 @@
                 <i class="fas fa-eye"></i>
                 مشاهدة الإعلانات
             </div>
-            <on class="toggle-tasks" id="toggle-tasks-btn" onclick="toggleTasks()">
+            <button class="toggle-tasks" id="toggle-tasks-btn" onclick="toggleTasks()">
                 <i class="fas fa-chevron-down"></i>
-            </on>
+            </button>
         </div>
         
         <div class="tasks-container" id="tasks-container">
@@ -1620,17 +1596,17 @@
                     <i class="fas fa-gift"></i>
                     كود هدية
                 </div>
-                <on class="toggle-tasks" id="toggle-gift-btn" onclick="toggleGiftCode()">
+                <button class="toggle-tasks" id="toggle-gift-btn" onclick="toggleGiftCode()">
                     <i class="fas fa-chevron-down"></i>
-                </on>
+                </button>
             </div>
             
             <div id="gift-code-content">
                 <div class="code-input-container">
                     <input type="text" class="code-input" id="gift-code-input" placeholder="أدخل الكود هنا">
-                    <on class="submit-code-btn" onclick="submitGiftCode()">
+                    <button class="submit-code-btn" onclick="submitGiftCode()">
                         <i class="fas fa-check"></i> تفعيل
-                    </on>
+                    </button>
                 </div>
                 
                 <a href="#" class="get-code-link" onclick="openTelegram('gift_codes')">
@@ -1650,9 +1626,9 @@
             <div class="gift-amount" id="daily-gift-amount">0.15 نقطة</div>
             <div class="gift-timer" id="daily-gift-timer">جاري التحميل...</div>
             
-            <on class="claim-gift-btn" id="claim-gift-btn" onclick="claimDailyGift()">
+            <button class="claim-gift-btn" id="claim-gift-btn" onclick="claimDailyGift()">
                 <i class="fas fa-gift"></i> احصل على الهدية
-            </on>
+            </button>
         </div>
     </div>
 
@@ -1687,13 +1663,13 @@
             <div class="invite-link">
                 <input type="text" id="invite-link" readonly value="" placeholder="سيتم إنشاء الرابط...">
             </div>
-            <div class="invite-ons">
-                <on class="copy-btn" onclick="copyInviteLink()">
+            <div class="invite-buttons">
+                <button class="copy-btn" onclick="copyInviteLink()">
                     <i class="fas fa-copy"></i> نسخ الرابط
-                </on>
-                <on class="share-btn" onclick="shareInviteLink()">
+                </button>
+                <button class="share-btn" onclick="shareInviteLink()">
                     <i class="fas fa-share-alt"></i> مشاركة
-                </on>
+                </button>
             </div>
         </div>
 
@@ -1701,9 +1677,9 @@
             <img src="bot_logo.png" alt="Pharaoh Net Bot Logo" class="bot-logo">
             <div class="bot-logo-title">Pharaoh Net Shop</div>
             <div class="bot-logo-subtitle">انضم إلى البوت لاستخدام النقاط التي تكسبها</div>
-            <on onclick="openBotProperly()" class="open-bot-btn">
+            <button onclick="openBotProperly()" class="open-bot-btn">
                 <i class="fas fa-external-link-alt"></i> فتح البوت لشراء
-            </on>
+            </button>
         </div>
     </div>
 
@@ -1740,14 +1716,16 @@
         const user = tg.initDataUnsafe.user || {};
 
         const totalTasks = 10;
+        const GIFT_CODE = "gift-pharaoh";
+        const AD_EXPIRY_DAYS = 30;
+        const GIFT_COOLDOWN_HOURS = 24;
+        
         let dailyGiftClaimed = false;
-        let dailyGiftTime = null;
+        let dailyGiftCooldown = 0;
         let tasksCollapsed = false;
         let giftCodeCollapsed = false;
         let lastActivityTime = null;
-
-        const GIFT_CODE = "gift-pharaoh";
-        const AD_EXPIRY_DAYS = 30;
+        let dailyGiftTimerInterval = null;
 
         function showLoading(show = true) {
             const loadingBar = document.getElementById('loadingBar');
@@ -1778,9 +1756,9 @@
                         <div class="alert-title">${title}</div>
                         <div class="alert-text">${message}</div>
                     </div>
-                    <on class="close-alert" onclick="document.getElementById('${alertId}').remove()">
+                    <button class="close-alert" onclick="document.getElementById('${alertId}').remove()">
                         <i class="fas fa-times"></i>
-                    </on>
+                    </button>
                 </div>
             `;
             
@@ -2210,10 +2188,10 @@
                             </div>
                         </div>
                         
-                        <on class="watch-btn ${isCompleted ? 'completed' : ''}" onclick="startAd(${i})" id="btn${i}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="watch-btn ${isCompleted ? 'completed' : ''}" onclick="startAd(${i})" id="btn${i}" ${isCompleted ? 'disabled' : ''}>
                             <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-play'}"></i> 
                             ${isCompleted ? 'تم الإكمال' : 'ابدأ المشاهدة'}
-                        </on>
+                        </button>
                     </div>
                 `;
                 container.innerHTML += taskHTML;
@@ -2405,7 +2383,7 @@
             const now = Date.now();
             const lastClaimTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
             const timeDiff = now - lastClaimTime;
-            const twentyFourHours = 24 * 60 * 60 * 1000;
+            const twentyFourHours = GIFT_COOLDOWN_HOURS * 60 * 60 * 1000;
             
             const claimBtn = document.getElementById('claim-gift-btn');
             const timerElement = document.getElementById('daily-gift-timer');
@@ -2420,7 +2398,7 @@
             amountElement.textContent = `${savedAmount} نقطة`;
             
             dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') === 'true';
-            dailyGiftTime = localStorage.getItem('dailyGiftTime');
+            dailyGiftCooldown = parseInt(localStorage.getItem('dailyGiftCooldown') || '0');
             
             if (dailyGiftClaimed && timeDiff < twentyFourHours) {
                 claimBtn.disabled = true;
@@ -2429,20 +2407,31 @@
                 const timeLeft = twentyFourHours - timeDiff;
                 updateGiftTimer(timeLeft, timerElement);
                 
-                const timerInterval = setInterval(() => {
+                if (dailyGiftTimerInterval) {
+                    clearInterval(dailyGiftTimerInterval);
+                }
+                
+                dailyGiftTimerInterval = setInterval(() => {
                     const currentTime = Date.now();
-                    const newTimeLeft = twentyFourHours - (currentTime - lastClaimTime);
+                    const lastTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
+                    const newTimeLeft = twentyFourHours - (currentTime - lastTime);
+                    
                     if (newTimeLeft <= 0) {
-                        clearInterval(timerInterval);
+                        clearInterval(dailyGiftTimerInterval);
+                        dailyGiftTimerInterval = null;
+                        
+                        dailyGiftClaimed = false;
+                        localStorage.setItem('dailyGiftClaimed', false);
+                        
                         claimBtn.disabled = false;
                         claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
                         timerElement.textContent = 'الهدية متاحة الآن!';
-                        dailyGiftClaimed = false;
-                        localStorage.setItem('dailyGiftClaimed', false);
                         
                         const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
                         localStorage.setItem('dailyGiftAmount', newAmount);
                         amountElement.textContent = `${newAmount} نقطة`;
+                        
+                        updateTasksDisplay();
                     } else {
                         updateGiftTimer(newTimeLeft, timerElement);
                     }
@@ -2452,6 +2441,12 @@
                 claimBtn.disabled = false;
                 timerElement.textContent = 'الهدية متاحة الآن!';
                 localStorage.setItem('dailyGiftClaimed', false);
+                
+                if (timeDiff >= twentyFourHours) {
+                    const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                    localStorage.setItem('dailyGiftAmount', newAmount);
+                    amountElement.textContent = `${newAmount} نقطة`;
+                }
             }
             
             updateTasksDisplay();
@@ -2466,6 +2461,17 @@
         }
 
         async function claimDailyGift() {
+            if (dailyGiftClaimed) {
+                showAlert('warning', 'هدية مطلوبة', 'لقد حصلت على الهدية اليومية بالفعل! انتظر حتى تتجدد.');
+                return;
+            }
+            
+            const claimBtn = document.getElementById('claim-gift-btn');
+            const timerElement = document.getElementById('daily-gift-timer');
+            
+            claimBtn.disabled = true;
+            claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+            
             const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
             
             const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift');
@@ -2476,21 +2482,52 @@
                 }
                 
                 dailyGiftClaimed = true;
-                dailyGiftTime = Date.now();
+                const claimTime = Date.now();
                 
                 localStorage.setItem('dailyGiftClaimed', true);
-                localStorage.setItem('dailyGiftTime', dailyGiftTime.toString());
+                localStorage.setItem('dailyGiftTime', claimTime.toString());
                 
                 updateTasksDisplay();
                 
-                const claimBtn = document.getElementById('claim-gift-btn');
-                claimBtn.disabled = true;
                 claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
                 
                 tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على هدية يومية!`);
+                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
                 
-                initDailyGift();
+                if (dailyGiftTimerInterval) {
+                    clearInterval(dailyGiftTimerInterval);
+                }
+                
+                dailyGiftTimerInterval = setInterval(() => {
+                    const currentTime = Date.now();
+                    const timeLeft = (GIFT_COOLDOWN_HOURS * 60 * 60 * 1000) - (currentTime - claimTime);
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(dailyGiftTimerInterval);
+                        dailyGiftTimerInterval = null;
+                        
+                        dailyGiftClaimed = false;
+                        localStorage.setItem('dailyGiftClaimed', false);
+                        
+                        claimBtn.disabled = false;
+                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                        timerElement.textContent = 'الهدية متاحة الآن!';
+                        
+                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                        localStorage.setItem('dailyGiftAmount', newAmount);
+                        document.getElementById('daily-gift-amount').textContent = `${newAmount} نقطة`;
+                        
+                        updateTasksDisplay();
+                    } else {
+                        updateGiftTimer(timeLeft, timerElement);
+                    }
+                }, 1000);
+                
+                updateGiftTimer(GIFT_COOLDOWN_HOURS * 60 * 60 * 1000, timerElement);
+            } else {
+                claimBtn.disabled = false;
+                claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                showAlert('error', 'خطأ', 'حدث خطأ أثناء معالجة الهدية. يرجى المحاولة مرة أخرى.');
             }
         }
 
@@ -2580,6 +2617,12 @@
         window.onload = function() {
             init();
             document.body.style.opacity = '1';
+        };
+
+        window.onbeforeunload = function() {
+            if (dailyGiftTimerInterval) {
+                clearInterval(dailyGiftTimerInterval);
+            }
         };
     </script>
 </body>
