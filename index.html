@@ -1725,33 +1725,32 @@
 
         // 🌐 دالة لجلب إعدادات التطبيق من البوت
         async function fetchAppConfig() {
-            try {
-                showLoading(true);
-                const response = await fetch(`${API_BASE_URL}/api/app-config`);
-                
-                if (response.ok) {
-                    const config = await response.json();
-                    
-                    // تحديث المتغيرات بالقيم القادمة من البوت
-                    GIFT_CODE = config.gift_code;
-                    AD_EXPIRY_DAYS = parseInt(config.ad_cooldown_days);
-                    GIFT_URL = config.gift_url;
-                    DAILY_GIFT_AMOUNT = parseFloat(config.daily_gift_amount);
-                    
-                    console.log("✅ تم تحديث الإعدادات من البوت:", config);
-                    
-                    // تحديث واجهة المستخدم
-                    updateUIWithConfig();
-                    
-                    return true;
-                }
-            } catch (error) {
-                console.error("❌ فشل جلب الإعدادات، استخدام القيم الافتراضية", error);
-            } finally {
-                showLoading(false);
-            }
-            return false;
+    try {
+        showLoading(true);
+        // نستخدم API_BASE_URL الثابت الذي حددته
+        const response = await fetch(`${API_BASE_URL}/api/app-config`); 
+        
+        if (response.ok) {
+            const config = await response.json();
+            
+            // ... تحديث المتغيرات ...
+            GIFT_CODE = config.gift_code;
+            AD_EXPIRY_DAYS = parseInt(config.ad_cooldown_days);
+            GIFT_URL = config.gift_url;
+            
+            console.log("✅ تم تحديث الإعدادات من البوت:", config);
+            return true;
+        } else {
+            console.error("❌ فشل جلب الإعدادات. حالة السيرفر:", response.status);
         }
+    } catch (error) {
+        // هذا الخطأ سيظهر إذا كانت مشكلة CORS أو مشكلة شبكة حقيقية
+        console.error("❌ فشل الاتصال بالبوت (CORS/Network Error):", error);
+    } finally {
+        showLoading(false);
+    }
+    return false;
+}
 
         // 🎨 تحديث واجهة المستخدم بالإعدادات الجديدة
         function updateUIWithConfig() {
