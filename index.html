@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhraohNetShop</title>
+    <title>PharaohNetShop - كسب نقاط</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1059,9 +1059,11 @@
             color: #FFF;
         }
 
-        .invite-ons {
+        .invite-buttons {
             display: flex;
+            flex-direction: row;
             gap: 10px;
+            width: 100%;
         }
 
         .copy-btn, .share-btn {
@@ -1084,13 +1086,7 @@
             background: linear-gradient(45deg, var(--info-blue), #1976D2);
             color: white;
         }
-        
-        .invite-buttons {
-    display: flex;
-    flex-direction: row; /* تأكد من أنه أفقي */
-    gap: 10px;
-    width: 100%;
-}
+
         .share-btn {
             background: linear-gradient(45deg, var(--success-green), #388E3C);
             color: white;
@@ -1609,7 +1605,7 @@
                     </button>
                 </div>
                 
-                <a href="#" class="get-code-link" onclick="openTelegram('gift_codes')">
+                <a href="#" class="get-code-link" id="get-code-link" onclick="openGiftUrl()">
                     <i class="fas fa-external-link-alt"></i> الحصول على كود هدية
                 </a>
             </div>
@@ -1706,18 +1702,18 @@
     <script src='//libtl.com/sdk.js' data-zone='10301752' data-sdk='show_10301752'></script>
 
     <script>
+        // 🔧 متغيرات ديناميكية سيتم تحديثها من البوت
         const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
         const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
         const BOT_USERNAME = 'PharaohNetChopBot';
 
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
-        const tg = Telegram.WebApp;
-        const user = tg.initDataUnsafe.user || {};
+        // ⚙️ قيم افتراضية سيتم تحديثها من البوت
+        let GIFT_CODE = "gift-pharaoh"; 
+        let AD_EXPIRY_DAYS = 30; 
+        let GIFT_URL = "https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/";
+        let DAILY_GIFT_AMOUNT = 0.15;
 
         const totalTasks = 10;
-        const GIFT_CODE = "gift-pharaoh";
-        const AD_EXPIRY_DAYS = 30;
         const GIFT_COOLDOWN_HOURS = 24;
         
         let dailyGiftClaimed = false;
@@ -1726,6 +1722,99 @@
         let giftCodeCollapsed = false;
         let lastActivityTime = null;
         let dailyGiftTimerInterval = null;
+
+        // 🌐 دالة لجلب إعدادات التطبيق من البوت
+        async function fetchAppConfig() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_BASE_URL}/api/app-config`);
+                
+                if (response.ok) {
+                    const config = await response.json();
+                    
+                    // تحديث المتغيرات بالقيم القادمة من البوت
+                    GIFT_CODE = config.gift_code;
+                    AD_EXPIRY_DAYS = parseInt(config.ad_cooldown_days);
+                    GIFT_URL = config.gift_url;
+                    DAILY_GIFT_AMOUNT = parseFloat(config.daily_gift_amount);
+                    
+                    console.log("✅ تم تحديث الإعدادات من البوت:", config);
+                    
+                    // تحديث واجهة المستخدم
+                    updateUIWithConfig();
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error("❌ فشل جلب الإعدادات، استخدام القيم الافتراضية", error);
+            } finally {
+                showLoading(false);
+            }
+            return false;
+        }
+
+        // 🎨 تحديث واجهة المستخدم بالإعدادات الجديدة
+        function updateUIWithConfig() {
+            // تحديث مبلغ الهدية اليومية في الواجهة
+            const dailyGiftAmountElement = document.getElementById('daily-gift-amount');
+            if (dailyGiftAmountElement) {
+                dailyGiftAmountElement.textContent = `${DAILY_GIFT_AMOUNT} نقطة`;
+            }
+            
+            // تحديث رابط الحصول على كود الهدية
+            const getCodeLink = document.getElementById('get-code-link');
+            if (getCodeLink) {
+                getCodeLink.onclick = openGiftUrl;
+            }
+            
+            // تحديث الإعلانات بناءً على المدة الجديدة
+            checkAdExpiryAfterConfigUpdate();
+            
+            showAlert('success', 'تم التحديث', 'تم تحديث الإعدادات من البوت بنجاح!', 3000);
+        }
+
+        // 🔄 التحقق من صلاحية الإعلانات بعد تحديث المدة
+        function checkAdExpiryAfterConfigUpdate() {
+            try {
+                const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+                if (!adsData.ads || !Array.isArray(adsData.ads)) {
+                    return;
+                }
+                
+                const now = Date.now();
+                const expiryDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+                
+                // إذا مرت المدة الجديدة منذ آخر إعادة تعيين
+                if (now - adsData.lastReset > expiryDaysInMs) {
+                    // إعادة تعيين جميع الإعلانات
+                    adsData.ads.forEach(ad => {
+                        ad.completed = false;
+                        ad.completedDate = null;
+                        ad.pointsEarned = 0;
+                    });
+                    adsData.lastReset = now;
+                    localStorage.setItem('adsData', JSON.stringify(adsData));
+                    
+                    // إعادة إنشاء المهام
+                    createTasks();
+                    updateTasksDisplay();
+                    
+                    showAlert('info', 'تم تحديث الإعلانات', `تم إعادة تعيين الإعلانات بناءً على المدة الجديدة (${AD_EXPIRY_DAYS} يوم)`);
+                }
+            } catch (error) {
+                console.error('خطأ في التحقق من صلاحية الإعلانات:', error);
+            }
+        }
+
+        // 🔗 دالة لفتح رابط الهدية (ديناميكي)
+        function openGiftUrl() {
+            if (GIFT_URL) {
+                tg.openLink(GIFT_URL);
+            } else {
+                showAlert('error', 'رابط غير متوفر', 'رابط كود الهدية غير متوفر حالياً.');
+            }
+            return false;
+        }
 
         function showLoading(show = true) {
             const loadingBar = document.getElementById('loadingBar');
@@ -1883,7 +1972,7 @@
             
             const pointsEarned = taskType === 'ad' ? 0.5 : 
                                taskType === 'gift' ? 2 : 
-                               taskType === 'daily_gift' ? parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15') : 0.5;
+                               taskType === 'daily_gift' ? DAILY_GIFT_AMOUNT : 0.5;
             
             const data = {
                 task_id: taskId,
@@ -1936,7 +2025,10 @@
             return true;
         }
 
-        function init() {
+        async function init() {
+            // جلب إعدادات التطبيق أولاً
+            await fetchAppConfig();
+            
             const userNameElement = document.getElementById('user-name');
             const displayName = user.first_name ? 
                 `${user.first_name} ${user.last_name || ''}`.trim() : 'ضيف';
@@ -2041,9 +2133,6 @@
                 case 'help':
                     url = 'https://t.me/Misteerx';
                     break;
-                case 'gift_codes':
-                    url = 'https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/';
-                    break;
                 default:
                     url = 'https://t.me/PharaohNetShop';
             }
@@ -2122,9 +2211,9 @@
 
         function checkAdExpiry(adsData) {
             const now = Date.now();
-            const sevenDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+            const expiryDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
             
-            if (now - adsData.lastReset > sevenDaysInMs) {
+            if (now - adsData.lastReset > expiryDaysInMs) {
                 adsData.ads.forEach(ad => {
                     ad.completed = false;
                     ad.completedDate = null;
@@ -2308,7 +2397,7 @@
 
         async function startAd(id) {
             if (getAdStatus(id)) {
-                tg.showAlert('لقد أتممت مشاهدة هذا الإعلان بالفعل! يمكنك مشاهدته مرة أخرى بعد 7 أيام.');
+                tg.showAlert(`لقد أتممت مشاهدة هذا الإعلان بالفعل! يمكنك مشاهدته مرة أخرى بعد ${AD_EXPIRY_DAYS} يوم.`);
                 return;
             }
 
@@ -2389,13 +2478,8 @@
             const timerElement = document.getElementById('daily-gift-timer');
             const amountElement = document.getElementById('daily-gift-amount');
             
-            let savedAmount = localStorage.getItem('dailyGiftAmount');
-            if (!savedAmount) {
-                savedAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                localStorage.setItem('dailyGiftAmount', savedAmount);
-            }
-            
-            amountElement.textContent = `${savedAmount} نقطة`;
+            // استخدام القيمة من البوت بدلاً من القيمة المحلية
+            amountElement.textContent = `${DAILY_GIFT_AMOUNT} نقطة`;
             
             dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') === 'true';
             dailyGiftCooldown = parseInt(localStorage.getItem('dailyGiftCooldown') || '0');
@@ -2427,10 +2511,6 @@
                         claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
                         timerElement.textContent = 'الهدية متاحة الآن!';
                         
-                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                        localStorage.setItem('dailyGiftAmount', newAmount);
-                        amountElement.textContent = `${newAmount} نقطة`;
-                        
                         updateTasksDisplay();
                     } else {
                         updateGiftTimer(newTimeLeft, timerElement);
@@ -2441,12 +2521,6 @@
                 claimBtn.disabled = false;
                 timerElement.textContent = 'الهدية متاحة الآن!';
                 localStorage.setItem('dailyGiftClaimed', false);
-                
-                if (timeDiff >= twentyFourHours) {
-                    const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                    localStorage.setItem('dailyGiftAmount', newAmount);
-                    amountElement.textContent = `${newAmount} نقطة`;
-                }
             }
             
             updateTasksDisplay();
@@ -2472,7 +2546,7 @@
             claimBtn.disabled = true;
             claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
             
-            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
+            const amount = DAILY_GIFT_AMOUNT;
             
             const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift');
             
@@ -2513,10 +2587,6 @@
                         claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
                         timerElement.textContent = 'الهدية متاحة الآن!';
                         
-                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                        localStorage.setItem('dailyGiftAmount', newAmount);
-                        document.getElementById('daily-gift-amount').textContent = `${newAmount} نقطة`;
-                        
                         updateTasksDisplay();
                     } else {
                         updateGiftTimer(timeLeft, timerElement);
@@ -2540,6 +2610,7 @@
                 return;
             }
             
+            // التحقق من الكود باستخدام القيمة الديناميكية من البوت
             if (code.toUpperCase() === GIFT_CODE.toUpperCase()) {
                 const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
                 if (usedCodes.includes(code.toUpperCase())) {
@@ -2614,8 +2685,14 @@
             }
         }
 
-        window.onload = function() {
-            init();
+        // 📱 Telegram WebApp تهيئة
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        const tg = Telegram.WebApp;
+        const user = tg.initDataUnsafe.user || {};
+
+        window.onload = async function() {
+            await init();
             document.body.style.opacity = '1';
         };
 
