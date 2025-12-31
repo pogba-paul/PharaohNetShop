@@ -477,8 +477,6 @@
             50% { transform: translateY(-15px) rotate(3deg); }
         }
 
-        /* تمت إزالة avatar-ring بالكامل */
-
         .user-name-large {
             font-size: 26px;
             font-weight: 900;
@@ -1614,7 +1612,6 @@
             <div class="avatar-container">
                 <img src="" alt="avatar" id="user-avatar" class="avatar-large" style="display:none;">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user123&backgroundColor=4361ee" alt="default" id="default-avatar" class="avatar-large">
-                <!-- تم إزالة avatar-ring -->
             </div>
             <div class="user-name-large" id="user-name">جاري التحميل...</div>
             <div class="user-status">عضو نشط</div>
@@ -1695,7 +1692,7 @@
                     </button>
                 </div>
                 
-                <a href="#" class="get-code-link" onclick="openTelegram('gift_codes')">
+                <a href="#" class="get-code-link" id="get-code-link" onclick="openGiftUrl()">
                     <i class="fas fa-external-link-alt"></i> الحصول على كود هدية
                 </a>
             </div>
@@ -1770,7 +1767,7 @@
         </div>
     </div>
 
-    <!-- التنقل السفلي - مشابه للصورة المرفقة -->
+    <!-- التنقل السفلي -->
     <div class="bottom-nav">
         <div class="nav">
             <div class="nav-item active" onclick="showPage('main')">
@@ -1795,28 +1792,109 @@
     <script src='//libtl.com/sdk.js' data-zone='10301752' data-sdk='show_10301752'></script>
 
     <script>
-        // تهيئة Telegram Web App
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
-        const tg = Telegram.WebApp;
-        const user = tg.initDataUnsafe.user || {};
-
-        // الإعدادات العامة
+        // 🔧 متغيرات ديناميكية سيتم تحديثها من البوت
         const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
         const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
         const BOT_USERNAME = 'PharaohNetChopBot';
+
+        // ⚙️ قيم افتراضية سيتم تحديثها من البوت
+        let GIFT_CODE = "gift-pharaoh"; 
+        let AD_EXPIRY_DAYS = 30; 
+        let GIFT_URL = "https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/";
+        let DAILY_GIFT_AMOUNT = 0.15;
+
         const totalTasks = 10;
-        const GIFT_CODE = "gift-pharaoh";
-        const AD_EXPIRY_DAYS = 30;
         const GIFT_COOLDOWN_HOURS = 24;
         
-        // حالة التطبيق
         let dailyGiftClaimed = false;
         let dailyGiftCooldown = 0;
         let tasksCollapsed = false;
         let giftCodeCollapsed = false;
         let lastActivityTime = null;
         let dailyGiftTimerInterval = null;
+
+        // 🌐 دالة لجلب إعدادات التطبيق من البوت
+        async function fetchAppConfig() {
+            try {
+                showLoading(true);
+                const response = await fetch(`${API_BASE_URL}/api/app-config`); 
+                
+                if (response.ok) {
+                    const config = await response.json();
+                    
+                    GIFT_CODE = config.gift_code;
+                    AD_EXPIRY_DAYS = parseInt(config.ad_cooldown_days);
+                    GIFT_URL = config.gift_url;
+                    
+                    console.log("✅ تم تحديث الإعدادات من البوت:", config);
+                    
+                    // تحديث واجهة المستخدم بالإعدادات الجديدة
+                    updateUIWithConfig();
+                    return true;
+                } else {
+                    console.error("❌ فشل جلب الإعدادات. حالة السيرفر:", response.status);
+                }
+            } catch (error) {
+                console.error("❌ فشل الاتصال بالبوت:", error);
+            } finally {
+                showLoading(false);
+            }
+            return false;
+        }
+
+        // 🎨 تحديث واجهة المستخدم بالإعدادات الجديدة
+        function updateUIWithConfig() {
+            // تحديث رابط الحصول على كود الهدية
+            const getCodeLink = document.getElementById('get-code-link');
+            if (getCodeLink) {
+                getCodeLink.onclick = openGiftUrl;
+            }
+            
+            // تحديث الإعلانات بناءً على المدة الجديدة
+            checkAdExpiryAfterConfigUpdate();
+            
+            showAlert('success', 'تم التحديث', 'تم تحديث الإعدادات من البوت بنجاح!', 3000);
+        }
+
+        // 🔄 التحقق من صلاحية الإعلانات بعد تحديث المدة
+        function checkAdExpiryAfterConfigUpdate() {
+            try {
+                const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
+                if (!adsData.ads || !Array.isArray(adsData.ads)) {
+                    return;
+                }
+                
+                const now = Date.now();
+                const expiryDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+                
+                if (now - adsData.lastReset > expiryDaysInMs) {
+                    adsData.ads.forEach(ad => {
+                        ad.completed = false;
+                        ad.completedDate = null;
+                        ad.pointsEarned = 0;
+                    });
+                    adsData.lastReset = now;
+                    localStorage.setItem('adsData', JSON.stringify(adsData));
+                    
+                    createTasks();
+                    updateTasksDisplay();
+                    
+                    showAlert('info', 'تم تحديث الإعلانات', `تم إعادة تعيين الإعلانات بناءً على المدة الجديدة (${AD_EXPIRY_DAYS} يوم)`);
+                }
+            } catch (error) {
+                console.error('خطأ في التحقق من صلاحية الإعلانات:', error);
+            }
+        }
+
+        // 🔗 دالة لفتح رابط الهدية (ديناميكي)
+        function openGiftUrl() {
+            if (GIFT_URL) {
+                tg.openLink(GIFT_URL);
+            } else {
+                showAlert('error', 'رابط غير متوفر', 'رابط كود الهدية غير متوفر حالياً.');
+            }
+            return false;
+        }
 
         // ============= وظائف المساعدة =============
 
@@ -1860,6 +1938,79 @@
             setTimeout(() => alertElement.remove(), duration + 400);
             
             return alertId;
+        }
+
+        // ============= دوال API لإرسال النقاط =============
+
+        async function completeTaskViaAPI(taskId, taskType = 'ad') {
+            showLoading(true);
+            
+            const userId = user.id;
+            if (!userId) {
+                showLoading(false);
+                showAlert('error', 'خطأ', 'لم يتم التعرف على هوية المستخدم');
+                return false;
+            }
+            
+            const endpoint = `${API_BASE_URL}/api/user/${userId}/complete-task`;
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-API-Key': API_KEY
+            };
+            
+            const pointsEarned = taskType === 'ad' ? 0.5 : 
+                               taskType === 'gift' ? 2 : 
+                               taskType === 'daily_gift' ? DAILY_GIFT_AMOUNT : 0.5;
+            
+            const data = {
+                task_id: taskId,
+                task_type: taskType,
+                points: pointsEarned
+            };
+            
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في API: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result && result.success) {
+                    lastActivityTime = new Date().toISOString();
+                    localStorage.setItem('lastActivityTime', lastActivityTime);
+                    
+                    showAlert('success', 'تمت المهمة!', `لقد أكملت المهمة بنجاح! النقاط تم إرسالها للبوت.`);
+                    updateTasksDisplay();
+                    
+                    return true;
+                } else {
+                    completeTaskLocally(taskId, taskType);
+                    return false;
+                }
+            } catch (error) {
+                console.error('خطأ في اتصال API:', error);
+                
+                completeTaskLocally(taskId, taskType);
+                return false;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function completeTaskLocally(taskId, taskType) {
+            lastActivityTime = new Date().toISOString();
+            localStorage.setItem('lastActivityTime', lastActivityTime);
+            
+            showAlert('info', 'تم حفظ المهمة', 'تم حفظ المهمة محلياً، سيتم مزامنتها مع البوت عند الاتصال.');
+            updateTasksDisplay();
+            
+            return true;
         }
 
         // ============= إدارة المهام =============
@@ -1950,8 +2101,7 @@
                 'channel': 'https://t.me/PharaohNetShop',
                 'group': 'https://t.me/PharaohNetChat',
                 'facebook_channel': 'https://www.facebook.com/profile.php?id=61573924207577',
-                'help': 'https://t.me/Misteerx',
-                'gift_codes': 'https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/'
+                'help': 'https://t.me/Misteerx'
             };
             
             tg.openLink(urls[type] || urls.channel);
@@ -2160,7 +2310,7 @@
         // بدء مشاهدة إعلان
         async function startAd(id) {
             if (getAdStatus(id)) {
-                tg.showAlert('لقد أتممت مشاهدة هذا الإعلان بالفعل!');
+                tg.showAlert(`لقد أتممت مشاهدة هذا الإعلان بالفعل! يمكنك مشاهدته مرة أخرى بعد ${AD_EXPIRY_DAYS} يوم.`);
                 return;
             }
 
@@ -2170,41 +2320,50 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التشغيل...';
 
-            // عرض الإعلان
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 2;
+                if (fill) fill.style.width = Math.min(progress, 100) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                }
+            }, 100);
+
             try {
                 if (typeof window.show_10301752 === 'function') {
                     await window.show_10301752();
                 }
                 
-                // محاكاة التقدم
-                let progress = 0;
-                const progressInterval = setInterval(() => {
-                    progress += 2;
-                    if (fill) fill.style.width = Math.min(progress, 100) + '%';
-                    if (progress >= 100) clearInterval(progressInterval);
-                }, 100);
+                clearInterval(progressInterval);
+                if (fill) fill.style.width = '100%';
                 
-                setTimeout(() => {
-                    clearInterval(progressInterval);
-                    if (fill) fill.style.width = '100%';
-                    
-                    // إكمال المهمة
-                    completeAdLocal(id, btn);
-                    
-                }, 5000);
+                const apiSuccess = await completeTaskViaAPI(id, 'ad');
                 
+                if (apiSuccess || !navigator.onLine) {
+                    setTimeout(() => {
+                        completeAdLocal(id, btn);
+                    }, 500);
+                }
             } catch (error) {
-                console.error('خطأ في الإعلان:', error);
-                showAlert('error', 'خطأ', 'حدث خطأ أثناء عرض الإعلان');
-                btn.innerHTML = '<i class="fas fa-play"></i> ابدأ المشاهدة';
-                btn.disabled = false;
+                clearInterval(progressInterval);
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-play"></i> ابدأ المشاهدة';
+                    btn.disabled = false;
+                }
                 if (fill) fill.style.width = '0%';
+                console.error('Ad error:', error);
+                showAlert('error', 'خطأ في الإعلان', 'حدث خطأ أثناء عرض الإعلان. يرجى المحاولة مرة أخرى.');
             }
         }
 
-        // إكمال الإعلان محلياً
+        // إكمال الإعلان
         function completeAdLocal(id, btn) {
             if (setAdCompleted(id)) {
+                if (!navigator.onLine) {
+                    completeTaskLocally(id, 'ad');
+                }
+                
                 if (btn) {
                     btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال';
                     btn.classList.add('completed');
@@ -2212,10 +2371,14 @@
                 }
                 
                 const taskCard = document.getElementById(`task${id}`);
-                if (taskCard) taskCard.classList.add('completed');
+                if (taskCard) {
+                    taskCard.classList.add('completed');
+                }
                 
                 tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'تمت المهمة', 'تم إكمال مشاهدة الإعلان بنجاح!');
+                showAlert('success', 'مهمة مكتملة', 'تم إكمال مشاهدة الإعلان بنجاح!');
+            } else {
+                showAlert('error', 'خطأ', 'حدث خطأ أثناء حفظ بيانات الإعلان.');
             }
         }
 
@@ -2232,13 +2395,8 @@
             const timerElement = document.getElementById('daily-gift-timer');
             const amountElement = document.getElementById('daily-gift-amount');
             
-            // تعيين مبلغ الهدية
-            let savedAmount = localStorage.getItem('dailyGiftAmount');
-            if (!savedAmount) {
-                savedAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                localStorage.setItem('dailyGiftAmount', savedAmount);
-            }
-            amountElement.textContent = `${savedAmount} نقطة`;
+            // استخدام القيمة من البوت بدلاً من القيمة المحلية
+            amountElement.textContent = `${DAILY_GIFT_AMOUNT} نقطة`;
             
             dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') === 'true';
             dailyGiftCooldown = parseInt(localStorage.getItem('dailyGiftCooldown') || '0');
@@ -2250,7 +2408,9 @@
                 const timeLeft = twentyFourHours - timeDiff;
                 updateGiftTimer(timeLeft, timerElement);
                 
-                if (dailyGiftTimerInterval) clearInterval(dailyGiftTimerInterval);
+                if (dailyGiftTimerInterval) {
+                    clearInterval(dailyGiftTimerInterval);
+                }
                 
                 dailyGiftTimerInterval = setInterval(() => {
                     const currentTime = Date.now();
@@ -2260,16 +2420,13 @@
                     if (newTimeLeft <= 0) {
                         clearInterval(dailyGiftTimerInterval);
                         dailyGiftTimerInterval = null;
+                        
                         dailyGiftClaimed = false;
                         localStorage.setItem('dailyGiftClaimed', false);
                         
                         claimBtn.disabled = false;
                         claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
                         timerElement.textContent = 'الهدية متاحة الآن!';
-                        
-                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                        localStorage.setItem('dailyGiftAmount', newAmount);
-                        amountElement.textContent = `${newAmount} نقطة`;
                         
                         updateTasksDisplay();
                     } else {
@@ -2281,12 +2438,6 @@
                 claimBtn.disabled = false;
                 timerElement.textContent = 'الهدية متاحة الآن!';
                 localStorage.setItem('dailyGiftClaimed', false);
-                
-                if (timeDiff >= twentyFourHours) {
-                    const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                    localStorage.setItem('dailyGiftAmount', newAmount);
-                    amountElement.textContent = `${newAmount} نقطة`;
-                }
             }
             
             updateTasksDisplay();
@@ -2304,7 +2455,7 @@
         // المطالبة بالهدية اليومية
         async function claimDailyGift() {
             if (dailyGiftClaimed) {
-                showAlert('warning', 'هدية مطلوبة', 'لقد حصلت على الهدية اليومية بالفعل!');
+                showAlert('warning', 'هدية مطلوبة', 'لقد حصلت على الهدية اليومية بالفعل! انتظر حتى تتجدد.');
                 return;
             }
             
@@ -2314,10 +2465,15 @@
             claimBtn.disabled = true;
             claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
             
-            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
+            const amount = DAILY_GIFT_AMOUNT;
             
-            // محاكاة اتصال API
-            setTimeout(() => {
+            const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift');
+            
+            if (apiSuccess || !navigator.onLine) {
+                if (!navigator.onLine) {
+                    completeTaskLocally('daily_gift', 'daily_gift');
+                }
+                
                 dailyGiftClaimed = true;
                 const claimTime = Date.now();
                 
@@ -2325,12 +2481,15 @@
                 localStorage.setItem('dailyGiftTime', claimTime.toString());
                 
                 updateTasksDisplay();
+                
                 claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
                 
                 tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة!`);
+                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
                 
-                if (dailyGiftTimerInterval) clearInterval(dailyGiftTimerInterval);
+                if (dailyGiftTimerInterval) {
+                    clearInterval(dailyGiftTimerInterval);
+                }
                 
                 dailyGiftTimerInterval = setInterval(() => {
                     const currentTime = Date.now();
@@ -2339,16 +2498,13 @@
                     if (timeLeft <= 0) {
                         clearInterval(dailyGiftTimerInterval);
                         dailyGiftTimerInterval = null;
+                        
                         dailyGiftClaimed = false;
                         localStorage.setItem('dailyGiftClaimed', false);
                         
                         claimBtn.disabled = false;
                         claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
                         timerElement.textContent = 'الهدية متاحة الآن!';
-                        
-                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
-                        localStorage.setItem('dailyGiftAmount', newAmount);
-                        document.getElementById('daily-gift-amount').textContent = `${newAmount} نقطة`;
                         
                         updateTasksDisplay();
                     } else {
@@ -2357,7 +2513,11 @@
                 }, 1000);
                 
                 updateGiftTimer(GIFT_COOLDOWN_HOURS * 60 * 60 * 1000, timerElement);
-            }, 1500);
+            } else {
+                claimBtn.disabled = false;
+                claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                showAlert('error', 'خطأ', 'حدث خطأ أثناء معالجة الهدية. يرجى المحاولة مرة أخرى.');
+            }
         }
 
         // ============= أكواد الهدايا =============
@@ -2381,7 +2541,7 @@
         }
 
         // إرسال كود الهدية
-        function submitGiftCode() {
+        async function submitGiftCode() {
             const codeInput = document.getElementById('gift-code-input');
             const code = codeInput.value.trim();
             
@@ -2393,19 +2553,28 @@
             if (code.toUpperCase() === GIFT_CODE.toUpperCase()) {
                 const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
                 if (usedCodes.includes(code.toUpperCase())) {
-                    showAlert('warning', 'تم الاستخدام', 'هذا الكود تم استخدامه مسبقاً!');
+                    showAlert('warning', 'تم الاستخدام', '⚠️ هذا الكود تم استخدامه مسبقاً!');
                     return;
                 }
                 
-                usedCodes.push(code.toUpperCase());
-                localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
-                updateTasksDisplay();
-                codeInput.value = '';
+                const apiSuccess = await completeTaskViaAPI('gift_code', 'gift');
                 
-                tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'مبروك!', 'تم تفعيل الكود بنجاح!');
+                if (apiSuccess || !navigator.onLine) {
+                    if (!navigator.onLine) {
+                        completeTaskLocally('gift_code', 'gift');
+                    }
+                    
+                    usedCodes.push(code.toUpperCase());
+                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
+                    
+                    updateTasksDisplay();
+                    codeInput.value = '';
+                    
+                    tg.HapticFeedback.impactOccurred('medium');
+                    showAlert('success', 'كود هدية', `🎉 تم تفعيل الكود بنجاح!`);
+                }
             } else {
-                showAlert('error', 'كود خاطئ', 'كود الهدية غير صحيح!');
+                showAlert('error', 'كود خاطئ', '❌ كود الهدية غير صحيح!');
             }
         }
 
@@ -2415,7 +2584,7 @@
         function copyInviteLink() {
             const link = document.getElementById('invite-link').value;
             navigator.clipboard.writeText(link).then(() => {
-                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح!');
+                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح! شاركه مع أصدقائك.');
                 tg.HapticFeedback.impactOccurred('light');
             }).catch(() => {
                 const tempInput = document.createElement('input');
@@ -2424,7 +2593,7 @@
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                showAlert('success', 'تم النسخ', 'تم نسخ الرابط!');
+                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح!');
             });
         }
 
@@ -2462,7 +2631,10 @@
         // ============= التهيئة =============
 
         // تهيئة التطبيق
-        function init() {
+        async function init() {
+            // جلب إعدادات التطبيق أولاً
+            await fetchAppConfig();
+            
             // بيانات المستخدم
             const userNameElement = document.getElementById('user-name');
             const displayName = user.first_name ? 
@@ -2549,9 +2721,15 @@
 
         // ============= أحداث الصفحة =============
 
+        // Telegram WebApp تهيئة
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        const tg = Telegram.WebApp;
+        const user = tg.initDataUnsafe.user || {};
+
         // عند تحميل الصفحة
-        window.onload = function() {
-            init();
+        window.onload = async function() {
+            await init();
             document.body.style.opacity = '1';
         };
 
