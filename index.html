@@ -3,29 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PharaohNetShop - كسب نقاط</title>
+    <title>PhraohNetShop - Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-blue: #2196F3;
-            --secondary-blue: #1976D2;
-            --dark-blue: #0D47A1;
-            --light-blue: #E3F2FD;
-            --dark-bg: #121212;
-            --darker-bg: #0A0A0A;
-            --light-bg: #F5F7FA;
-            --card-dark: #1E1E1E;
-            --card-light: #FFFFFF;
-            --gradient-blue: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-            --gradient-dark: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
-            --gradient-light: linear-gradient(135deg, #F5F7FA 0%, #FFFFFF 100%);
-            --success-green: #4CAF50;
-            --info-blue: #2196F3;
-            --warning-orange: #FF9800;
-            --error-red: #f44336;
-            --menu-width: 280px;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --primary-light: #4895ef;
+            --secondary: #7209b7;
+            --accent: #f72585;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f94144;
+            --dark: #121826;
+            --darker: #0d1117;
+            --light: #f8f9fa;
+            --lighter: #ffffff;
+            --gray: #6c757d;
+            --gray-light: #adb5bd;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.15);
+            --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.25);
+            --gradient-primary: linear-gradient(135deg, #4361ee, #3a0ca3);
+            --gradient-secondary: linear-gradient(135deg, #7209b7, #560bad);
+            --gradient-accent: linear-gradient(135deg, #f72585, #b5179e);
+            --gradient-success: linear-gradient(135deg, #4cc9f0, #4895ef);
+            --gradient-dark: linear-gradient(135deg, #121826, #1e293b);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --border-radius: 18px;
+            --border-radius-sm: 10px;
+            --border-radius-lg: 25px;
         }
 
         * {
@@ -37,77 +48,205 @@
         body {
             font-family: 'Cairo', sans-serif;
             min-height: 100vh;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--gradient-dark);
+            color: var(--light);
             overflow-x: hidden;
             position: relative;
+            transition: var(--transition);
         }
 
         body.light-theme {
-            background: var(--gradient-light);
-            color: #333;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            color: var(--dark);
         }
 
-        body.dark-theme {
-            background: var(--gradient-dark);
-            color: #F0F0F0;
-        }
-
-        .blue-bg-effect {
+        /* خلفيات متحركة */
+        .bg-animation {
             position: fixed;
             top: 0;
             right: 0;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0) 70%);
-            z-index: -1;
-            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
         }
 
-        .blue-bg-effect-2 {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .bg-circle:nth-child(1) {
             width: 400px;
             height: 400px;
-            background: radial-gradient(circle, rgba(25, 118, 210, 0.05) 0%, rgba(25, 118, 210, 0) 70%);
-            z-index: -1;
-            border-radius: 50%;
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
         }
 
+        .bg-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            left: -150px;
+            animation-delay: 5s;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 500px;
+            height: 500px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.05;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, 50px) rotate(120deg); }
+            66% { transform: translate(-20px, 30px) rotate(240deg); }
+        }
+
+        /* تأثيرات الجسيمات */
+        .particles {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particle-float 15s infinite linear;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* شريط التحميل */
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+            z-index: 9999;
+            transform: translateX(-100%);
+        }
+
+        .loading-bar.active {
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* التنبيهات */
+        .alert-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 9998;
+            max-width: 350px;
+            width: calc(100% - 30px);
+        }
+
+        .alert {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: var(--shadow);
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideIn 0.4s forwards;
+            border-right: 3px solid var(--primary);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-theme .alert {
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .alert.success { border-right-color: var(--success); }
+        .alert.error { border-right-color: var(--danger); }
+        .alert.info { border-right-color: var(--primary); }
+        .alert.warning { border-right-color: var(--warning); }
+
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* القائمة الجانبية */
         .side-menu {
             position: fixed;
             top: 0;
-            right: -280px;
-            width: var(--menu-width);
+            right: -320px;
+            width: 300px;
             height: 100%;
-            background: var(--gradient-light);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             z-index: 2000;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            padding: 25px 20px;
             overflow-y: auto;
         }
 
         .dark-theme .side-menu {
-            background: var(--gradient-dark);
-            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.3);
+            background: rgba(18, 24, 38, 0.95);
         }
 
         .side-menu.active {
-            transform: translateX(-280px);
+            transform: translateX(-320px);
         }
 
         .menu-overlay {
             position: fixed;
             top: 0;
             right: 0;
-            bottom: 0;
-            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             z-index: 1999;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
         .menu-overlay.active {
@@ -121,72 +260,77 @@
             align-items: center;
             margin-bottom: 30px;
             padding-bottom: 15px;
-            border-bottom: 2px solid rgba(33, 150, 243, 0.2);
+            border-bottom: 2px solid rgba(67, 97, 238, 0.2);
         }
 
         .menu-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
-            background: var(--gradient-blue);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
         .close-menu {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: rgba(33, 150, 243, 0.1);
-            border: none;
-            color: var(--dark-blue);
+            background: rgba(67, 97, 238, 0.1);
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            color: var(--primary);
             font-size: 18px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-menu:hover {
-            background: rgba(33, 150, 243, 0.2);
+            background: rgba(67, 97, 238, 0.2);
             transform: rotate(90deg);
         }
 
         .menu-items {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            background: rgba(33, 150, 243, 0.05);
+            padding: 14px 16px;
+            border-radius: var(--border-radius);
+            background: rgba(67, 97, 238, 0.08);
             text-decoration: none;
             color: inherit;
-            transition: all 0.3s;
+            transition: var(--transition);
             border: 1px solid transparent;
         }
 
         .menu-item:hover {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(67, 97, 238, 0.15);
             transform: translateX(-5px);
-            border-color: rgba(33, 150, 243, 0.3);
+            border-color: rgba(67, 97, 238, 0.3);
         }
 
         .menu-item i {
+            font-size: 18px;
             width: 24px;
             text-align: center;
-            color: var(--dark-blue);
-            font-size: 18px;
+            color: var(--primary);
         }
 
         .menu-item span {
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            flex: 1;
         }
 
+        /* الهيدر */
         .app-header {
             position: sticky;
             top: 0;
@@ -197,91 +341,78 @@
             justify-content: space-between;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s;
+            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
         }
 
         .dark-theme .app-header {
-            background: rgba(18, 18, 18, 0.95);
-            border-bottom: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(18, 24, 38, 0.95);
+            border-bottom: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient-blue);
+            width: 42px;
+            height: 42px;
+            background: var(--gradient-primary);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 20px;
-            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
         }
 
         .logo-text {
-            font-size: 22px;
-            font-weight: 800;
-            background: var(--gradient-blue);
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
         .menu-btn {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
-            background: rgba(33, 150, 243, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            background: rgba(67, 97, 238, 0.1);
+            border: 2px solid rgba(67, 97, 238, 0.2);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .dark-theme .menu-btn {
-            background: rgba(33, 150, 243, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.3);
+            transition: var(--transition);
         }
 
         .menu-btn:hover {
-            background: rgba(33, 150, 243, 0.2);
+            background: rgba(67, 97, 238, 0.2);
             transform: translateY(-2px);
         }
 
         .menu-btn span {
             width: 20px;
             height: 2px;
-            background: var(--dark-blue);
+            background: var(--primary);
             border-radius: 2px;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
         .dark-theme .menu-btn span {
-            background: var(--primary-blue);
+            background: var(--primary-light);
         }
 
         .menu-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translate(4px, 4px);
+            transform: rotate(45deg) translate(5px, 5px);
         }
 
         .menu-btn.active span:nth-child(2) {
@@ -289,13 +420,14 @@
         }
 
         .menu-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(4px, -4px);
+            transform: rotate(-45deg) translate(5px, -5px);
         }
 
+        /* الصفحات */
         .page {
             display: none;
-            padding: 20px 20px 90px;
-            animation: pageFadeIn 0.6s forwards;
+            padding: 20px 20px 80px;
+            animation: pageFadeIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .page.active {
@@ -313,113 +445,88 @@
             }
         }
 
+        /* الصفحة الرئيسية */
         .user-profile-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 30px 0 40px;
             text-align: center;
+            padding: 30px 0 40px;
             position: relative;
         }
 
         .avatar-container {
             position: relative;
-            margin-bottom: 20px;
+            margin: 0 auto 25px;
+            width: 130px;
+            height: 130px;
         }
 
         .avatar-large {
-            width: 120px;
-            height: 120px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid transparent;
-            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue)) border-box;
-            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3);
+            background: linear-gradient(45deg, var(--primary), var(--secondary)) border-box;
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.3);
             position: relative;
             z-index: 1;
+            animation: floatAvatar 6s ease-in-out infinite;
         }
 
-        .avatar-ring {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 136px;
-            height: 136px;
-            border-radius: 50%;
-            border: 2px dashed var(--primary-blue);
-            animation: spin 20s linear infinite;
+        @keyframes floatAvatar {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* تمت إزالة avatar-ring بالكامل */
 
         .user-name-large {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: var(--gradient-blue);
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 2px 10px rgba(33, 150, 243, 0.2);
         }
 
         .user-status {
-            font-size: 14px;
-            padding: 6px 18px;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 30px;
-            color: var(--dark-blue);
-            border: 1px solid rgba(33, 150, 243, 0.3);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 10px 22px;
+            background: rgba(67, 97, 238, 0.15);
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-light);
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .user-status::before {
             content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--success-green);
+            width: 10px;
+            height: 10px;
+            background: var(--success);
             border-radius: 50%;
-            animation: pulse 2s infinite;
+            animation: blink 1.5s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
-            100% { opacity: 1; }
         }
 
+        /* بطاقة المهام */
         .tasks-summary-card {
-            background: var(--gradient-blue);
-            border-radius: 24px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius-lg);
             padding: 30px;
             margin: 0 0 30px;
             color: white;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(33, 150, 243, 0.3);
-            transform: translateY(0);
-            transition: transform 0.3s;
-        }
-
-        .tasks-summary-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .tasks-summary-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            z-index: 0;
+            box-shadow: var(--shadow-lg);
         }
 
         .tasks-summary-header {
@@ -432,21 +539,30 @@
             font-size: 36px;
             margin-bottom: 15px;
             color: white;
-            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+            animation: bounce 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         .tasks-summary-header .label {
-            font-size: 16px;
+            font-size: 15px;
             opacity: 0.9;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
         }
 
         .tasks-summary-header .value {
             font-size: 48px;
             font-weight: 900;
-            margin: 10px 0;
-            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            margin: 12px 0;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #f0f0f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .tasks-summary-header .subtext {
@@ -455,172 +571,183 @@
             font-weight: 500;
         }
 
+        /* بطاقات الإعدادات */
         .configs-card {
-            background: var(--card-light);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
             padding: 25px;
             margin: 30px 0;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
             position: relative;
             overflow: hidden;
+            transition: var(--transition);
         }
 
         .dark-theme .configs-card {
-            background: var(--card-dark);
-            border: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .configs-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(45deg, transparent, rgba(33, 150, 243, 0.05));
-            border-radius: 0 0 0 100%;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .configs-card h3 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: var(--dark-blue);
-            font-weight: 700;
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            font-weight: 900;
+            position: relative;
+            display: inline-block;
         }
 
-        .configs-card p {
-            line-height: 1.8;
-            color: #666;
-            font-size: 16px;
-        }
-
-        .dark-theme .configs-card p {
-            color: #CCC;
-        }
-
-        .blue-text {
-            background: var(--gradient-blue);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 800;
+        .configs-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 50px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
         }
 
         .config-item {
             text-align: right;
             margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 12px;
-            border-right: 4px solid var(--primary-blue);
+            padding: 20px;
+            background: rgba(67, 97, 238, 0.08);
+            border-radius: var(--border-radius);
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .config-item:hover {
+            background: rgba(67, 97, 238, 0.12);
+            transform: translateX(-5px);
         }
 
         .config-title {
             font-size: 18px;
-            font-weight: 700;
-            color: var(--dark-blue);
-            margin-bottom: 10px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .config-features {
             font-size: 14px;
-            color: #666;
-            margin-bottom: 10px;
+            color: var(--gray);
+            margin-bottom: 12px;
             list-style: none;
+            line-height: 1.7;
+        }
+
+        .dark-theme .config-features {
+            color: var(--gray-light);
         }
 
         .config-features li {
-            padding: 5px 0;
+            padding: 6px 0;
             position: relative;
-            padding-right: 20px;
+            padding-right: 25px;
         }
 
         .config-features li::before {
             content: '✓';
             position: absolute;
             right: 0;
-            color: var(--primary-blue);
+            color: var(--primary);
             font-weight: bold;
+            font-size: 16px;
         }
 
         .config-price {
             font-size: 16px;
-            font-weight: 600;
-            color: var(--primary-blue);
+            font-weight: 700;
+            color: var(--primary);
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: 50px;
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
+        /* عنوان الصفحة */
         .page-title {
             text-align: center;
-            font-size: 28px;
+            font-size: 26px;
             margin: 20px 0 30px;
-            font-weight: 800;
+            font-weight: 900;
             position: relative;
-            display: block;
-            width: 100%;
-            white-space: nowrap;
-            overflow: visible;
+            padding-bottom: 15px;
         }
 
         .page-title::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: 0;
             right: 50%;
             transform: translateX(50%);
             width: 100px;
             height: 4px;
-            background: var(--gradient-blue);
+            background: var(--gradient-primary);
             border-radius: 2px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
         }
 
+        /* رأس المهام */
         .tasks-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
-            background: var(--card-light);
-            padding: 15px;
-            border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            transition: var(--transition);
         }
 
         .dark-theme .tasks-header {
-            background: var(--card-dark);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .tasks-title {
             font-size: 20px;
-            font-weight: 700;
-            color: var(--dark-blue);
+            font-weight: 800;
+            color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .toggle-tasks {
-            background: rgba(33, 150, 243, 0.1);
-            border: none;
             width: 40px;
             height: 40px;
-            border-radius: 10px;
+            border-radius: var(--border-radius-sm);
+            background: rgba(67, 97, 238, 0.1);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            color: var(--primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--dark-blue);
-            font-size: 18px;
-            cursor: pointer;
-            transition: all 0.3s;
         }
 
         .toggle-tasks:hover {
-            background: rgba(33, 150, 243, 0.2);
-            transform: translateY(-2px);
+            background: rgba(67, 97, 238, 0.2);
+            transform: rotate(180deg);
         }
 
+        /* حاوية المهام */
         .tasks-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -632,100 +759,83 @@
             display: none;
         }
 
+        /* بطاقة المهمة */
         .task-card {
-            background: var(--card-light);
-            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
             padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(33, 150, 243, 0.1);
-            transition: all 0.4s;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
 
         .dark-theme .task-card {
-            background: var(--card-dark);
-            border: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .task-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(67, 97, 238, 0.3);
         }
 
-        .dark-theme .task-card:hover {
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        }
-
-        .task-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, transparent, rgba(33, 150, 243, 0.05));
-            border-radius: 0 0 0 100%;
+        .task-card.completed {
+            border-color: rgba(76, 201, 240, 0.3);
         }
 
         .task-header {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
         .task-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
+            width: 55px;
+            height: 55px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             color: white;
-            flex-shrink: 0;
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            background: var(--gradient-primary);
         }
 
-        .task-icon::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-            z-index: 0;
-        }
-
-        .task-icon i {
-            position: relative;
-            z-index: 1;
+        .task-card.completed .task-icon {
+            background: var(--gradient-success);
         }
 
         .task-info h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #333;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            color: var(--dark);
         }
 
         .dark-theme .task-info h3 {
-            color: #FFF;
+            color: var(--light);
         }
 
         .task-info p {
             font-size: 14px;
-            color: #666;
+            color: var(--gray);
+            line-height: 1.5;
         }
 
         .dark-theme .task-info p {
-            color: #AAA;
+            color: var(--gray-light);
         }
 
+        /* شريط التقدم */
         .progress-container {
             margin: 20px 0;
         }
@@ -733,66 +843,62 @@
         .progress-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .progress-info .points {
-            color: var(--dark-blue);
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            padding: 5px 12px;
+            border-radius: 50px;
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .progress-bar {
-            height: 12px;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .dark-theme .progress-bar {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .progress-fill {
             height: 100%;
             width: 0%;
-            border-radius: 10px;
-            background: var(--gradient-blue);
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
             position: relative;
             transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 30px;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255,255,255,0.3), transparent);
-        }
-
+        /* أزرار المشاهدة */
         .watch-btn {
             width: 100%;
-            padding: 18px;
+            padding: 16px;
             border: none;
-            border-radius: 16px;
+            border-radius: var(--border-radius);
             font-family: 'Cairo', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            transition: all 0.3s;
+            gap: 10px;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
             margin-top: 15px;
-            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            background: var(--gradient-primary);
             color: white;
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
         }
 
         .watch-btn:disabled {
@@ -803,34 +909,34 @@
 
         .watch-btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+            box-shadow: 0 12px 30px rgba(67, 97, 238, 0.4);
         }
 
         .watch-btn.completed {
-            background: linear-gradient(45deg, var(--success-green), #45a049);
-            color: white;
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+            background: var(--gradient-success);
+            box-shadow: 0 8px 25px rgba(76, 201, 240, 0.3);
         }
 
         .watch-btn i {
-            font-size: 20px;
+            font-size: 18px;
         }
 
+        /* قسم كود الهدية */
         .gift-code-section {
-            background: var(--card-light);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
             padding: 25px;
             margin: 30px 0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
             position: relative;
             overflow: hidden;
         }
 
         .dark-theme .gift-code-section {
-            background: var(--card-dark);
-            border: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .gift-code-header {
@@ -842,85 +948,97 @@
 
         .gift-code-title {
             font-size: 20px;
-            font-weight: 700;
-            color: var(--dark-blue);
+            font-weight: 800;
+            color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .code-input-container {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
         }
 
         .code-input {
             flex: 1;
-            padding: 15px 20px;
-            border: 2px solid rgba(33, 150, 243, 0.2);
-            border-radius: 12px;
+            padding: 16px 20px;
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            border-radius: var(--border-radius);
             font-size: 16px;
             font-family: 'Cairo', sans-serif;
-            background: var(--light-bg);
-            color: #333;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--dark);
             text-align: center;
             direction: ltr;
+            transition: var(--transition);
         }
 
         .dark-theme .code-input {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(30, 41, 59, 0.9);
             color: white;
-            border-color: rgba(33, 150, 243, 0.3);
+            border-color: rgba(67, 97, 238, 0.3);
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
         }
 
         .submit-code-btn {
-            padding: 15px 30px;
-            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+            padding: 16px 28px;
+            background: var(--gradient-primary);
             border: none;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             color: white;
             font-size: 16px;
-            font-weight: 700;
+            font-weight: 800;
             font-family: 'Cairo', sans-serif;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 10px;
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
         }
 
         .submit-code-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
+            box-shadow: 0 12px 25px rgba(67, 97, 238, 0.4);
         }
 
         .get-code-link {
             display: block;
             text-align: center;
-            color: var(--primary-blue);
+            color: var(--primary);
             text-decoration: none;
-            font-weight: 600;
-            padding: 10px;
-            border-radius: 8px;
-            background: rgba(33, 150, 243, 0.1);
-            transition: all 0.3s;
+            font-weight: 800;
+            padding: 14px;
+            border-radius: var(--border-radius);
+            background: rgba(67, 97, 238, 0.1);
+            transition: var(--transition);
             margin-top: 15px;
+            border: 1px solid transparent;
         }
 
         .get-code-link:hover {
-            background: rgba(33, 150, 243, 0.2);
+            background: rgba(67, 97, 238, 0.2);
+            transform: translateY(-2px);
+            border-color: rgba(67, 97, 238, 0.3);
         }
 
+        /* الهدية اليومية */
         .daily-gift-section {
-            background: linear-gradient(135deg, #4CAF50, #388E3C);
-            border-radius: 20px;
-            padding: 25px;
+            background: var(--gradient-success);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
             margin: 30px 0;
             color: white;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 15px 35px rgba(76, 201, 240, 0.3);
         }
 
         .daily-gift-header {
@@ -932,25 +1050,30 @@
 
         .daily-gift-title {
             font-size: 20px;
-            font-weight: 700;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .gift-amount {
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 900;
             text-align: center;
-            margin: 20px 0;
-            text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            margin: 25px 0;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #e0f7ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .gift-timer {
             font-size: 16px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             opacity: 0.9;
+            font-weight: 600;
         }
 
         .claim-gift-btn {
@@ -958,211 +1081,283 @@
             padding: 18px;
             background: white;
             border: none;
-            border-radius: 16px;
-            color: #388E3C;
+            border-radius: var(--border-radius);
+            color: var(--primary);
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 900;
             font-family: 'Cairo', sans-serif;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
         }
 
         .claim-gift-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
             background: rgba(255, 255, 255, 0.5);
+            transform: none !important;
         }
 
         .claim-gift-btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
+            color: var(--secondary);
         }
 
+        /* صفحة الملف الشخصي */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
-            margin-top: 20px;
+            margin: 25px 0 30px;
         }
 
         .stat-card {
-            background: var(--card-light);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
             padding: 25px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
         .dark-theme .stat-card {
-            background: var(--card-dark);
-            border: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(67, 97, 238, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(67, 97, 238, 0.3);
         }
 
         .stat-card h4 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: var(--dark-blue);
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--primary);
+            font-weight: 800;
         }
 
         .stat-value {
             font-size: 32px;
-            font-weight: 800;
-            color: var(--primary-blue);
+            font-weight: 900;
+            color: var(--primary);
+            margin: 12px 0;
         }
 
         .stat-value-small {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--success-green);
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--success);
+            margin: 12px 0;
         }
 
+        .stat-card p {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .dark-theme .stat-card p {
+            color: var(--gray-light);
+        }
+
+        /* رابط الدعوة */
         .invite-link-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 12px;
-            border: 1px solid rgba(33, 150, 243, 0.3);
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .invite-link-container:hover {
+            background: rgba(67, 97, 238, 0.15);
         }
 
         .invite-link-container h4 {
             font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--dark-blue);
+            margin-bottom: 20px;
+            color: var(--primary);
             text-align: center;
+            font-weight: 900;
         }
 
         .invite-link {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .invite-link input {
             flex: 1;
-            padding: 10px 15px;
-            border: none;
-            background: var(--light-bg);
-            border-radius: 8px;
+            padding: 14px 20px;
+            border: 1px solid rgba(67, 97, 238, 0.2);
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.9);
             font-size: 14px;
-            color: var(--dark-blue);
+            color: var(--dark);
             direction: ltr;
+            transition: var(--transition);
         }
 
         .dark-theme .invite-link input {
-            background: rgba(255, 255, 255, 0.1);
-            color: #FFF;
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+            border-color: rgba(67, 97, 238, 0.3);
+        }
+
+        .invite-link input:focus {
+            outline: none;
+            border-color: var(--primary);
         }
 
         .invite-buttons {
             display: flex;
-            flex-direction: row;
-            gap: 10px;
-            width: 100%;
+            gap: 12px;
         }
 
         .copy-btn, .share-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 800;
             font-family: 'Cairo', sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
         .copy-btn {
-            background: linear-gradient(45deg, var(--info-blue), #1976D2);
+            background: var(--gradient-primary);
             color: white;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
         }
 
         .share-btn {
-            background: linear-gradient(45deg, var(--success-green), #388E3C);
+            background: var(--gradient-success);
             color: white;
+            box-shadow: 0 6px 20px rgba(76, 201, 240, 0.3);
         }
 
         .copy-btn:hover, .share-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
+        /* قسم البوت */
         .bot-logo-section {
             text-align: center;
-            margin: 30px 0;
-            padding: 20px;
-            background: var(--card-light);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+            transition: var(--transition);
         }
 
         .dark-theme .bot-logo-section {
-            background: var(--card-dark);
-            border: 1px solid rgba(33, 150, 243, 0.15);
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .bot-logo {
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             border-radius: 25px;
             object-fit: cover;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
             border: 4px solid transparent;
-            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue)) border-box;
-            box-shadow: 0 10px 30px rgba(33, 150, 243, 0.3);
-            display: block;
+            background: linear-gradient(45deg, var(--primary), var(--secondary)) border-box;
+            box-shadow: 0 15px 35px rgba(67, 97, 238, 0.3);
+            animation: floatAvatar 7s ease-in-out infinite;
         }
 
         .bot-logo-title {
             font-size: 22px;
-            font-weight: 800;
-            color: var(--dark-blue);
-            margin-bottom: 5px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 12px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .bot-logo-subtitle {
             font-size: 16px;
-            color: #666;
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-weight: 600;
         }
 
         .dark-theme .bot-logo-subtitle {
-            color: #AAA;
+            color: var(--gray-light);
         }
 
-        /* التنقل السفلي المصغر والمضغوط */
+        .open-bot-btn {
+            padding: 16px 35px;
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px auto 0;
+            transition: var(--transition);
+            font-size: 16px;
+            box-shadow: 0 10px 30px rgba(247, 37, 133, 0.3);
+        }
+
+        .open-bot-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(247, 37, 133, 0.4);
+        }
+
+        /* التنقل السفلي - تم تحسينه ليكون مشابه للصورة */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             right: 0;
             left: 0;
-            padding: 8px 5px 12px;
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(33, 150, 243, 0.1);
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(67, 97, 238, 0.1);
             z-index: 1000;
-            box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
-            height: 60px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            height: 65px;
             display: flex;
             align-items: center;
         }
 
         .dark-theme .bottom-nav {
-            background: rgba(18, 18, 18, 0.97);
-            border-top: 1px solid rgba(33, 150, 243, 0.15);
-            box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(18, 24, 38, 0.98);
+            border-top: 1px solid rgba(67, 97, 238, 0.2);
         }
 
         .nav {
@@ -1178,53 +1373,53 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #888;
-            font-size: 18px;
-            transition: all 0.3s ease;
+            color: var(--gray);
+            font-size: 20px;
+            transition: var(--transition);
             position: relative;
             cursor: pointer;
-            padding: 5px 8px;
-            border-radius: 12px;
-            min-width: 50px;
+            padding: 8px 12px;
+            border-radius: var(--border-radius-sm);
             background: transparent;
-            height: 45px;
+            min-width: 60px;
+            height: 50px;
         }
 
         .nav-item span {
-            font-size: 9px;
-            margin-top: 3px;
-            font-weight: 600;
+            font-size: 11px;
+            margin-top: 4px;
+            font-weight: 700;
             opacity: 0.7;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
 
         .nav-item.active {
             color: white;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-            transform: translateY(-3px);
-            box-shadow: 0 3px 10px rgba(33, 150, 243, 0.25);
-            padding: 5px 10px;
-            min-width: 55px;
-            border-radius: 12px;
-            height: 48px;
+            background: var(--gradient-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+            padding: 10px 15px;
+            min-width: 65px;
+            border-radius: var(--border-radius);
+            height: 55px;
         }
 
         .nav-item.active span {
             opacity: 1;
             color: white;
-            font-weight: 700;
-            font-size: 10px;
+            font-weight: 800;
+            font-size: 12px;
         }
 
         .nav-indicator {
             position: absolute;
-            top: -2px;
-            width: 3px;
-            height: 3px;
-            background: var(--primary-blue);
+            top: -4px;
+            width: 5px;
+            height: 5px;
+            background: var(--primary);
             border-radius: 50%;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: var(--transition);
         }
 
         .nav-item.active .nav-indicator {
@@ -1232,31 +1427,71 @@
         }
 
         .nav-item:hover:not(.active) {
-            background: rgba(33, 150, 243, 0.05);
-            transform: translateY(-1px);
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.08);
         }
 
-        .task-card.completed {
-            border-color: rgba(76, 175, 80, 0.3);
-        }
-
-        .task-card.completed .task-icon {
-            background: linear-gradient(135deg, var(--success-green), #45a049);
-        }
-
-        .blue-sparkle {
+        /* تأثيرات إضافية */
+        .sparkle {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--primary-blue);
+            width: 8px;
+            height: 8px;
+            background: var(--primary-light);
             border-radius: 50%;
             opacity: 0.7;
             animation: sparkle 3s infinite;
+            pointer-events: none;
+            z-index: 1;
         }
 
         @keyframes sparkle {
             0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.3); }
+            50% { opacity: 0.9; transform: scale(1.3); }
+        }
+
+        /* الاستجابة */
+        @media (max-width: 768px) {
+            .tasks-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .invite-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-item {
+                padding: 6px 10px;
+                min-width: 55px;
+                font-size: 18px;
+                height: 45px;
+            }
+            
+            .nav-item.active {
+                transform: translateY(-4px);
+                padding: 8px 12px;
+                min-width: 60px;
+                height: 50px;
+            }
+            
+            .tasks-summary-header .value {
+                font-size: 40px;
+            }
+            
+            .gift-amount {
+                font-size: 36px;
+            }
+            
+            .bot-logo {
+                width: 130px;
+                height: 130px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1268,206 +1503,57 @@
                 font-size: 18px;
             }
             
-            .tasks-summary-header .value {
-                font-size: 36px;
+            .user-name-large {
+                font-size: 22px;
             }
             
-            .task-card {
-                padding: 20px;
+            .avatar-container {
+                width: 110px;
+                height: 110px;
             }
             
-            .nav-item {
-                padding: 8px 12px;
-                min-width: 60px;
-                font-size: 18px;
-            }
-            
-            .nav-item.active {
-                transform: translateY(-12px);
-                padding: 10px 18px;
-                min-width: 70px;
-            }
-
             .page-title {
-                font-size: 24px;
-            }
-            
-            .tasks-container {
-                grid-template-columns: 1fr;
+                font-size: 22px;
             }
             
             .code-input-container {
                 flex-direction: column;
             }
             
-            .bot-logo {
-                width: 150px;
-                height: 150px;
+            .tasks-summary-card,
+            .configs-card,
+            .gift-code-section,
+            .daily-gift-section,
+            .bot-logo-section {
+                padding: 20px;
             }
-        }
-
-        .loading-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
-            transform: translateX(-100%);
-            z-index: 9999;
-            transition: transform 0.3s;
-        }
-
-        .loading-bar.active {
-            animation: loading 1.5s ease-in-out infinite;
-        }
-
-        @keyframes loading {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .alert-message {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            left: 20px;
-            padding: 15px 20px;
-            border-radius: 12px;
-            background: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            z-index: 9998;
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .alert-message.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .alert-message.success {
-            border-right: 4px solid var(--success-green);
-        }
-
-        .alert-message.error {
-            border-right: 4px solid var(--error-red);
-        }
-
-        .alert-message.info {
-            border-right: 4px solid var(--info-blue);
-        }
-
-        .alert-message.warning {
-            border-right: 4px solid var(--warning-orange);
-        }
-
-        .dark-theme .alert-message {
-            background: var(--card-dark);
-        }
-
-        .alert-icon {
-            font-size: 24px;
-        }
-
-        .alert-message.success .alert-icon {
-            color: var(--success-green);
-        }
-
-        .alert-message.error .alert-icon {
-            color: var(--error-red);
-        }
-
-        .alert-message.info .alert-icon {
-            color: var(--info-blue);
-        }
-
-        .alert-message.warning .alert-icon {
-            color: var(--warning-orange);
-        }
-
-        .alert-content {
-            flex: 1;
-        }
-
-        .alert-title {
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .alert-text {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .close-alert {
-            background: none;
-            border: none;
-            color: #888;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .open-bot-btn {
-            margin-top: 15px;
-            padding: 14px 28px;
-            background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
-            color: white;
-            border: none;
-            border-radius: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 15px auto 0;
-            transition: all 0.3s;
-            font-size: 16px;
-            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .open-bot-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(33, 150, 243, 0.4);
-        }
-
-        .open-bot-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-        }
-
-        .open-bot-btn:hover::before {
-            animation: shine 1.5s ease-out;
-        }
-
-        @keyframes shine {
-            to { transform: translateX(100%); }
+            
+            .bottom-nav {
+                padding: 8px 10px;
+                height: 60px;
+            }
         }
     </style>
 </head>
-<body class="light-theme">
+<body class="dark-theme">
 
+    <!-- الخلفيات المتحركة -->
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- الجسيمات المتحركة -->
+    <div class="particles" id="particles"></div>
+
+    <!-- شريط التحميل -->
     <div class="loading-bar" id="loadingBar"></div>
 
-    <div id="alertContainer"></div>
+    <!-- التنبيهات -->
+    <div class="alert-container" id="alertContainer"></div>
 
-    <div class="blue-bg-effect"></div>
-    <div class="blue-bg-effect-2"></div>
-
+    <!-- القائمة الجانبية -->
     <div class="side-menu">
         <div class="menu-header">
             <div class="menu-title">القائمة</div>
@@ -1482,7 +1568,7 @@
             </a>
             <a href="#" class="menu-item" onclick="openTelegram('channel')">
                 <i class="fas fa-broadcast-tower"></i>
-                <span>قناة مبيعات البوت</span>
+                <span>قناة المبيعات</span>
             </a>
             <a href="#" class="menu-item" onclick="openTelegram('group')">
                 <i class="fas fa-users"></i>
@@ -1490,11 +1576,11 @@
             </a>
             <a href="#" class="menu-item" onclick="openTelegram('facebook_channel')">
                 <i class="fab fa-facebook"></i>
-                <span>قناتنا على الفيسبوك</span>
+                <span>قناة الفيسبوك</span>
             </a>
             <div class="menu-item" id="theme-toggle-menu-item" onclick="toggleTheme()">
                 <i class="fas fa-moon" id="theme-icon"></i>
-                <span id="theme-text">التنقل إلى الوضع الليلي</span>
+                <span id="theme-text">الوضع الليلي</span>
             </div>
             <a href="#" class="menu-item" onclick="openTelegram('help')">
                 <i class="fas fa-question-circle"></i>
@@ -1504,12 +1590,13 @@
     </div>
     <div class="menu-overlay" onclick="toggleMenu()"></div>
 
+    <!-- الهيدر -->
     <div class="app-header">
         <div class="logo">
             <div class="logo-icon">
-                <i class="fas fa-coins"></i>
+                <i class="fas fa-crown"></i>
             </div>
-            <div class="logo-text">كسب نقاط</div>
+            <div class="logo-text">Pharaoh Net</div>
         </div>
         
         <div class="header-controls">
@@ -1521,12 +1608,13 @@
         </div>
     </div>
 
+    <!-- الصفحة الرئيسية -->
     <div id="main-page" class="page active">
         <div class="user-profile-center">
             <div class="avatar-container">
                 <img src="" alt="avatar" id="user-avatar" class="avatar-large" style="display:none;">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user123&backgroundColor=2196F3" alt="default" id="default-avatar" class="avatar-large">
-                <div class="avatar-ring"></div>
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user123&backgroundColor=4361ee" alt="default" id="default-avatar" class="avatar-large">
+                <!-- تم إزالة avatar-ring -->
             </div>
             <div class="user-name-large" id="user-name">جاري التحميل...</div>
             <div class="user-status">عضو نشط</div>
@@ -1534,7 +1622,7 @@
 
         <div class="tasks-summary-card">
             <div class="tasks-summary-header">
-                <i class="fas fa-tasks"></i>
+                <i class="fas fa-trophy"></i>
                 <div class="label">المهام المكتملة اليوم</div>
                 <div class="value"><span id="completed-tasks">0</span></div>
                 <div class="subtext">من أصل 10 مهام متاحة</div>
@@ -1542,9 +1630,9 @@
         </div>
 
         <div class="configs-card">
-            <h3>🔍 طرق كسب نقاط</h3>
+            <h3>🚀 طرق كسب النقاط</h3>
             <div class="config-item">
-                <div class="config-title">📺 مشاهدة الإعلانات</div>
+                <div class="config-title">🎬 مشاهدة الإعلانات</div>
                 <ul class="config-features">
                     <li>قم بمشاهدة الإعلانات و اكسب 0.5 نقطة لكل اعلان تشاهده</li>
                     <li>متاح 10 إعلانات تنتضرك لمشاهدتها</li>
@@ -1552,7 +1640,7 @@
                 </ul>
             </div>
             <div class="config-item">
-                <div class="config-title">🎟 كود الهدية</div>
+                <div class="config-title">🎁 كود الهدية</div>
                 <ul class="config-features">
                     <li>اضغط على زر الحصول على كود الهدية</li>
                     <li>ستجد الكود في منشور فيسبوك انسخه</li>
@@ -1560,7 +1648,7 @@
                 </ul>
             </div>
             <div class="config-item">
-                <div class="config-title">🎁 الهدية اليومية</div>
+                <div class="config-title">⭐ الهدية اليومية</div>
                 <ul class="config-features">
                     <li>يمكنك الحصول على نقاط هدية خلال كل يوم</li>
                     <li>انتظر 24 ساعة للحصول على هدية جديدة</li>
@@ -1570,6 +1658,7 @@
         </div>
     </div>
 
+    <!-- صفحة المهام -->
     <div id="tasks-page" class="page">
         <h2 class="page-title">المهام اليومية</h2>
         
@@ -1584,9 +1673,10 @@
         </div>
         
         <div class="tasks-container" id="tasks-container">
+            <!-- سيتم إنشاء المهام ديناميكياً -->
         </div>
 
-        <div class="task-card" style="margin: 30px 0;">
+        <div class="gift-code-section">
             <div class="gift-code-header">
                 <div class="gift-code-title">
                     <i class="fas fa-gift"></i>
@@ -1601,11 +1691,11 @@
                 <div class="code-input-container">
                     <input type="text" class="code-input" id="gift-code-input" placeholder="أدخل الكود هنا">
                     <button class="submit-code-btn" onclick="submitGiftCode()">
-                        <i class="fas fa-check"></i> تفعيل
+                        <i class="fas fa-check-circle"></i> تفعيل
                     </button>
                 </div>
                 
-                <a href="#" class="get-code-link" id="get-code-link" onclick="openGiftUrl()">
+                <a href="#" class="get-code-link" onclick="openTelegram('gift_codes')">
                     <i class="fas fa-external-link-alt"></i> الحصول على كود هدية
                 </a>
             </div>
@@ -1614,8 +1704,8 @@
         <div class="daily-gift-section">
             <div class="daily-gift-header">
                 <div class="daily-gift-title">
-                    <i class="fas fa-calendar-day"></i>
-                    هدية يومية
+                    <i class="fas fa-calendar-star"></i>
+                    الهدية اليومية
                 </div>
             </div>
             
@@ -1628,40 +1718,41 @@
         </div>
     </div>
 
+    <!-- صفحة الملف الشخصي -->
     <div id="profile-page" class="page">
-        <h2 class="page-title">معلوماتي</h2>
+        <h2 class="page-title">الملف الشخصي</h2>
         
         <div class="stats-container">
             <div class="stat-card">
                 <h4>المهام المكتملة</h4>
                 <div class="stat-value" id="profile-completed-tasks">0</div>
-                <p style="font-size: 14px; color: #666; margin-top: 5px;">من أصل 10</p>
+                <p>من أصل 10</p>
             </div>
             <div class="stat-card">
                 <h4>الإعلانات اليوم</h4>
                 <div class="stat-value" id="today-ads">0</div>
-                <p style="font-size: 14px; color: #666; margin-top: 5px">من أصل 10</p>
+                <p>من أصل 10</p>
             </div>
             <div class="stat-card">
                 <h4>حالة الهدية</h4>
                 <div class="stat-value-small" id="gift-status">غير مطلوبة</div>
-                <p style="font-size: 14px; color: #666; margin-top: 5px">اليومية</p>
+                <p>اليومية</p>
             </div>
             <div class="stat-card">
                 <h4>آخر نشاط</h4>
                 <div class="stat-value" id="last-activity" style="font-size: 20px;">-</div>
-                <p style="font-size: 14px; color: #666; margin-top: 5px">تحديث</p>
+                <p>تحديث</p>
             </div>
         </div>
 
         <div class="invite-link-container">
-            <h4>رابط الدعوة الخاص بك</h4>
+            <h4>🎯 رابط الدعوة الخاص بك</h4>
             <div class="invite-link">
                 <input type="text" id="invite-link" readonly value="" placeholder="سيتم إنشاء الرابط...">
             </div>
             <div class="invite-buttons">
                 <button class="copy-btn" onclick="copyInviteLink()">
-                    <i class="fas fa-copy"></i> نسخ الرابط
+                    <i class="fas fa-copy"></i> نسخ
                 </button>
                 <button class="share-btn" onclick="shareInviteLink()">
                     <i class="fas fa-share-alt"></i> مشاركة
@@ -1669,16 +1760,17 @@
             </div>
         </div>
 
-        <div class="bot-logo-section" style="margin-top: 30px;">
+        <div class="bot-logo-section">
             <img src="bot_logo.png" alt="Pharaoh Net Bot Logo" class="bot-logo">
             <div class="bot-logo-title">Pharaoh Net Shop</div>
             <div class="bot-logo-subtitle">انضم إلى البوت لاستخدام النقاط التي تكسبها</div>
             <button onclick="openBotProperly()" class="open-bot-btn">
-                <i class="fas fa-external-link-alt"></i> فتح البوت لشراء
+                <i class="fas fa-external-link-alt"></i> فتح البوت
             </button>
         </div>
     </div>
 
+    <!-- التنقل السفلي - مشابه للصورة المرفقة -->
     <div class="bottom-nav">
         <div class="nav">
             <div class="nav-item active" onclick="showPage('main')">
@@ -1693,29 +1785,32 @@
             </div>
             <div class="nav-item" onclick="showPage('profile')">
                 <div class="nav-indicator"></div>
-                <i class="fas fa-user"></i>
-                <span>معلوماتي</span>
+                <i class="fas fa-user-circle"></i>
+                <span>ملفي</span>
             </div>
         </div>
     </div>
 
+    <!-- إعلانات -->
     <script src='//libtl.com/sdk.js' data-zone='10301752' data-sdk='show_10301752'></script>
 
     <script>
-        // 🔧 متغيرات ديناميكية سيتم تحديثها من البوت
+        // تهيئة Telegram Web App
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        const tg = Telegram.WebApp;
+        const user = tg.initDataUnsafe.user || {};
+
+        // الإعدادات العامة
         const API_BASE_URL = 'https://platier-sharmaine-unresuscitating.ngrok-free.dev';
         const API_KEY = '36kYTCZpdd4FAXzkGn0TC5lMCva_78gTwcwcaH6tR3H5z7Reh';
         const BOT_USERNAME = 'PharaohNetChopBot';
-
-        // ⚙️ قيم افتراضية سيتم تحديثها من البوت
-        let GIFT_CODE = "gift-pharaoh"; 
-        let AD_EXPIRY_DAYS = 30; 
-        let GIFT_URL = "https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/";
-        let DAILY_GIFT_AMOUNT = 0.15;
-
         const totalTasks = 10;
+        const GIFT_CODE = "gift-pharaoh";
+        const AD_EXPIRY_DAYS = 30;
         const GIFT_COOLDOWN_HOURS = 24;
         
+        // حالة التطبيق
         let dailyGiftClaimed = false;
         let dailyGiftCooldown = 0;
         let tasksCollapsed = false;
@@ -1723,175 +1818,67 @@
         let lastActivityTime = null;
         let dailyGiftTimerInterval = null;
 
-        // 🌐 دالة لجلب إعدادات التطبيق من البوت
-        async function fetchAppConfig() {
-    try {
-        showLoading(true);
-        // نستخدم API_BASE_URL الثابت الذي حددته
-        const response = await fetch(`${API_BASE_URL}/api/app-config`); 
-        
-        if (response.ok) {
-            const config = await response.json();
-            
-            // ... تحديث المتغيرات ...
-            GIFT_CODE = config.gift_code;
-            AD_EXPIRY_DAYS = parseInt(config.ad_cooldown_days);
-            GIFT_URL = config.gift_url;
-            
-            console.log("✅ تم تحديث الإعدادات من البوت:", config);
-            return true;
-        } else {
-            console.error("❌ فشل جلب الإعدادات. حالة السيرفر:", response.status);
-        }
-    } catch (error) {
-        // هذا الخطأ سيظهر إذا كانت مشكلة CORS أو مشكلة شبكة حقيقية
-        console.error("❌ فشل الاتصال بالبوت (CORS/Network Error):", error);
-    } finally {
-        showLoading(false);
-    }
-    return false;
-}
+        // ============= وظائف المساعدة =============
 
-        // 🎨 تحديث واجهة المستخدم بالإعدادات الجديدة
-        function updateUIWithConfig() {
-            // تحديث مبلغ الهدية اليومية في الواجهة
-            const dailyGiftAmountElement = document.getElementById('daily-gift-amount');
-            if (dailyGiftAmountElement) {
-                dailyGiftAmountElement.textContent = `${DAILY_GIFT_AMOUNT} نقطة`;
-            }
-            
-            // تحديث رابط الحصول على كود الهدية
-            const getCodeLink = document.getElementById('get-code-link');
-            if (getCodeLink) {
-                getCodeLink.onclick = openGiftUrl;
-            }
-            
-            // تحديث الإعلانات بناءً على المدة الجديدة
-            checkAdExpiryAfterConfigUpdate();
-            
-            showAlert('success', 'تم التحديث', 'تم تحديث الإعدادات من البوت بنجاح!', 3000);
-        }
-
-        // 🔄 التحقق من صلاحية الإعلانات بعد تحديث المدة
-        function checkAdExpiryAfterConfigUpdate() {
-            try {
-                const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
-                if (!adsData.ads || !Array.isArray(adsData.ads)) {
-                    return;
-                }
-                
-                const now = Date.now();
-                const expiryDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
-                
-                // إذا مرت المدة الجديدة منذ آخر إعادة تعيين
-                if (now - adsData.lastReset > expiryDaysInMs) {
-                    // إعادة تعيين جميع الإعلانات
-                    adsData.ads.forEach(ad => {
-                        ad.completed = false;
-                        ad.completedDate = null;
-                        ad.pointsEarned = 0;
-                    });
-                    adsData.lastReset = now;
-                    localStorage.setItem('adsData', JSON.stringify(adsData));
-                    
-                    // إعادة إنشاء المهام
-                    createTasks();
-                    updateTasksDisplay();
-                    
-                    showAlert('info', 'تم تحديث الإعلانات', `تم إعادة تعيين الإعلانات بناءً على المدة الجديدة (${AD_EXPIRY_DAYS} يوم)`);
-                }
-            } catch (error) {
-                console.error('خطأ في التحقق من صلاحية الإعلانات:', error);
+        // إنشاء جسيمات متحركة
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.right = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particlesContainer.appendChild(particle);
             }
         }
 
-        // 🔗 دالة لفتح رابط الهدية (ديناميكي)
-        function openGiftUrl() {
-            if (GIFT_URL) {
-                tg.openLink(GIFT_URL);
-            } else {
-                showAlert('error', 'رابط غير متوفر', 'رابط كود الهدية غير متوفر حالياً.');
-            }
-            return false;
-        }
-
+        // عرض مؤشر التحميل
         function showLoading(show = true) {
             const loadingBar = document.getElementById('loadingBar');
-            if (show) {
-                loadingBar.classList.add('active');
-            } else {
-                loadingBar.classList.remove('active');
-            }
+            loadingBar.classList.toggle('active', show);
         }
 
-        function showAlert(type, title, message, duration = 5000) {
+        // عرض تنبيه
+        function showAlert(type, title, message, duration = 4000) {
             const container = document.getElementById('alertContainer');
             const alertId = 'alert-' + Date.now();
             
-            const alertTypes = {
-                'success': { icon: 'fa-check-circle', color: 'success' },
-                'error': { icon: 'fa-exclamation-circle', color: 'error' },
-                'info': { icon: 'fa-info-circle', color: 'info' },
-                'warning': { icon: 'fa-exclamation-triangle', color: 'warning' }
-            };
-            
-            const alertType = alertTypes[type] || alertTypes.info;
-            
             const alertHTML = `
-                <div class="alert-message ${alertType.color}" id="${alertId}">
-                    <i class="fas ${alertType.icon} alert-icon"></i>
+                <div class="alert ${type}" id="${alertId}">
                     <div class="alert-content">
-                        <div class="alert-title">${title}</div>
-                        <div class="alert-text">${message}</div>
+                        <h4>${title}</h4>
+                        <p>${message}</p>
                     </div>
-                    <button class="close-alert" onclick="document.getElementById('${alertId}').remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
                 </div>
             `;
             
             container.insertAdjacentHTML('beforeend', alertHTML);
             
             const alertElement = document.getElementById(alertId);
-            setTimeout(() => {
-                alertElement.classList.add('show');
-            }, 10);
-            
-            setTimeout(() => {
-                if (alertElement.parentNode) {
-                    alertElement.classList.remove('show');
-                    setTimeout(() => {
-                        if (alertElement.parentNode) {
-                            alertElement.remove();
-                        }
-                    }, 400);
-                }
-            }, duration);
+            setTimeout(() => alertElement.remove(), duration + 400);
             
             return alertId;
         }
 
+        // ============= إدارة المهام =============
+
+        // تحديث عرض المهام
         function updateTasksDisplay() {
             const completedTasks = calculateCompletedTasks();
             const todayAds = calculateTodayAds();
             
-            const completedTasksElement = document.getElementById('completed-tasks');
-            if (completedTasksElement) completedTasksElement.textContent = completedTasks;
-            
-            const profileCompletedTasksElement = document.getElementById('profile-completed-tasks');
-            if (profileCompletedTasksElement) profileCompletedTasksElement.textContent = completedTasks;
-            
-            const todayAdsElement = document.getElementById('today-ads');
-            if (todayAdsElement) todayAdsElement.textContent = todayAds;
+            document.getElementById('completed-tasks').textContent = completedTasks;
+            document.getElementById('profile-completed-tasks').textContent = completedTasks;
+            document.getElementById('today-ads').textContent = todayAds;
             
             const giftStatusElement = document.getElementById('gift-status');
-            if (giftStatusElement) {
-                giftStatusElement.textContent = dailyGiftClaimed ? 'مطلوبة' : 'متاحة';
-                giftStatusElement.style.color = dailyGiftClaimed ? '#FF9800' : '#4CAF50';
-            }
+            giftStatusElement.textContent = dailyGiftClaimed ? 'مطلوبة' : 'متاحة';
+            giftStatusElement.style.color = dailyGiftClaimed ? 'var(--warning)' : 'var(--success)';
             
             const lastActivityElement = document.getElementById('last-activity');
-            if (lastActivityElement && lastActivityTime) {
+            if (lastActivityTime) {
                 const time = new Date(lastActivityTime);
                 lastActivityElement.textContent = time.toLocaleTimeString('ar-SA');
             }
@@ -1899,211 +1886,53 @@
             updateTasksUI();
         }
 
+        // حساب المهام المكتملة
         function calculateCompletedTasks() {
             try {
                 const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
-                if (!adsData.ads || !Array.isArray(adsData.ads)) {
-                    return 0;
-                }
-                
                 let completedAds = 0;
-                adsData.ads.forEach(ad => {
-                    if (ad.completed) completedAds++;
-                });
+                if (adsData.ads && Array.isArray(adsData.ads)) {
+                    adsData.ads.forEach(ad => ad.completed && completedAds++);
+                }
                 
                 let otherTasks = 0;
-                
-                if (localStorage.getItem('dailyGiftClaimed') === 'true') {
-                    otherTasks++;
-                }
-                
+                if (localStorage.getItem('dailyGiftClaimed') === 'true') otherTasks++;
                 const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
                 otherTasks += usedCodes.length;
                 
                 return completedAds + otherTasks;
             } catch (error) {
-                console.error('خطأ في حساب المهام المكتملة:', error);
+                console.error('خطأ في حساب المهام:', error);
                 return 0;
             }
         }
 
+        // حساب الإعلانات اليومية
         function calculateTodayAds() {
             try {
                 const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
-                if (!adsData.ads || !Array.isArray(adsData.ads)) {
-                    return 0;
-                }
-                
                 let todayAds = 0;
                 const today = new Date().toDateString();
                 
-                adsData.ads.forEach(ad => {
-                    if (ad.completed && ad.completedDate) {
-                        const adDate = new Date(ad.completedDate).toDateString();
-                        if (adDate === today) {
-                            todayAds++;
+                if (adsData.ads && Array.isArray(adsData.ads)) {
+                    adsData.ads.forEach(ad => {
+                        if (ad.completed && ad.completedDate) {
+                            const adDate = new Date(ad.completedDate).toDateString();
+                            if (adDate === today) todayAds++;
                         }
-                    }
-                });
+                    });
+                }
                 
                 return todayAds;
             } catch (error) {
-                console.error('خطأ في حساب الإعلانات اليومية:', error);
+                console.error('خطأ في حساب الإعلانات:', error);
                 return 0;
             }
         }
 
-        async function completeTaskViaAPI(taskId, taskType = 'ad') {
-            showLoading(true);
-            
-            const userId = user.id;
-            if (!userId) {
-                showLoading(false);
-                showAlert('error', 'خطأ', 'لم يتم التعرف على هوية المستخدم');
-                return false;
-            }
-            
-            const endpoint = `${API_BASE_URL}/api/user/${userId}/complete-task`;
-            const headers = {
-                'Content-Type': 'application/json',
-                'X-API-Key': API_KEY
-            };
-            
-            const pointsEarned = taskType === 'ad' ? 0.5 : 
-                               taskType === 'gift' ? 2 : 
-                               taskType === 'daily_gift' ? DAILY_GIFT_AMOUNT : 0.5;
-            
-            const data = {
-                task_id: taskId,
-                task_type: taskType,
-                points: pointsEarned
-            };
-            
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`خطأ في API: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                
-                if (result && result.success) {
-                    lastActivityTime = new Date().toISOString();
-                    localStorage.setItem('lastActivityTime', lastActivityTime);
-                    
-                    showAlert('success', 'تمت المهمة!', `لقد أكملت المهمة بنجاح! النقاط تم إرسالها للبوت.`);
-                    updateTasksDisplay();
-                    
-                    return true;
-                } else {
-                    completeTaskLocally(taskId, taskType);
-                    return false;
-                }
-            } catch (error) {
-                console.error('خطأ في اتصال API:', error);
-                
-                completeTaskLocally(taskId, taskType);
-                return false;
-            } finally {
-                showLoading(false);
-            }
-        }
+        // ============= إدارة واجهة المستخدم =============
 
-        function completeTaskLocally(taskId, taskType) {
-            lastActivityTime = new Date().toISOString();
-            localStorage.setItem('lastActivityTime', lastActivityTime);
-            
-            showAlert('info', 'تم حفظ المهمة', 'تم حفظ المهمة محلياً، سيتم مزامنتها مع البوت عند الاتصال.');
-            updateTasksDisplay();
-            
-            return true;
-        }
-
-        async function init() {
-            // جلب إعدادات التطبيق أولاً
-            await fetchAppConfig();
-            
-            const userNameElement = document.getElementById('user-name');
-            const displayName = user.first_name ? 
-                `${user.first_name} ${user.last_name || ''}`.trim() : 'ضيف';
-            userNameElement.textContent = displayName;
-
-            const userAvatar = document.getElementById('user-avatar');
-            const defaultAvatar = document.getElementById('default-avatar');
-            
-            if (user.photo_url) {
-                userAvatar.src = user.photo_url;
-                userAvatar.style.display = 'block';
-                defaultAvatar.style.display = 'none';
-            }
-
-            lastActivityTime = localStorage.getItem('lastActivityTime');
-
-            const userId = user.id || 'local_user';
-            const inviteLink = `https://t.me/${BOT_USERNAME}?start=${userId}`;
-            document.getElementById('invite-link').value = inviteLink;
-
-            updateThemeToggleText();
-            initAdData();
-            createTasks();
-            updateTasksFromData();
-            initTasksCollapse();
-            initGiftCodeCollapse();
-            initDailyGift();
-
-            if (localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-theme');
-                document.body.classList.remove('light-theme');
-            }
-            
-            addSparkleEffects();
-            
-            tg.setHeaderColor('#2196F3');
-            tg.setBackgroundColor('#F5F7FA');
-            
-            if (document.body.classList.contains('dark-theme')) {
-                tg.setBackgroundColor('#121212');
-            }
-
-            document.documentElement.setAttribute('dir', 'rtl');
-            document.documentElement.setAttribute('lang', 'ar');
-            
-            updateTasksDisplay();
-        }
-
-        function updateThemeToggleText() {
-            const isDark = document.body.classList.contains('dark-theme');
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
-            
-            if (isDark) {
-                themeIcon.className = 'fas fa-sun';
-                themeText.textContent = 'التنقل إلى الوضع النهاري';
-            } else {
-                themeIcon.className = 'fas fa-moon';
-                themeText.textContent = 'التنقل إلى الوضع الليلي';
-            }
-        }
-
-        function addSparkleEffects() {
-            const container = document.querySelector('body');
-            for (let i = 0; i < 15; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'blue-sparkle';
-                sparkle.style.top = Math.random() * 100 + 'vh';
-                sparkle.style.right = Math.random() * 100 + 'vw';
-                sparkle.style.animationDelay = Math.random() * 3 + 's';
-                sparkle.style.width = Math.random() * 8 + 4 + 'px';
-                sparkle.style.height = sparkle.style.width;
-                container.appendChild(sparkle);
-            }
-        }
-
+        // تبديل القائمة
         function toggleMenu() {
             const menu = document.querySelector('.side-menu');
             const overlay = document.querySelector('.menu-overlay');
@@ -2114,82 +1943,69 @@
             menuBtn.classList.toggle('active');
         }
 
+        // فتح روابط Telegram
         function openTelegram(type) {
-            let url;
-            switch(type) {
-                case 'developer_account':
-                    url = 'https://t.me/Misteerx';
-                    break;
-                case 'channel':
-                    url = 'https://t.me/PharaohNetShop';
-                    break;
-                case 'group':
-                    url = 'https://t.me/PharaohNetChat';
-                    break;
-                case 'facebook_channel':
-                    url = 'https://www.facebook.com/profile.php?id=61573924207577';
-                    break;
-                case 'help':
-                    url = 'https://t.me/Misteerx';
-                    break;
-                default:
-                    url = 'https://t.me/PharaohNetShop';
-            }
+            const urls = {
+                'developer_account': 'https://t.me/Misteerx',
+                'channel': 'https://t.me/PharaohNetShop',
+                'group': 'https://t.me/PharaohNetChat',
+                'facebook_channel': 'https://www.facebook.com/profile.php?id=61573924207577',
+                'help': 'https://t.me/Misteerx',
+                'gift_codes': 'https://www.facebook.com/61573924207577/posts/pfbid0vDrJ6tmHocJzeXewR5Uo2sVtFSCX1qLi2mbZPYL7pXz2AiXSjLpRUtVSPQSn7Uhml/'
+            };
             
-            tg.openLink(url);
+            tg.openLink(urls[type] || urls.channel);
             toggleMenu();
         }
 
-        function openBotProperly() {
-            const botUrl = `https://t.me/${BOT_USERNAME}`;
-            
-            tg.showConfirm('سيتم فتح البوت في تطبيق تيليغرام الرئيسي', function(confirmed) {
-                if (confirmed) {
-                    tg.openLink(botUrl);
-                    
-                    setTimeout(() => {
-                        tg.close();
-                    }, 100);
-                }
-            });
-        }
-
+        // تبديل الوضع الليلي/النهاري
         function toggleTheme() {
             const isDark = document.body.classList.contains('dark-theme');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
             
             if (isDark) {
                 document.body.classList.remove('dark-theme');
                 document.body.classList.add('light-theme');
-                tg.setBackgroundColor('#F5F7FA');
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'الوضع الليلي';
+                tg.setBackgroundColor('#f1f5f9');
                 localStorage.setItem('theme', 'light');
             } else {
                 document.body.classList.remove('light-theme');
                 document.body.classList.add('dark-theme');
-                tg.setBackgroundColor('#121212');
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'الوضع النهاري';
+                tg.setBackgroundColor('#121826');
                 localStorage.setItem('theme', 'dark');
-            }
-            
-            updateThemeToggleText();
-            
-            document.body.style.opacity = '0.8';
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 300);
-            
-            if (document.querySelector('.side-menu').classList.contains('active')) {
-                toggleMenu();
             }
         }
 
+        // إظهار صفحة محددة
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.getElementById(page + '-page').classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach((el, i) => {
+                el.classList.toggle('active', 
+                    (page === 'main' && i === 0) || 
+                    (page === 'tasks' && i === 1) || 
+                    (page === 'profile' && i === 2)
+                );
+            });
+            
+            updateTasksDisplay();
+        }
+
+        // ============= إدارة المهام والإعلانات =============
+
+        // تهيئة بيانات الإعلانات
         function initAdData() {
             let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
             
             if (!adsData.ads || adsData.ads.length !== totalTasks) {
                 const now = Date.now();
-                adsData = {
-                    ads: [],
-                    lastReset: now
-                };
+                adsData = { ads: [], lastReset: now };
                 
                 for (let i = 1; i <= totalTasks; i++) {
                     adsData.ads.push({
@@ -2204,15 +2020,15 @@
             }
             
             checkAdExpiry(adsData);
-            
             return adsData;
         }
 
+        // التحقق من انتهاء صلاحية الإعلانات
         function checkAdExpiry(adsData) {
             const now = Date.now();
-            const expiryDaysInMs = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+            const expiryTime = AD_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
             
-            if (now - adsData.lastReset > expiryDaysInMs) {
+            if (now - adsData.lastReset > expiryTime) {
                 adsData.ads.forEach(ad => {
                     ad.completed = false;
                     ad.completedDate = null;
@@ -2220,17 +2036,17 @@
                 });
                 adsData.lastReset = now;
                 localStorage.setItem('adsData', JSON.stringify(adsData));
-                
-                updateTasksFromData();
             }
         }
 
+        // الحصول على حالة الإعلان
         function getAdStatus(adId) {
             const adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
             const ad = adsData.ads?.find(a => a.id === adId);
             return ad ? ad.completed : false;
         }
 
+        // تعيين الإعلان كمكتمل
         function setAdCompleted(adId) {
             let adsData = JSON.parse(localStorage.getItem('adsData') || '{}');
             const adIndex = adsData.ads?.findIndex(a => a.id === adId);
@@ -2240,14 +2056,13 @@
                 adsData.ads[adIndex].completedDate = Date.now();
                 adsData.ads[adIndex].pointsEarned = 0.5;
                 localStorage.setItem('adsData', JSON.stringify(adsData));
-                
                 updateTasksDisplay();
-                
                 return true;
             }
             return false;
         }
 
+        // إنشاء المهام في الواجهة
         function createTasks() {
             const container = document.getElementById('tasks-container');
             container.innerHTML = '';
@@ -2276,7 +2091,10 @@
                             </div>
                         </div>
                         
-                        <button class="watch-btn ${isCompleted ? 'completed' : ''}" onclick="startAd(${i})" id="btn${i}" ${isCompleted ? 'disabled' : ''}>
+                        <button class="watch-btn ${isCompleted ? 'completed' : ''}" 
+                                onclick="startAd(${i})" 
+                                id="btn${i}" 
+                                ${isCompleted ? 'disabled' : ''}>
                             <i class="fas ${isCompleted ? 'fa-check-circle' : 'fa-play'}"></i> 
                             ${isCompleted ? 'تم الإكمال' : 'ابدأ المشاهدة'}
                         </button>
@@ -2286,6 +2104,7 @@
             }
         }
 
+        // تحديث واجهة المهام
         function updateTasksUI() {
             for (let i = 1; i <= totalTasks; i++) {
                 const isCompleted = getAdStatus(i);
@@ -2298,32 +2117,13 @@
                         btn.disabled = true;
                         card.classList.add('completed');
                         const fillElement = document.getElementById(`p${i}`);
-                        if (fillElement) {
-                            fillElement.style.width = '100%';
-                        }
+                        if (fillElement) fillElement.style.width = '100%';
                     }
                 }
             }
         }
 
-        function updateTasksFromData() {
-            updateTasksUI();
-            updateTasksDisplay();
-        }
-
-        function initTasksCollapse() {
-            const container = document.getElementById('tasks-container');
-            const toggleBtn = document.getElementById('toggle-tasks-btn');
-            
-            if (tasksCollapsed) {
-                container.classList.add('collapsed');
-                toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
-            } else {
-                container.classList.remove('collapsed');
-                toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-            }
-        }
-
+        // تبديل عرض المهام
         function toggleTasks() {
             const container = document.getElementById('tasks-container');
             const toggleBtn = document.getElementById('toggle-tasks-btn');
@@ -2341,19 +2141,228 @@
             localStorage.setItem('tasksCollapsed', tasksCollapsed);
         }
 
-        function initGiftCodeCollapse() {
-            const content = document.getElementById('gift-code-content');
-            const toggleBtn = document.getElementById('toggle-gift-btn');
+        // تهيئة حالة المهام
+        function initTasksCollapse() {
+            const container = document.getElementById('tasks-container');
+            const toggleBtn = document.getElementById('toggle-tasks-btn');
             
-            if (giftCodeCollapsed) {
-                content.style.display = 'none';
+            if (tasksCollapsed) {
+                container.classList.add('collapsed');
                 toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
             } else {
-                content.style.display = 'block';
+                container.classList.remove('collapsed');
                 toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
             }
         }
 
+        // ============= الإعلانات =============
+
+        // بدء مشاهدة إعلان
+        async function startAd(id) {
+            if (getAdStatus(id)) {
+                tg.showAlert('لقد أتممت مشاهدة هذا الإعلان بالفعل!');
+                return;
+            }
+
+            const btn = document.querySelector(`#task${id} .watch-btn`);
+            const fill = document.getElementById(`p${id}`);
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التشغيل...';
+
+            // عرض الإعلان
+            try {
+                if (typeof window.show_10301752 === 'function') {
+                    await window.show_10301752();
+                }
+                
+                // محاكاة التقدم
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 2;
+                    if (fill) fill.style.width = Math.min(progress, 100) + '%';
+                    if (progress >= 100) clearInterval(progressInterval);
+                }, 100);
+                
+                setTimeout(() => {
+                    clearInterval(progressInterval);
+                    if (fill) fill.style.width = '100%';
+                    
+                    // إكمال المهمة
+                    completeAdLocal(id, btn);
+                    
+                }, 5000);
+                
+            } catch (error) {
+                console.error('خطأ في الإعلان:', error);
+                showAlert('error', 'خطأ', 'حدث خطأ أثناء عرض الإعلان');
+                btn.innerHTML = '<i class="fas fa-play"></i> ابدأ المشاهدة';
+                btn.disabled = false;
+                if (fill) fill.style.width = '0%';
+            }
+        }
+
+        // إكمال الإعلان محلياً
+        function completeAdLocal(id, btn) {
+            if (setAdCompleted(id)) {
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال';
+                    btn.classList.add('completed');
+                    btn.disabled = true;
+                }
+                
+                const taskCard = document.getElementById(`task${id}`);
+                if (taskCard) taskCard.classList.add('completed');
+                
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'تمت المهمة', 'تم إكمال مشاهدة الإعلان بنجاح!');
+            }
+        }
+
+        // ============= الهدايا اليومية =============
+
+        // تهيئة الهدية اليومية
+        function initDailyGift() {
+            const now = Date.now();
+            const lastClaimTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
+            const timeDiff = now - lastClaimTime;
+            const twentyFourHours = GIFT_COOLDOWN_HOURS * 60 * 60 * 1000;
+            
+            const claimBtn = document.getElementById('claim-gift-btn');
+            const timerElement = document.getElementById('daily-gift-timer');
+            const amountElement = document.getElementById('daily-gift-amount');
+            
+            // تعيين مبلغ الهدية
+            let savedAmount = localStorage.getItem('dailyGiftAmount');
+            if (!savedAmount) {
+                savedAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                localStorage.setItem('dailyGiftAmount', savedAmount);
+            }
+            amountElement.textContent = `${savedAmount} نقطة`;
+            
+            dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') === 'true';
+            dailyGiftCooldown = parseInt(localStorage.getItem('dailyGiftCooldown') || '0');
+            
+            if (dailyGiftClaimed && timeDiff < twentyFourHours) {
+                claimBtn.disabled = true;
+                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                
+                const timeLeft = twentyFourHours - timeDiff;
+                updateGiftTimer(timeLeft, timerElement);
+                
+                if (dailyGiftTimerInterval) clearInterval(dailyGiftTimerInterval);
+                
+                dailyGiftTimerInterval = setInterval(() => {
+                    const currentTime = Date.now();
+                    const lastTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
+                    const newTimeLeft = twentyFourHours - (currentTime - lastTime);
+                    
+                    if (newTimeLeft <= 0) {
+                        clearInterval(dailyGiftTimerInterval);
+                        dailyGiftTimerInterval = null;
+                        dailyGiftClaimed = false;
+                        localStorage.setItem('dailyGiftClaimed', false);
+                        
+                        claimBtn.disabled = false;
+                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                        timerElement.textContent = 'الهدية متاحة الآن!';
+                        
+                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                        localStorage.setItem('dailyGiftAmount', newAmount);
+                        amountElement.textContent = `${newAmount} نقطة`;
+                        
+                        updateTasksDisplay();
+                    } else {
+                        updateGiftTimer(newTimeLeft, timerElement);
+                    }
+                }, 1000);
+            } else {
+                dailyGiftClaimed = false;
+                claimBtn.disabled = false;
+                timerElement.textContent = 'الهدية متاحة الآن!';
+                localStorage.setItem('dailyGiftClaimed', false);
+                
+                if (timeDiff >= twentyFourHours) {
+                    const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                    localStorage.setItem('dailyGiftAmount', newAmount);
+                    amountElement.textContent = `${newAmount} نقطة`;
+                }
+            }
+            
+            updateTasksDisplay();
+        }
+
+        // تحديث مؤقت الهدية
+        function updateGiftTimer(timeLeft, timerElement) {
+            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
+        }
+
+        // المطالبة بالهدية اليومية
+        async function claimDailyGift() {
+            if (dailyGiftClaimed) {
+                showAlert('warning', 'هدية مطلوبة', 'لقد حصلت على الهدية اليومية بالفعل!');
+                return;
+            }
+            
+            const claimBtn = document.getElementById('claim-gift-btn');
+            const timerElement = document.getElementById('daily-gift-timer');
+            
+            claimBtn.disabled = true;
+            claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+            
+            const amount = parseFloat(localStorage.getItem('dailyGiftAmount') || '0.15');
+            
+            // محاكاة اتصال API
+            setTimeout(() => {
+                dailyGiftClaimed = true;
+                const claimTime = Date.now();
+                
+                localStorage.setItem('dailyGiftClaimed', true);
+                localStorage.setItem('dailyGiftTime', claimTime.toString());
+                
+                updateTasksDisplay();
+                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
+                
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة!`);
+                
+                if (dailyGiftTimerInterval) clearInterval(dailyGiftTimerInterval);
+                
+                dailyGiftTimerInterval = setInterval(() => {
+                    const currentTime = Date.now();
+                    const timeLeft = (GIFT_COOLDOWN_HOURS * 60 * 60 * 1000) - (currentTime - claimTime);
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(dailyGiftTimerInterval);
+                        dailyGiftTimerInterval = null;
+                        dailyGiftClaimed = false;
+                        localStorage.setItem('dailyGiftClaimed', false);
+                        
+                        claimBtn.disabled = false;
+                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
+                        timerElement.textContent = 'الهدية متاحة الآن!';
+                        
+                        const newAmount = (Math.random() * 0.15 + 0.1).toFixed(2);
+                        localStorage.setItem('dailyGiftAmount', newAmount);
+                        document.getElementById('daily-gift-amount').textContent = `${newAmount} نقطة`;
+                        
+                        updateTasksDisplay();
+                    } else {
+                        updateGiftTimer(timeLeft, timerElement);
+                    }
+                }, 1000);
+                
+                updateGiftTimer(GIFT_COOLDOWN_HOURS * 60 * 60 * 1000, timerElement);
+            }, 1500);
+        }
+
+        // ============= أكواد الهدايا =============
+
+        // تبديل عرض كود الهدية
         function toggleGiftCode() {
             const content = document.getElementById('gift-code-content');
             const toggleBtn = document.getElementById('toggle-gift-btn');
@@ -2371,236 +2380,8 @@
             localStorage.setItem('giftCodeCollapsed', giftCodeCollapsed);
         }
 
-        function showPage(page) {
-            document.querySelectorAll('.page').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            document.getElementById(page + '-page').classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach((el, i) => {
-                if ((page === 'main' && i === 0) || (page === 'tasks' && i === 1) || (page === 'profile' && i === 2)) {
-                    el.classList.add('active');
-                } else {
-                    el.classList.remove('active');
-                }
-            });
-            
-            document.getElementById(page + '-page').style.animation = 'none';
-            setTimeout(() => {
-                document.getElementById(page + '-page').style.animation = 'pageFadeIn 0.6s forwards';
-            }, 10);
-            
-            updateTasksDisplay();
-        }
-
-        async function startAd(id) {
-            if (getAdStatus(id)) {
-                tg.showAlert(`لقد أتممت مشاهدة هذا الإعلان بالفعل! يمكنك مشاهدته مرة أخرى بعد ${AD_EXPIRY_DAYS} يوم.`);
-                return;
-            }
-
-            const btn = document.querySelector(`#task${id} .watch-btn`);
-            const fill = document.getElementById(`p${id}`);
-            
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التشغيل...';
-
-            let progress = 0;
-            const progressInterval = setInterval(() => {
-                progress += 2;
-                if (fill) fill.style.width = Math.min(progress, 100) + '%';
-                
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                }
-            }, 100);
-
-            try {
-                if (typeof window.show_10301752 === 'function') {
-                    await window.show_10301752();
-                }
-                
-                clearInterval(progressInterval);
-                if (fill) fill.style.width = '100%';
-                
-                const apiSuccess = await completeTaskViaAPI(id, 'ad');
-                
-                if (apiSuccess || !navigator.onLine) {
-                    setTimeout(() => {
-                        completeAdLocal(id, btn);
-                    }, 500);
-                }
-            } catch (error) {
-                clearInterval(progressInterval);
-                if (btn) {
-                    btn.innerHTML = '<i class="fas fa-play"></i> ابدأ المشاهدة';
-                    btn.disabled = false;
-                }
-                if (fill) fill.style.width = '0%';
-                console.error('Ad error:', error);
-                showAlert('error', 'خطأ في الإعلان', 'حدث خطأ أثناء عرض الإعلان. يرجى المحاولة مرة أخرى.');
-            }
-        }
-
-        function completeAdLocal(id, btn) {
-            if (setAdCompleted(id)) {
-                if (!navigator.onLine) {
-                    completeTaskLocally(id, 'ad');
-                }
-                
-                if (btn) {
-                    btn.innerHTML = '<i class="fas fa-check-circle"></i> تم الإكمال';
-                    btn.classList.add('completed');
-                    btn.disabled = true;
-                }
-                
-                const taskCard = document.getElementById(`task${id}`);
-                if (taskCard) {
-                    taskCard.classList.add('completed');
-                }
-                
-                tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'مهمة مكتملة', 'تم إكمال مشاهدة الإعلان بنجاح!');
-            } else {
-                showAlert('error', 'خطأ', 'حدث خطأ أثناء حفظ بيانات الإعلان.');
-            }
-        }
-
-        function initDailyGift() {
-            const now = Date.now();
-            const lastClaimTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
-            const timeDiff = now - lastClaimTime;
-            const twentyFourHours = GIFT_COOLDOWN_HOURS * 60 * 60 * 1000;
-            
-            const claimBtn = document.getElementById('claim-gift-btn');
-            const timerElement = document.getElementById('daily-gift-timer');
-            const amountElement = document.getElementById('daily-gift-amount');
-            
-            // استخدام القيمة من البوت بدلاً من القيمة المحلية
-            amountElement.textContent = `${DAILY_GIFT_AMOUNT} نقطة`;
-            
-            dailyGiftClaimed = localStorage.getItem('dailyGiftClaimed') === 'true';
-            dailyGiftCooldown = parseInt(localStorage.getItem('dailyGiftCooldown') || '0');
-            
-            if (dailyGiftClaimed && timeDiff < twentyFourHours) {
-                claimBtn.disabled = true;
-                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                
-                const timeLeft = twentyFourHours - timeDiff;
-                updateGiftTimer(timeLeft, timerElement);
-                
-                if (dailyGiftTimerInterval) {
-                    clearInterval(dailyGiftTimerInterval);
-                }
-                
-                dailyGiftTimerInterval = setInterval(() => {
-                    const currentTime = Date.now();
-                    const lastTime = parseInt(localStorage.getItem('dailyGiftTime') || '0');
-                    const newTimeLeft = twentyFourHours - (currentTime - lastTime);
-                    
-                    if (newTimeLeft <= 0) {
-                        clearInterval(dailyGiftTimerInterval);
-                        dailyGiftTimerInterval = null;
-                        
-                        dailyGiftClaimed = false;
-                        localStorage.setItem('dailyGiftClaimed', false);
-                        
-                        claimBtn.disabled = false;
-                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
-                        timerElement.textContent = 'الهدية متاحة الآن!';
-                        
-                        updateTasksDisplay();
-                    } else {
-                        updateGiftTimer(newTimeLeft, timerElement);
-                    }
-                }, 1000);
-            } else {
-                dailyGiftClaimed = false;
-                claimBtn.disabled = false;
-                timerElement.textContent = 'الهدية متاحة الآن!';
-                localStorage.setItem('dailyGiftClaimed', false);
-            }
-            
-            updateTasksDisplay();
-        }
-
-        function updateGiftTimer(timeLeft, timerElement) {
-            const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-            
-            timerElement.textContent = `متبقي: ${hours}س ${minutes}د ${seconds}ث`;
-        }
-
-        async function claimDailyGift() {
-            if (dailyGiftClaimed) {
-                showAlert('warning', 'هدية مطلوبة', 'لقد حصلت على الهدية اليومية بالفعل! انتظر حتى تتجدد.');
-                return;
-            }
-            
-            const claimBtn = document.getElementById('claim-gift-btn');
-            const timerElement = document.getElementById('daily-gift-timer');
-            
-            claimBtn.disabled = true;
-            claimBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
-            
-            const amount = DAILY_GIFT_AMOUNT;
-            
-            const apiSuccess = await completeTaskViaAPI('daily_gift_' + Date.now(), 'daily_gift');
-            
-            if (apiSuccess || !navigator.onLine) {
-                if (!navigator.onLine) {
-                    completeTaskLocally('daily_gift', 'daily_gift');
-                }
-                
-                dailyGiftClaimed = true;
-                const claimTime = Date.now();
-                
-                localStorage.setItem('dailyGiftClaimed', true);
-                localStorage.setItem('dailyGiftTime', claimTime.toString());
-                
-                updateTasksDisplay();
-                
-                claimBtn.innerHTML = '<i class="fas fa-clock"></i> قيد الانتظار';
-                
-                tg.HapticFeedback.impactOccurred('medium');
-                showAlert('success', 'هدية يومية', `مبروك! لقد حصلت على ${amount} نقطة كهدية يومية!`);
-                
-                if (dailyGiftTimerInterval) {
-                    clearInterval(dailyGiftTimerInterval);
-                }
-                
-                dailyGiftTimerInterval = setInterval(() => {
-                    const currentTime = Date.now();
-                    const timeLeft = (GIFT_COOLDOWN_HOURS * 60 * 60 * 1000) - (currentTime - claimTime);
-                    
-                    if (timeLeft <= 0) {
-                        clearInterval(dailyGiftTimerInterval);
-                        dailyGiftTimerInterval = null;
-                        
-                        dailyGiftClaimed = false;
-                        localStorage.setItem('dailyGiftClaimed', false);
-                        
-                        claimBtn.disabled = false;
-                        claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
-                        timerElement.textContent = 'الهدية متاحة الآن!';
-                        
-                        updateTasksDisplay();
-                    } else {
-                        updateGiftTimer(timeLeft, timerElement);
-                    }
-                }, 1000);
-                
-                updateGiftTimer(GIFT_COOLDOWN_HOURS * 60 * 60 * 1000, timerElement);
-            } else {
-                claimBtn.disabled = false;
-                claimBtn.innerHTML = '<i class="fas fa-gift"></i> احصل على الهدية';
-                showAlert('error', 'خطأ', 'حدث خطأ أثناء معالجة الهدية. يرجى المحاولة مرة أخرى.');
-            }
-        }
-
-        async function submitGiftCode() {
+        // إرسال كود الهدية
+        function submitGiftCode() {
             const codeInput = document.getElementById('gift-code-input');
             const code = codeInput.value.trim();
             
@@ -2609,92 +2390,172 @@
                 return;
             }
             
-            // التحقق من الكود باستخدام القيمة الديناميكية من البوت
             if (code.toUpperCase() === GIFT_CODE.toUpperCase()) {
                 const usedCodes = JSON.parse(localStorage.getItem('usedGiftCodes') || '[]');
                 if (usedCodes.includes(code.toUpperCase())) {
-                    showAlert('warning', 'تم الاستخدام', '⚠️ هذا الكود تم استخدامه مسبقاً!');
+                    showAlert('warning', 'تم الاستخدام', 'هذا الكود تم استخدامه مسبقاً!');
                     return;
                 }
                 
-                const apiSuccess = await completeTaskViaAPI('gift_code', 'gift');
+                usedCodes.push(code.toUpperCase());
+                localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
+                updateTasksDisplay();
+                codeInput.value = '';
                 
-                if (apiSuccess || !navigator.onLine) {
-                    if (!navigator.onLine) {
-                        completeTaskLocally('gift_code', 'gift');
-                    }
-                    
-                    usedCodes.push(code.toUpperCase());
-                    localStorage.setItem('usedGiftCodes', JSON.stringify(usedCodes));
-                    
-                    updateTasksDisplay();
-                    codeInput.value = '';
-                    
-                    tg.HapticFeedback.impactOccurred('medium');
-                    showAlert('success', 'كود هدية', `🎉 تم تفعيل الكود بنجاح!`);
-                }
+                tg.HapticFeedback.impactOccurred('medium');
+                showAlert('success', 'مبروك!', 'تم تفعيل الكود بنجاح!');
             } else {
-                showAlert('error', 'كود خاطئ', '❌ كود الهدية غير صحيح!');
+                showAlert('error', 'كود خاطئ', 'كود الهدية غير صحيح!');
             }
         }
 
+        // ============= رابط الدعوة =============
+
+        // نسخ رابط الدعوة
         function copyInviteLink() {
             const link = document.getElementById('invite-link').value;
             navigator.clipboard.writeText(link).then(() => {
-                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح! شاركه مع أصدقائك.');
+                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح!');
                 tg.HapticFeedback.impactOccurred('light');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
+            }).catch(() => {
                 const tempInput = document.createElement('input');
                 tempInput.value = link;
                 document.body.appendChild(tempInput);
                 tempInput.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempInput);
-                showAlert('success', 'تم النسخ', 'تم نسخ الرابط بنجاح!');
+                showAlert('success', 'تم النسخ', 'تم نسخ الرابط!');
             });
         }
 
+        // مشاركة رابط الدعوة
         function shareInviteLink() {
             const link = document.getElementById('invite-link').value;
-            const shareText = 'انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨\n' + link;
+            const shareText = 'انضم إلى Pharaoh Net Shop واحصل على منتجات رائعة! 🎁\n' + link;
             
             if (tg.shareToChat) {
-                tg.shareToChat(shareText, (shared) => {
-                    if (shared) {
-                        showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح!');
-                    }
-                });
+                tg.shareToChat(shareText, (shared) => shared && showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح!'));
             } else if (navigator.share) {
                 navigator.share({
-                    title: 'Pharaoh Net Shop - بوت المنتوجات',
-                    text: 'انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨',
+                    title: 'Pharaoh Net Shop',
+                    text: 'انضم إلى Pharaoh Net Shop',
                     url: link,
-                })
-                .then(() => {
-                    showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح!');
-                })
-                .catch((error) => {
-                    console.error('Error sharing:', error);
-                    copyInviteLink();
-                });
+                }).then(() => showAlert('success', 'تمت المشاركة', 'تم المشاركة بنجاح!'));
             } else {
-                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى بوت Pharaoh Net Shop واحصل على منتوجات قيمة! 🎁✨')}`;
+                const telegramShareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent('انضم إلى Pharaoh Net Shop')}`;
                 tg.openLink(telegramShareUrl);
             }
         }
 
-        // 📱 Telegram WebApp تهيئة
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
-        const tg = Telegram.WebApp;
-        const user = tg.initDataUnsafe.user || {};
+        // فتح البوت بشكل صحيح
+        function openBotProperly() {
+            const botUrl = `https://t.me/${BOT_USERNAME}`;
+            
+            tg.showConfirm('سيتم فتح البوت في تطبيق تيليغرام', (confirmed) => {
+                if (confirmed) {
+                    tg.openLink(botUrl);
+                    setTimeout(() => tg.close(), 100);
+                }
+            });
+        }
 
-        window.onload = async function() {
-            await init();
+        // ============= التهيئة =============
+
+        // تهيئة التطبيق
+        function init() {
+            // بيانات المستخدم
+            const userNameElement = document.getElementById('user-name');
+            const displayName = user.first_name ? 
+                `${user.first_name} ${user.last_name || ''}`.trim() : 'ضيف';
+            userNameElement.textContent = displayName;
+
+            // الصورة الشخصية
+            const userAvatar = document.getElementById('user-avatar');
+            const defaultAvatar = document.getElementById('default-avatar');
+            if (user.photo_url) {
+                userAvatar.src = user.photo_url;
+                userAvatar.style.display = 'block';
+                defaultAvatar.style.display = 'none';
+            }
+
+            // النشاط الأخير
+            lastActivityTime = localStorage.getItem('lastActivityTime');
+
+            // رابط الدعوة
+            const userId = user.id || 'local_user';
+            const inviteLink = `https://t.me/${BOT_USERNAME}?start=${userId}`;
+            document.getElementById('invite-link').value = inviteLink;
+
+            // الوضع الليلي/النهاري
+            updateThemeToggleText();
+            
+            // البيانات والمهام
+            initAdData();
+            createTasks();
+            updateTasksFromData();
+            initTasksCollapse();
+            initDailyGift();
+            
+            // التأثيرات البصرية
+            createParticles();
+            
+            // تهيئة Telegram Web App
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                tg.setBackgroundColor('#121826');
+            } else {
+                tg.setBackgroundColor('#f1f5f9');
+            }
+            
+            // تحديث البيانات
+            updateTasksDisplay();
+        }
+
+        // تحديث نص تبديل الوضع
+        function updateThemeToggleText() {
+            const isDark = document.body.classList.contains('dark-theme');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            if (isDark) {
+                themeIcon.className = 'fas fa-sun';
+                themeText.textContent = 'الوضع النهاري';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+                themeText.textContent = 'الوضع الليلي';
+            }
+        }
+
+        // تحديث بيانات المهام
+        function updateTasksFromData() {
+            updateTasksUI();
+            updateTasksDisplay();
+        }
+
+        // تهيئة حالة كود الهدية
+        function initGiftCodeCollapse() {
+            const content = document.getElementById('gift-code-content');
+            const toggleBtn = document.getElementById('toggle-gift-btn');
+            
+            if (giftCodeCollapsed) {
+                content.style.display = 'none';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            } else {
+                content.style.display = 'block';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            }
+        }
+
+        // ============= أحداث الصفحة =============
+
+        // عند تحميل الصفحة
+        window.onload = function() {
+            init();
             document.body.style.opacity = '1';
         };
 
+        // قبل إغلاق الصفحة
         window.onbeforeunload = function() {
             if (dailyGiftTimerInterval) {
                 clearInterval(dailyGiftTimerInterval);
